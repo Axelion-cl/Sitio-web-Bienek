@@ -1,2 +1,6 @@
 # Prueba-sitio-web-Bienek
-Aquí voy a intentar decirle al Agente que haga un plan para crear el sitio web. Le daré el listado de páginas.
+Nota: La carpeta "Guía Sitio web Bienek" contiene diseños de cada página del sitio web realizados en Figma y una descripción en markdown respectiva. De haber discrepancias entre los diseños y la descripción, se prioriza el diseño.
+
+Todos los iconos que necesitemos para el sitio web los encontraremos en la carpeta "Iconos".
+
+Todas las imágenes que necesitemos para el sitio web las encontraremos en la carpeta "Imagenes".

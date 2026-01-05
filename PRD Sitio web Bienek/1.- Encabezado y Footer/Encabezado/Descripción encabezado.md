@@ -1,0 +1,21 @@
+### Cabecera y Navegación (Header)
+
+- **Barra de Utilidad:** Alineado al extremo izquierdo muestra una opcion para escoger el idioma de la página, el cual se puede alternar entre español e ingles. A continuacion pero todavía alineado a la izquierda se muestran accesos a las páginas “Empresa” y “Bolsa de Trabajo”. Alineados al extremo derecho se muestra la información operativa crítica: Cobertura (RM a X Región), Horario (8:00 a 18:00 hrs) y el correo de ventas.
+- **Menú Principal:** Logo a la izquierda y enlaces de navegación (Inicio, Soluciones, Catálogo, Promociones). A la derecha, el acceso al "Blog Técnico", el login de "**Acceso Clientes**" y el botón de llamado a la acción "**CONTÁCTENOS**" en amarillo.
+    - Cuando el cliente inicia sesión, "**Acceso Clientes**" cambia a “**[nombre_usuario]**”, ej: “Pepito Pérez” acompañado de un icono de usuario.
+    - Cuando el cliente agrega un producto, a la derecha de “[**nombre_usuario**]” aparece un icono de carrito con un contador numerico su derecha que refleja cuantos productos hay actualmente en el carrito de preferencias.
+- **Barra de descripcion de Marca:**
+    - **Ubicación:** Sección de transición situada entre el Menú de navegación y la Barra Buscador & Statement.
+    - **Descripción:** Un bloque blanco con texto minimalista negro que contiene el nombre descriptivo/alternativo de la empresa. Debe actuar como un elemento de identidad estático que refuerza el rubro inmediatamente debajo del logotipo antes de dar paso al contenido promocional del Hero.
+    - **Estilo:** Tipografía Outfit de alta legibilidad, peso regular o semi-bold, con amplio espacio negativo (padding) para mantener la limpieza visual.
+- **Barra Buscador & Statement:**
+    - **Posicionamiento:** Se sitúa como una franja horizontal de transición entre el Header (Menú Principal) y la sección Hero.
+    - **Fondo**: Se presenta sobre un fondo oscuro (negro) para resaltar los elementos internos.
+    - **Bloque de Búsqueda (Extremo Izquierdo):**
+        - **Diseño:** Un campo de entrada (input) prominente con fondo gris claro y bordes altamente redondeados (`rounded-full`) para una estética moderna.
+        - **Placeholder:** Texto informativo "Encuentra lo que estas buscando..." en tipografía **Outfit**.
+        - **Iconografía:** Incluye un icono de lupa (Search) alineado al extremo derecho dentro del mismo input para indicar la acción de búsqueda.
+        - **Comportamiento:** Permite buscar todos los productos de forma directa desde la base en Supabase. Al escribir, genera un dropdown menu con los productos que mejor calzan con la busqueda del usuario.
+    - **Statement e Identidad (Extremo Derecho)**
+        - **Mensaje Corporativo:** Texto en blanco de alta legibilidad que dicta: **"Lideres en Distribución de productos de Higiene"**.
+        - **Sello de Compromiso:** Acompañado a la derecha por un sello circular de identidad. Esta imagen de enuentra en la carpeta imágenes bajo el nombre “Lema Bienek”.
