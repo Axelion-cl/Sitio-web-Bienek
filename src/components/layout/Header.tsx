@@ -16,7 +16,7 @@ export function Header() {
     };
 
     return (
-        <header className="w-full flex flex-col">
+        <header className="w-full flex flex-col sticky top-0 z-[100] shadow-md" style={{ position: 'sticky', top: 0, zIndex: 100 }}>
             {/* 1. Utility Bar */}
             <div className="bg-black text-white py-3 hidden lg:block relative" style={{ zIndex: 30 }}>
                 <div className="container mx-auto px-4 flex justify-between items-center font-sans">
@@ -24,10 +24,10 @@ export function Header() {
                     <div className="flex items-center gap-8">
                         <div className="relative">
                             <div
-                                className="flex items-center gap-3 cursor-pointer group"
+                                className="flex items-center gap-6 cursor-pointer group"
                                 onClick={() => setIsLangOpen(!isLangOpen)}
                             >
-                                <Globe className="w-6 h-6 text-white" style={{ marginLeft: '-10px' }} />
+                                <Globe className="w-6 h-6 text-white" />
                                 <div className="flex flex-col leading-tight">
                                     <span className="text-sm font-medium text-white">Idioma</span>
                                     <span className="text-sm text-white group-hover:text-primary transition-colors flex items-center gap-1">
@@ -147,7 +147,7 @@ export function Header() {
             <div className="bg-white hidden lg:flex items-center" style={{ height: '60px' }}>
                 <div className="container mx-auto px-4">
                     <p className="font-sans text-xl text-gray-800 tracking-wide">
-                        Soluciones Integrales de Higiene Industrial
+                        Soluciones Integrales de Limpieza
                     </p>
                 </div>
             </div>

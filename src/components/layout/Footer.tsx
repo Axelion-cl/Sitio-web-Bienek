@@ -44,7 +44,7 @@ export function Footer() {
                             <p>Horario De Atención:</p>
                             <p>Lunes A Viernes De 8:00 A 18:00.</p>
                         </div>
-                        <p>Correo: Ventas@Bienek.Cl</p>
+                        <p>Correo: ventas@bienek.cl</p>
                     </div>
                 </div>
 
