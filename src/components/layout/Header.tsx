@@ -131,15 +131,16 @@ export function Header() {
                     </div>
 
                     {/* Statement & Seal */}
-                    <div className="flex items-center gap-6">
-                        <span className="font-sans font-medium text-lg hidden md:block tracking-wide">
+                    <div className="flex items-center justify-between w-full lg:w-1/3">
+                        <span className="font-outfit font-normal text-lg hidden md:block tracking-wide">
                             Líderes en Distribución de productos de Higiene
                         </span>
-                        <div className="relative h-14 w-36">
+                        <div className="flex items-center">
                             <Image
                                 src="/assets/images/lema-bienek.png"
                                 alt="Sello Bienek"
-                                fill
+                                width={50}
+                                height={50}
                                 className="object-contain"
                             />
                         </div>
