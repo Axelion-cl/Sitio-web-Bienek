@@ -10,3 +10,4 @@
 - **Granulado**
 - **Contemplar un buen Refactoring**
 - **Control de Versiones (Github)**
+- **Contemplar un buen manejo de errores**
