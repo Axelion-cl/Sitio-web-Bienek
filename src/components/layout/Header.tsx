@@ -9,12 +9,12 @@ export function Header() {
     return (
         <header className="w-full flex flex-col">
             {/* 1. Utility Bar */}
-            <div className="bg-black text-white py-2 hidden lg:block">
+            <div className="bg-black text-white py-3 hidden lg:block">
                 <div className="container mx-auto px-4 flex justify-between items-center font-sans">
                     {/* Left: Language & Links */}
                     <div className="flex items-center gap-8">
-                        <div className="flex items-center gap-2 cursor-pointer group">
-                            <Globe className="w-5 h-5 text-primary" />
+                        <div className="flex items-center gap-3 cursor-pointer group">
+                            <Globe className="w-5 h-5 text-white" />
                             <div className="flex flex-col leading-tight">
                                 <span className="text-[10px] text-gray-400 uppercase tracking-wider">Idioma</span>
                                 <span className="text-sm font-medium group-hover:text-primary transition-colors flex items-center gap-1">
@@ -29,33 +29,33 @@ export function Header() {
                     </div>
 
                     {/* Right: Info Items */}
-                    <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-12">
                         {/* Cobertura */}
-                        <div className="flex items-center gap-3">
-                            <Truck className="w-6 h-6 text-white" />
-                            <div className="flex flex-col leading-none">
-                                <span className="text-[11px] text-gray-400 mb-0.5">Cobertura:</span>
-                                <span className="text-sm font-bold tracking-wide">RM - X Región.</span>
+                        <div className="flex items-center gap-4">
+                            <Truck className="w-8 h-8 text-white" />
+                            <div className="flex flex-col leading-tight">
+                                <span className="text-xs text-gray-300">Cobertura:</span>
+                                <span className="text-sm text-white">RM - X Región.</span>
                             </div>
                         </div>
 
                         {/* Horario */}
-                        <div className="flex items-center gap-3">
-                            <Clock className="w-6 h-6 text-white" />
-                            <div className="flex flex-col leading-none">
-                                <span className="text-[11px] text-gray-400 mb-0.5">Horario de atención:</span>
-                                <span className="text-sm font-bold tracking-wide">8:00 a 18:00 hrs</span>
+                        <div className="flex items-center gap-4">
+                            <Clock className="w-8 h-8 text-white" />
+                            <div className="flex flex-col leading-tight">
+                                <span className="text-xs text-gray-300">Horario de atención:</span>
+                                <span className="text-sm text-white">8:00 a 18:00 hrs</span>
                             </div>
                         </div>
 
                         {/* Contacto */}
-                        <div className="flex items-center gap-3">
-                            <Phone className="w-6 h-6 text-white" />
-                            <div className="flex flex-col leading-none">
-                                <a href="mailto:ventas@bienek.cl" className="text-[11px] text-gray-400 hover:text-primary transition-colors mb-0.5">
+                        <div className="flex items-center gap-4">
+                            <Phone className="w-8 h-8 text-white" />
+                            <div className="flex flex-col leading-tight">
+                                <a href="mailto:ventas@bienek.cl" className="text-sm text-white hover:text-primary transition-colors">
                                     ventas@bienek.cl
                                 </a>
-                                <span className="text-sm font-bold tracking-wide">+56 41 - 2635500</span>
+                                <span className="text-sm text-white">+56 41 - 2635500</span>
                             </div>
                         </div>
                     </div>
@@ -65,28 +65,32 @@ export function Header() {
             {/* 2. Main Menu */}
             <div className="bg-white py-4 shadow-sm z-20 relative">
                 <div className="container mx-auto px-4 flex justify-between items-center">
-                    {/* Logo */}
-                    <Link href="/" className="flex-shrink-0">
-                        <Image
-                            src="/assets/images/logo.svg"
-                            alt="Bienek Logo"
-                            width={180}
-                            height={60}
-                            className="h-12 w-auto object-contain"
-                            priority
-                        />
-                    </Link>
 
-                    {/* Nav Links (Desktop) */}
-                    <nav className="hidden lg:flex items-center gap-8 font-sans font-medium text-sm">
-                        <Link href="/" className="hover:text-primary transition-colors">INICIO</Link>
-                        <Link href="#" className="hover:text-primary transition-colors">SOLUCIONES</Link>
-                        <Link href="#" className="hover:text-primary transition-colors">CATÁLOGO</Link>
-                        <Link href="#" className="hover:text-primary transition-colors">PROMOCIONES</Link>
-                    </nav>
+                    {/* Left Side: Logo + Nav */}
+                    <div className="flex items-center gap-12">
+                        {/* Logo */}
+                        <Link href="/" className="flex-shrink-0">
+                            <Image
+                                src="/assets/images/logo.svg"
+                                alt="Bienek Logo"
+                                width={180}
+                                height={60}
+                                className="h-12 w-auto object-contain"
+                                priority
+                            />
+                        </Link>
 
-                    {/* Actions */}
-                    <div className="flex items-center gap-6">
+                        {/* Nav Links (Desktop) */}
+                        <nav className="hidden lg:flex items-center gap-8 font-sans font-medium text-base text-gray-700">
+                            <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>
+                            <Link href="#" className="hover:text-primary transition-colors">Soluciones</Link>
+                            <Link href="#" className="hover:text-primary transition-colors">Catálogo</Link>
+                            <Link href="#" className="hover:text-primary transition-colors">Promociones</Link>
+                        </nav>
+                    </div>
+
+                    {/* Right Side: Actions */}
+                    <div className="flex items-center gap-8">
                         <Link href="#" className="hidden lg:block text-sm font-medium hover:text-primary transition-colors">
                             Blog Técnico
                         </Link>
@@ -96,8 +100,8 @@ export function Header() {
                             <span>Acceso Clientes</span>
                         </div>
 
-                        <Button className="font-bold tracking-wide">
-                            CONTÁCTENOS
+                        <Button className="bg-primary hover:bg-primary/90 text-black font-medium text-base rounded-full px-8 py-6 shadow-none">
+                            CONTACTENOS
                         </Button>
                     </div>
                 </div>
@@ -113,7 +117,7 @@ export function Header() {
             </div>
 
             {/* 4. Search Bar & Statement */}
-            <div className="bg-black text-white py-3">
+            <div className="bg-black text-white py-4">
                 <div className="container mx-auto px-4 flex flex-col lg:flex-row justify-between items-center gap-4">
 
                     {/* Search Input */}
@@ -121,9 +125,9 @@ export function Header() {
                         <input
                             type="text"
                             placeholder="Encuentra lo que estás buscando..."
-                            className="w-full bg-gray-100 text-black rounded-full py-2.5 pl-5 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans"
+                            className="w-full bg-gray-100 text-black rounded-full py-3 pl-6 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans"
                         />
-                        <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 h-4 w-4" />
+                        <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5" />
                     </div>
 
                     {/* Statement & Seal */}
@@ -131,7 +135,7 @@ export function Header() {
                         <span className="font-sans font-medium text-lg hidden md:block tracking-wide">
                             Líderes en Distribución de productos de Higiene
                         </span>
-                        <div className="relative h-12 w-32">
+                        <div className="relative h-14 w-36">
                             <Image
                                 src="/assets/images/lema-bienek.png"
                                 alt="Sello Bienek"
