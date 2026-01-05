@@ -125,7 +125,7 @@ export function Header() {
                         <input
                             type="text"
                             placeholder="Encuentra lo que estás buscando..."
-                            className="w-full bg-gray-100 text-black rounded-full py-3 pl-6 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans"
+                            className="w-full bg-gray-100 text-black rounded-full py-3 pl-5 pr-14 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 font-sans"
                         />
                         <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 h-5 w-5" />
                     </div>
