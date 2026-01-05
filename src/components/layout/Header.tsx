@@ -1,26 +1,62 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Search, Globe, Truck, Clock, Phone } from "lucide-react";
+import { Search, Globe, Truck, Clock, Phone, ChevronDown } from "lucide-react";
 
 export function Header() {
+    const [isLangOpen, setIsLangOpen] = useState(false);
+    const [selectedLang, setSelectedLang] = useState("Español");
+
+    const handleLanguageSelect = (lang: string) => {
+        setSelectedLang(lang);
+        setIsLangOpen(false);
+    };
+
     return (
         <header className="w-full flex flex-col">
             {/* 1. Utility Bar */}
-            <div className="bg-black text-white py-3 hidden lg:block">
+            <div className="bg-black text-white py-3 hidden lg:block relative" style={{ zIndex: 30 }}>
                 <div className="container mx-auto px-4 flex justify-between items-center font-sans">
                     {/* Left: Language & Links */}
                     <div className="flex items-center gap-8">
-                        <div className="flex items-center gap-3 cursor-pointer group">
-                            <Globe className="w-5 h-5 text-white" />
-                            <div className="flex flex-col leading-tight">
-                                <span className="text-[10px] text-gray-400 uppercase tracking-wider">Idioma</span>
-                                <span className="text-sm font-medium group-hover:text-primary transition-colors flex items-center gap-1">
-                                    Español <span className="text-[10px]">▼</span>
-                                </span>
+                        <div className="relative">
+                            <div
+                                className="flex items-center gap-3 cursor-pointer group"
+                                onClick={() => setIsLangOpen(!isLangOpen)}
+                            >
+                                <Globe className="w-6 h-6 text-white" style={{ marginLeft: '-10px' }} />
+                                <div className="flex flex-col leading-tight">
+                                    <span className="text-sm font-medium text-white">Idioma</span>
+                                    <span className="text-sm text-white group-hover:text-primary transition-colors flex items-center gap-1">
+                                        {selectedLang} <ChevronDown className={`w-4 h-4 transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
+                                    </span>
+                                </div>
                             </div>
+                            {/* Dropdown Menu */}
+                            {isLangOpen && (
+                                <div
+                                    className="absolute top-full left-0 mt-2 bg-black border border-gray-700 rounded-lg py-2 min-w-[140px] shadow-xl"
+                                    style={{ zIndex: 50 }}
+                                >
+                                    <button
+                                        onClick={() => handleLanguageSelect("Español")}
+                                        className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-gray-800 transition-colors flex items-center justify-between"
+                                    >
+                                        <span>Español</span>
+                                        {selectedLang === "Español" && <span className="text-primary">✓</span>}
+                                    </button>
+                                    <button
+                                        onClick={() => handleLanguageSelect("English")}
+                                        className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-gray-800 transition-colors flex items-center justify-between"
+                                    >
+                                        <span>English</span>
+                                        {selectedLang === "English" && <span className="text-primary">✓</span>}
+                                    </button>
+                                </div>
+                            )}
                         </div>
                         <div className="flex items-center gap-6 text-sm font-medium text-gray-300">
                             <Link href="#" className="hover:text-primary transition-colors">Empresa</Link>
