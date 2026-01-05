@@ -3,35 +3,60 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Search, ShoppingCart, User } from "lucide-react";
+import { Search, Globe, Truck, Clock, Phone } from "lucide-react";
 
 export function Header() {
     return (
         <header className="w-full flex flex-col">
             {/* 1. Utility Bar */}
-            <div className="bg-white border-b border-gray-100 py-1 hidden lg:block">
-                <div className="container mx-auto px-4 flex justify-between items-center text-xs text-gray-600 font-sans">
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1 cursor-pointer hover:text-black">
-                            <span>ES</span>
-                            <span>/</span>
-                            <span className="text-gray-400 hover:text-black">EN</span>
+            <div className="bg-black text-white py-2 hidden lg:block">
+                <div className="container mx-auto px-4 flex justify-between items-center font-sans">
+                    {/* Left: Language & Links */}
+                    <div className="flex items-center gap-8">
+                        <div className="flex items-center gap-2 cursor-pointer group">
+                            <Globe className="w-5 h-5 text-primary" />
+                            <div className="flex flex-col leading-tight">
+                                <span className="text-[10px] text-gray-400 uppercase tracking-wider">Idioma</span>
+                                <span className="text-sm font-medium group-hover:text-primary transition-colors flex items-center gap-1">
+                                    Español <span className="text-[10px]">▼</span>
+                                </span>
+                            </div>
                         </div>
-                        <Link href="#" className="hover:text-black hover:underline">Empresa</Link>
-                        <Link href="#" className="hover:text-black hover:underline">Bolsa de Trabajo</Link>
+                        <div className="flex items-center gap-6 text-sm font-medium text-gray-300">
+                            <Link href="#" className="hover:text-primary transition-colors">Empresa</Link>
+                            <Link href="#" className="hover:text-primary transition-colors">Bolsa de Trabajo</Link>
+                        </div>
                     </div>
-                    <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-2">
-                            <Image src="/assets/icons/ubicacion.svg" alt="Location" width={12} height={12} />
-                            <span>Cobertura: RM a X Región</span>
+
+                    {/* Right: Info Items */}
+                    <div className="flex items-center gap-8">
+                        {/* Cobertura */}
+                        <div className="flex items-center gap-3">
+                            <Truck className="w-6 h-6 text-white" />
+                            <div className="flex flex-col leading-none">
+                                <span className="text-[11px] text-gray-400 mb-0.5">Cobertura:</span>
+                                <span className="text-sm font-bold tracking-wide">RM - X Región.</span>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Image src="/assets/icons/reloj.svg" alt="Schedule" width={12} height={12} />
-                            <span>8:00 a 18:00 hrs</span>
+
+                        {/* Horario */}
+                        <div className="flex items-center gap-3">
+                            <Clock className="w-6 h-6 text-white" />
+                            <div className="flex flex-col leading-none">
+                                <span className="text-[11px] text-gray-400 mb-0.5">Horario de atención:</span>
+                                <span className="text-sm font-bold tracking-wide">8:00 a 18:00 hrs</span>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Image src="/assets/icons/correo.svg" alt="Email" width={12} height={12} />
-                            <a href="mailto:ventas@bienek.cl" className="hover:text-black hover:underline">ventas@bienek.cl</a>
+
+                        {/* Contacto */}
+                        <div className="flex items-center gap-3">
+                            <Phone className="w-6 h-6 text-white" />
+                            <div className="flex flex-col leading-none">
+                                <a href="mailto:ventas@bienek.cl" className="text-[11px] text-gray-400 hover:text-primary transition-colors mb-0.5">
+                                    ventas@bienek.cl
+                                </a>
+                                <span className="text-sm font-bold tracking-wide">+56 41 - 2635500</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,8 +66,15 @@ export function Header() {
             <div className="bg-white py-4 shadow-sm z-20 relative">
                 <div className="container mx-auto px-4 flex justify-between items-center">
                     {/* Logo */}
-                    <Link href="/" className="text-3xl font-bold font-sans tracking-tight">
-                        Bienek
+                    <Link href="/" className="flex-shrink-0">
+                        <Image
+                            src="/assets/images/logo.svg"
+                            alt="Bienek Logo"
+                            width={180}
+                            height={60}
+                            className="h-12 w-auto object-contain"
+                            priority
+                        />
                     </Link>
 
                     {/* Nav Links (Desktop) */}
