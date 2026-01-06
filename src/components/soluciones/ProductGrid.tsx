@@ -49,11 +49,11 @@ export function ProductGrid({ products }: ProductGridProps) {
     const hasActiveFilters = query !== "" || selectedBrand !== null;
 
     return (
-        <section className="py-8 bg-white">
+        <section className="pt-8 pb-10 md:pb-20 bg-white">
             <div className="container mx-auto px-4">
 
                 {/* Search & Filter Bar - Modern centered design */}
-                <div className="flex items-center justify-center gap-4" style={{ marginTop: '10px', marginBottom: '50px' }}>
+                <div className="flex items-center justify-center gap-2" style={{ marginTop: '10px', marginBottom: '50px' }}>
 
                     {/* Search Input - Pill shape with shadow */}
                     <div
@@ -71,15 +71,13 @@ export function ProductGrid({ products }: ProductGridProps) {
                         <Search className="absolute top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" style={{ left: '20px' }} />
                     </div>
 
-                    {/* Divider line */}
-                    <div className="h-12 w-px bg-gray-300" />
-
                     {/* Filtros Button */}
                     <div className="relative" ref={filterRef}>
                         <button
                             type="button"
                             onClick={() => setIsFilterOpen(!isFilterOpen)}
-                            className="flex items-center gap-2 px-10 py-4 rounded-full bg-gray-100 hover:bg-gray-200 transition-all text-gray-700 font-medium shadow-sm hover:shadow-md"
+                            className="flex items-center gap-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all text-gray-700 font-medium shadow-sm hover:shadow-md"
+                            style={{ paddingLeft: '24px', paddingRight: '24px', paddingTop: '16px', paddingBottom: '16px', whiteSpace: 'nowrap' }}
                         >
                             Filtros
                             <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isFilterOpen ? 'rotate-180' : ''}`} />
@@ -141,7 +139,7 @@ export function ProductGrid({ products }: ProductGridProps) {
                 {/* Product Grid - 5 columns with modern cards */}
                 <div
                     className="grid gap-6"
-                    style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}
+                    style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', marginBottom: '80px' }}
                 >
                     {filteredProducts.length > 0 ? (
                         filteredProducts.map(product => (
