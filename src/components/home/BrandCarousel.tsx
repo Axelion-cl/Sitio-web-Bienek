@@ -29,26 +29,28 @@ const brands = [
 export function BrandCarousel() {
     return (
         <section className="py-8 bg-gray-50 border-y border-gray-100 overflow-hidden">
-            <div className="container mx-auto px-4 mb-8 text-center">
-                <h3 className="text-gray-400 font-sans font-medium uppercase tracking-widest text-sm">
-                    Nuestros Aliados Estratégicos
+            <div className="container mx-auto px-4 mb-12 text-center relative z-10 text-[40px]">
+                <h3 className="font-sans font-normal text-black flex flex-col items-center gap-4 text-[40px] leading-tight" style={{ fontSize: '40px', fontFamily: 'var(--font-outfit)' }}>
+                    Marcas Destacadas
+                    <span className="bg-[#ecec00] block" style={{ width: '176px', height: '5px' }} />
                 </h3>
             </div>
 
-            <div className="relative w-full overflow-hidden mask-linear-fade">
-                <div className="flex animate-scroll whitespace-nowrap w-max gap-16 items-center">
+            <div className="relative w-full overflow-hidden mask-linear-fade h-24 flex items-center">
+                <div className="flex animate-scroll whitespace-nowrap w-max gap-16 items-center h-full">
                     {/* Duplicate list for seamless loop */}
                     {[...brands, ...brands].map((brand, index) => (
                         <div
                             key={index}
-                            className="relative h-16 w-32 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300 transform hover:scale-110 cursor-pointer flex items-center justify-center"
+                            className="relative h-16 w-40 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300 transform hover:scale-110 cursor-pointer flex items-center justify-center shrink-0"
+                            style={{ height: '64px', width: '160px' }}
                         >
                             <Image
                                 src={brand.src}
                                 alt={`${brand.name} Logo`}
                                 fill
                                 className="object-contain"
-                                sizes="(max-width: 768px) 100px, 150px"
+                                sizes="160px"
                             />
                         </div>
                     ))}
@@ -62,10 +64,11 @@ export function BrandCarousel() {
           100% { transform: translateX(-50%); }
         }
         .animate-scroll {
-          animation: scroll 60s linear infinite;
+          animation: scroll 40s linear infinite;
         }
         .mask-linear-fade {
              mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+             -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
       `}</style>
         </section>
