@@ -41,7 +41,8 @@ Se propone construir el sitio en 5 fases secuenciales para asegurar estabilidad 
 - [/] **Componentes de Producto**: `ProductCard` (Grid y List view).
 - [/] **Página de Soluciones (Template Sectorial)**: Crear la plantilla dinámica para los 12 sectores.
     - **Estrategia Técnica:** Usar Ruta Dinámica `app/soluciones/[slug]/page.tsx`.
-    - **SEO - CRÍTICO:** Implementar `generateStaticParams` para generar las 12 páginas estáticas (SSG) en build time. Esto crea 12 URLs físicas independientes (ej: `/soluciones/salud`, `/soluciones/educacion`) con sus propios metadatos (`generateMetadata`), fundamental para Google.
+    - **SEO - CRÍTICO:** Implementar `generateStaticParams` para generar las 12 páginas estáticas (SSG).
+    - **UX Scroll:** Implementar un **Contenedor con Scroll Independiente** para la grilla. Debe tener una altura máxima definida (ej: `max-h-[800px]` o `calc(100vh - 200px)`) y `overflow-y-auto`. Esto permite scrollear productos infinitos sin alargar la página, permitiendo al usuario llegar al Footer fácilmente usando el scroll principal del navegador.
 - [ ] **Buscador y Filtros**: Implementar la lógica de búsqueda en tiempo real y filtros laterales.
 - [ ] **Página de Detalle de Producto**: Hero de producto, descripción y carrusel de sugerencias.
 

@@ -53,7 +53,7 @@ export function ProductGrid({ products }: ProductGridProps) {
             <div className="container mx-auto px-4">
 
                 {/* Search & Filter Bar - Modern centered design */}
-                <div className="flex items-center justify-center gap-2" style={{ marginTop: '60px', marginBottom: '50px' }}>
+                <div className="flex items-center justify-center gap-2" style={{ marginTop: '8px', marginBottom: '42px' }}>
 
                     {/* Search Input - Pill shape with shadow */}
                     <div
@@ -136,29 +136,31 @@ export function ProductGrid({ products }: ProductGridProps) {
                     )}
                 </div>
 
-                {/* Product Grid - 5 columns with modern cards */}
-                <div
-                    className="grid gap-6"
-                    style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', marginBottom: '80px' }}
-                >
-                    {filteredProducts.length > 0 ? (
-                        filteredProducts.map(product => (
-                            <ProductCard key={product.id} product={product} />
-                        ))
-                    ) : (
-                        <div className="col-span-5 py-20 text-center text-gray-400">
-                            <Search className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                            <p className="text-lg">No se encontraron productos</p>
-                            {hasActiveFilters && (
-                                <button
-                                    onClick={clearFilters}
-                                    className="mt-4 text-[#ecec00] hover:underline font-medium"
-                                >
-                                    Limpiar filtros
-                                </button>
-                            )}
-                        </div>
-                    )}
+                {/* Product Grid - Scrollable Container */}
+                <div className="max-h-[800px] overflow-y-auto p-4 custom-scrollbar" style={{ marginBottom: '20px' }}>
+                    <div
+                        className="grid gap-6"
+                        style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}
+                    >
+                        {filteredProducts.length > 0 ? (
+                            filteredProducts.map(product => (
+                                <ProductCard key={product.id} product={product} />
+                            ))
+                        ) : (
+                            <div className="col-span-5 py-20 text-center text-gray-400">
+                                <Search className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                                <p className="text-lg">No se encontraron productos</p>
+                                {hasActiveFilters && (
+                                    <button
+                                        onClick={clearFilters}
+                                        className="mt-4 text-[#ecec00] hover:underline font-medium"
+                                    >
+                                        Limpiar filtros
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </section>
