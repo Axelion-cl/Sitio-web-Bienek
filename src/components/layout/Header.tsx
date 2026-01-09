@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Search, Globe, Truck, Clock, Phone, ChevronDown } from "lucide-react";
 import { SearchBar } from "./SearchBar";
+import { solutions } from "@/data/solutions";
 
 export function Header() {
     const [isLangOpen, setIsLangOpen] = useState(false);
@@ -120,7 +121,40 @@ export function Header() {
                         {/* Nav Links (Desktop) */}
                         <nav className="hidden lg:flex items-center gap-8 font-sans font-medium text-base text-gray-700">
                             <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>
-                            <Link href="#" className="hover:text-primary transition-colors">Soluciones</Link>
+
+                            {/* Soluciones Dropdown */}
+                            <div className="group relative h-full flex items-center">
+                                <Link
+                                    href="/soluciones/soluciones-generales-de-higiene"
+                                    className="flex items-center gap-1 hover:text-primary transition-colors py-4"
+                                >
+                                    Soluciones
+                                    <ChevronDown className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 opacity-70" />
+                                </Link>
+
+                                {/* Dropdown Menu */}
+                                <div className="absolute top-full -left-20 w-[600px] bg-white rounded-xl shadow-xl border border-gray-100 p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
+                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                                        {solutions.map((bg) => (
+                                            <Link
+                                                key={bg.slug}
+                                                href={`/soluciones/${bg.slug}`}
+                                                className="group/item flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                                            >
+                                                {/* Dot indicator */}
+                                                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary transition-colors shrink-0" />
+
+                                                <div className="flex flex-col">
+                                                    <span className="text-sm font-medium text-gray-700 group-hover/item:text-black transition-colors">
+                                                        {bg.title}
+                                                    </span>
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
                             <Link href="#" className="hover:text-primary transition-colors">Promociones</Link>
                         </nav>
                     </div>

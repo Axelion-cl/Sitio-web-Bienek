@@ -1,34 +1,32 @@
-import { notFound } from "next/navigation";
+import { solutions } from "@/data/solutions";
 import { SectorHero } from "@/components/soluciones/SectorHero";
 import { ProductGrid } from "@/components/soluciones/ProductGrid";
-import { getSectorBySlug, sectors } from "@/data/sectors";
-import { getProductsBySector } from "@/data/mockProducts";
+import { products } from "@/data/mockProducts";
+import { notFound } from "next/navigation";
+
+// Generate static params for all solution slugs
+export async function generateStaticParams() {
+    return solutions.map((solution) => ({
+        slug: solution.slug,
+    }));
+}
 
 interface PageProps {
     params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-    return sectors.map((sector) => ({
-        slug: sector.slug,
-    }));
-}
-
 export default async function SolucionesPage({ params }: PageProps) {
     const { slug } = await params;
-    const sector = getSectorBySlug(slug);
+    const solution = solutions.find((s) => s.slug === slug);
 
-    if (!sector) {
+    if (!solution) {
         notFound();
     }
 
-    const products = getProductsBySector(sector.id);
-
     return (
-        <>
-            <SectorHero sector={sector} />
+        <main>
+            <SectorHero title={solution.title} image={solution.image} />
             <ProductGrid products={products} />
-        </>
+        </main>
     );
 }
-

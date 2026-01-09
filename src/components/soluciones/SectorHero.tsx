@@ -1,17 +1,17 @@
-import { Sector } from "@/data/sectors";
 import Image from "next/image";
 
 interface SectorHeroProps {
-    sector: Sector;
+    title: string;
+    image: string;
 }
 
-export function SectorHero({ sector }: SectorHeroProps) {
+export function SectorHero({ title, image }: SectorHeroProps) {
     return (
         <section className="relative w-full overflow-hidden" style={{ height: '400px' }}>
             {/* Background Image */}
             <Image
-                src="/images/sectors/soluciones-generales-de-higiene.png"
-                alt={sector.title}
+                src={image}
+                alt={title}
                 fill
                 className="object-cover"
                 priority
@@ -35,7 +35,7 @@ export function SectorHero({ sector }: SectorHeroProps) {
                             lineHeight: '1.2',
                         }}
                     >
-                        Soluciones Generales de Higiene
+                        {title}
                     </h1>
                 </div>
             </div>
