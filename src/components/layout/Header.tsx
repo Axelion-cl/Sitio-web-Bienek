@@ -170,9 +170,11 @@ export function Header() {
                             <span>Acceso Clientes</span>
                         </div>
 
-                        <Button className="bg-primary hover:bg-primary/90 text-black font-medium text-base rounded-full px-8 py-6 shadow-none">
-                            CONTACTENOS
-                        </Button>
+                        <Link href="/contacto" className="cursor-pointer">
+                            <Button className="bg-primary hover:bg-primary/90 text-black font-medium text-base rounded-full px-8 py-6 shadow-none cursor-pointer">
+                                CONTACTENOS
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </div>

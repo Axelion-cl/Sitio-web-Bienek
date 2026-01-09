@@ -23,8 +23,8 @@
 ### Fase 2: Páginas Core (En Progreso)
 - [x] Página Inicio (Home) <!-- id: 16 -->
     - [x] Hero, Value Cards, Brand Carousel, Solutions Grid
-- [ ] Página Empresa (Sobre Nosotros) <!-- id: 23 -->
-- [ ] Página Contáctenos <!-- id: 24 -->
+- [x] Página Empresa (Sobre Nosotros) <!-- id: 23 -->
+- [x] Página Contáctenos <!-- id: 24 -->
 
 ### Fase 3: Soluciones y Catálogo (En Progreso)
 - [x] Plantilla de Soluciones (Rutas Dinámicas `[slug]`) <!-- id: 18 -->
