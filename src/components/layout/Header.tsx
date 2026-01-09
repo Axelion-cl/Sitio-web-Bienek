@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,36 @@ import { solutions } from "@/data/solutions";
 export function Header() {
     const [isLangOpen, setIsLangOpen] = useState(false);
     const [selectedLang, setSelectedLang] = useState("Español");
+    const [isVisible, setIsVisible] = useState(true);
+    const lastScrollY = useRef(0);
+    const headerRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            const headerHeight = headerRef.current?.offsetHeight || 200;
+
+            // Only apply hide/show logic after scrolling past the header
+            if (currentScrollY > headerHeight) {
+                // Scrolling down - hide header
+                if (currentScrollY > lastScrollY.current + 10) {
+                    setIsVisible(false);
+                }
+                // Scrolling up - show header
+                else if (currentScrollY < lastScrollY.current - 10) {
+                    setIsVisible(true);
+                }
+            } else {
+                // At or near top - always show
+                setIsVisible(true);
+            }
+
+            lastScrollY.current = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const handleLanguageSelect = (lang: string) => {
         setSelectedLang(lang);
@@ -18,7 +48,10 @@ export function Header() {
     };
 
     return (
-        <header className="w-full flex flex-col sticky top-0 z-[100] shadow-md" style={{ position: 'sticky', top: 0, zIndex: 100 }}>
+        <header
+            ref={headerRef}
+            className={`w-full flex flex-col sticky top-0 z-[100] shadow-md transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
+        >
             {/* 1. Utility Bar */}
             <div className="bg-black text-white py-3 hidden lg:block relative" style={{ zIndex: 30 }}>
                 <div className="container mx-auto px-4 flex justify-between items-center font-sans">
