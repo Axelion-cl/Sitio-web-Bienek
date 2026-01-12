@@ -94,7 +94,7 @@ export function Header() {
                             )}
                         </div>
                         <div className="flex items-center gap-6 text-sm font-medium text-gray-300">
-                            <Link href="#" className="hover:text-primary transition-colors">Empresa</Link>
+                            <Link href="/empresa" className="hover:text-primary transition-colors">Empresa</Link>
                             <Link href="#" className="hover:text-primary transition-colors">Bolsa de Trabajo</Link>
                         </div>
                     </div>

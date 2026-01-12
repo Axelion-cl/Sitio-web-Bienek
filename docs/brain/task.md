@@ -29,7 +29,9 @@
 ### Fase 3: Soluciones y Catálogo (En Progreso)
 - [x] Plantilla de Soluciones (Rutas Dinámicas `[slug]`) <!-- id: 18 -->
 - [x] Datos Centralizados (`src/data`) <!-- id: 20 -->
-- [ ] Página Detalle de Producto (`[id]`) <!-- id: 25 -->
+- [x] Página Detalle de Producto (`[id]`) (En Progreso) <!-- id: 25 -->
+    - [x] Ruta Dinámica `src/app/productos/[id]/page.tsx` <!-- id: 29 -->
+    - [x] Componente `ProductDetail` con información visual <!-- id: 30 -->
 - [ ] Buscador y Filtros Avanzados <!-- id: 26 -->
 
 ### Fases Futuras (Pendientes)

@@ -4,6 +4,25 @@ Este documento registra los cambios implementados durante las sesiones de desarr
 
 ---
 
+## Sesión: 2026-01-12 (Página de Producto)
+
+### Página Detalle de Producto (`/productos/[id]`)
+- **Ruta Dinámica**: `src/app/productos/[id]/page.tsx` con ISR.
+- **Componentes Nuevos**:
+    - `ProductGallery`: Galería interactiva.
+    - `ProductInfo`: Info crítica (Marca, Título, SKU, Badges) y botón de acción (Agregar).
+    - `RelatedProducts`: Grilla de productos relacionados.
+- **Datos Mock**: Actualizado `mockProducts.ts` con arrays de imágenes, descripciones largas, especificaciones, badges y relaciones.
+- **UI/UX Refinado**: 
+    - Eliminado botón "Cotizar" y visualización de precios.
+    - Eliminado texto legal de IVA.
+    - Reordenado Brand debajo de Título.
+    - **Reestructuración de Layout**: Descripción y Especificaciones movidas a la columna derecha debajo de la información crítica, optimizando el espacio vertical y eliminando los espacios vacíos.
+    - Layout responsivo (Galería izquierda, Info derecha en desktop), transiciones suaves, cards clickeables.
+- **Correcciones**:
+    - `ProductCard` ahora usa imágenes reales y es totalmente clickeable.
+    - Se corrigió la estructura HTML en `ProductPage` para asegurar contenedores cerrados correctamente.
+
 ## Sesión: 2026-01-09
 
 ### Página Empresa (`/empresa`)
@@ -28,17 +47,12 @@ Este documento registra los cambios implementados durante las sesiones de desarr
 ### Header Actualizado
 - **CTA Button**: Enlaza a `/contacto`, texto "CONTACTENOS"
 - **Smart Sticky**: Se oculta al bajar, reaparece al subir (scroll direction detection)
+- **Navegación**: Enlace "Empresa" actualizado a `/empresa`
 - **Archivo**: `src/components/layout/Header.tsx`
 
-### Archivos Modificados
-| Archivo | Cambio |
-|---------|--------|
-| `src/app/empresa/page.tsx` | Creado con Z-pattern |
-| `src/app/contacto/page.tsx` | Creado con form + mapa |
-| `src/components/contacto/ContactForm.tsx` | Nuevo componente |
-| `src/components/ui/PageTitle.tsx` | Nuevo componente |
-| `src/components/layout/Header.tsx` | Smart sticky + link contacto |
-| `docs/brain/task.md` | Fase 2 marcada completa |
+### Footer Actualizado
+- **Navegación**: Enlace "Empresa" actualizado a `/empresa`
+- **Archivo**: `src/components/layout/Footer.tsx`
 
 ---
 
@@ -46,3 +60,4 @@ Este documento registra los cambios implementados durante las sesiones de desarr
 - **Títulos de página**: Usar `<PageTitle>` component
 - **Márgenes de contenido**: `px-8 lg:px-24` para páginas internas
 - **Imágenes generadas**: Consultar usuario antes de usar generate_image
+- **Enlaces**: Verificar siempre que los enlaces `href` apunten a rutas reales y no `#`.

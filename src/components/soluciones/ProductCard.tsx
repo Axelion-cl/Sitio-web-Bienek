@@ -9,27 +9,29 @@ interface ProductCardProps {
     product: Product;
 }
 
+import Link from "next/link";
+
 export function ProductCard({ product }: ProductCardProps) {
     const [isAdded, setIsAdded] = useState(false);
 
-    const handleAddClick = () => {
+    const handleAddClick = (e: React.MouseEvent) => {
+        e.preventDefault(); // Prevent link navigation
         setIsAdded(!isAdded);
         // TODO: Future cart functionality when user is logged in
     };
 
     return (
-        <div className="bg-white rounded-xl overflow-hidden flex flex-col h-full border border-gray-100 shadow-sm hover:shadow-lg hover:border-gray-200 transition-all duration-300 group">
+        <div className="bg-white rounded-xl overflow-hidden flex flex-col h-full border border-gray-100 shadow-sm hover:shadow-lg hover:border-gray-200 transition-all duration-300 group relative">
+            <Link href={`/productos/${product.id}`} className="absolute inset-0 z-10" aria-label={`Ver detalles de ${product.name}`} />
             {/* Image Placeholder - Square with icon */}
-            <div
-                className="relative w-full flex items-center justify-center group-hover:opacity-90 transition-opacity"
-                style={{ aspectRatio: '1 / 1', backgroundColor: '#e8eef3' }}
-            >
-                <div
-                    className="w-1/2 h-1/2 rounded-xl flex items-center justify-center"
-                    style={{ backgroundColor: '#a8c4d9' }}
-                >
-                    <ImageIcon className="w-1/2 h-1/2 text-white" strokeWidth={1.5} />
-                </div>
+            {/* Product Image */}
+            <div className="relative w-full aspect-square bg-[#f8f9fa] group-hover:opacity-95 transition-opacity">
+                <Image
+                    src={product.images[0]}
+                    alt={product.name}
+                    fill
+                    className="object-contain p-4"
+                />
             </div>
 
             {/* Content */}
@@ -56,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 </div>
 
                 {/* Buttons */}
-                <div className="mt-auto pt-4 flex flex-col" style={{ gap: '10px' }}>
+                <div className="mt-auto pt-4 flex flex-col relative z-20" style={{ gap: '10px' }}>
                     <button
                         type="button"
                         onClick={handleAddClick}
@@ -70,13 +72,13 @@ export function ProductCard({ product }: ProductCardProps) {
                         {isAdded ? 'Agregado' : 'Agregar'}
                     </button>
 
-                    <button
-                        type="button"
-                        className="w-full text-black font-normal text-base py-2.5 rounded-md shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                    <Link
+                        href={`/productos/${product.id}`}
+                        className="w-full text-black font-normal text-base py-2.5 rounded-md shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center text-center"
                         style={{ backgroundColor: '#A7E0A0' }}
                     >
                         Mas Info
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

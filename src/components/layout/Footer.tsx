@@ -56,7 +56,7 @@ export function Footer() {
                     </div>
                     <nav className="flex flex-col gap-1 text-black font-sans font-normal text-base leading-7">
                         <Link href="#" className="hover:text-primary transition-colors">Blog</Link>
-                        <Link href="#" className="hover:text-primary transition-colors">Empresa</Link>
+                        <Link href="/empresa" className="hover:text-primary transition-colors">Empresa</Link>
                         <Link href="#" className="hover:text-primary transition-colors">Trabaja Con Nosotros</Link>
                     </nav>
                 </div>
