@@ -16,8 +16,7 @@ export function ProductGrid({ products, onClearSearch }: ProductGridProps) {
                 {/* Product Grid - Scrollable Container */}
                 <div className="max-h-[800px] overflow-y-auto p-4 custom-scrollbar" style={{ marginBottom: '20px' }}>
                     <div
-                        className="grid gap-6"
-                        style={{ gridTemplateColumns: 'repeat(5, minmax(0, 1fr))' }}
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3"
                     >
                         {products.length > 0 ? (
                             products.map(product => (

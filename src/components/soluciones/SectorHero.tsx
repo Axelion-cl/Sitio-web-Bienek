@@ -20,20 +20,10 @@ export function SectorHero({ title, image }: SectorHeroProps) {
             {/* Text overlay box with black background and 50% opacity */}
             <div className="absolute inset-0 flex items-center justify-center">
                 <div
-                    className="py-6 rounded-xl text-center"
-                    style={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        paddingLeft: '50px',
-                        paddingRight: '50px',
-                    }}
+                    className="py-6 px-4 md:px-8 max-w-[95%] md:max-w-4xl rounded-xl text-center mx-auto bg-black/50"
                 >
                     <h1
-                        className="text-white font-normal"
-                        style={{
-                            fontFamily: 'Outfit, sans-serif',
-                            fontSize: '55px',
-                            lineHeight: '1.2',
-                        }}
+                        className="text-white font-normal font-outfit text-3xl md:text-5xl lg:text-[55px] leading-tight"
                     >
                         {title}
                     </h1>

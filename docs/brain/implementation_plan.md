@@ -28,9 +28,30 @@ Objetivo: Finalizar la página de producto y dotar al sitio de capacidades de b�
     - El `SolutionsLayout` debe envolver la Grilla.
     - Pasar la lista de productos filtrados al `ProductGrid`.
 
-## 4. Requerimientos Futuros (Data Model & Admin)
-**Nota para Backend/Arquitectura:**
-- **Modelo Relacional Flexible:** La base de datos debe soportar un sistema de etiquetado robusto (Many-to-Many).
-    - `Products` <-> `Product_Tags` <-> `Tags` (Type: 'Sector', 'Familia', 'Atributo').
-- **Admin Panel:** Debe permitir crear/editar/eliminar estas etiquetas dinámicamente y asignarlas a productos sin tocar código.
-- **Frontend Mock Current:** El `mockProducts.ts` debe reflejar esto usando arrays de strings para `sectors` (Pages), `family` (Filtros), etc.
+- **Modelo Relacional Flexible:**
+    - `Products` (Many-to-Many with Tags)
+    - `Tags` (Types: Sector, Family, Attribute)
+    - `Leads` (Contact Form submissions)
+    - `Users` (Role: 'client' | 'admin')
+    - `Orders` (Relation User -> Products)
+
+## 5. Fase 4: Autenticación y Cliente (B2B Workflow)
+**Objetivo:** Gestión de acceso controlado y experiencia personalizada.
+- **Login/Registro:**
+    - Modelo "Asistido": El usuario se registra via "Contáctenos" -> Admin lo valida -> Admin genera credenciales.
+    - Login tradicional con email/password (y recuperación).
+- **Header Dinámico:**
+    - Estado Logged-In: Muestra "Hola, [Cliente]" + Icono Carrito.
+- **Mi Cuenta:**
+    - **Mis Productos:** Catálogo personalizado o Favoritos.
+    - **Mis Ordenes:** Historial de pedidos.
+    - **Perfil:** Actualización de datos y password.
+
+## 6. Fase 6: Administración (CRM Interno)
+**Objetivo:** Control total del negocio y gestión de clientes.
+- **Gestión de Leads:**
+    - Listar envíos del formulario "Contáctenos".
+    - **Acción Clave:** "Convertir Lead a Usuario" -> Genera usuario en Supabase Auth y envía credenciales.
+- **Gestión de Etiquetas:** CRUD completo y asignación masiva.
+- **Gestión de Productos:** Formulario y Carga CSV.
+- **Gestión de Ordenes:** Visualización de pedidos de clientes.

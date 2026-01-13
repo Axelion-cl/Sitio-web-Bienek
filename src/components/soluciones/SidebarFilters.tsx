@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { ChevronDown, ChevronRight } from "lucide-react";
+
 // Using native input styled with Tailwind since shadcn Checkbox is not installed.
 
 interface SidebarFiltersProps {
@@ -9,15 +12,31 @@ interface SidebarFiltersProps {
 }
 
 export function SidebarFilters({ availableBrands, selectedBrands, onToggleBrand }: SidebarFiltersProps) {
+    const [isBrandsOpen, setIsBrandsOpen] = useState(true);
+
     return (
-        <aside className="w-full lg:w-64 flex-shrink-0 space-y-6">
+        <aside className="w-full lg:w-40 flex-shrink-0 space-y-6">
             <div className="pb-4 border-b border-gray-100">
                 <h3 className="font-outfit font-semibold text-xl text-gray-900">Filtros</h3>
             </div>
 
             <div>
-                <h4 className="font-medium text-gray-900 mb-3 text-sm uppercase tracking-wide">Marcas</h4>
-                <div className="space-y-2">
+                <button
+                    onClick={() => setIsBrandsOpen(!isBrandsOpen)}
+                    className="flex items-center justify-between w-full group mb-3"
+                >
+                    <h4 className="font-medium text-gray-900 text-sm uppercase tracking-wide">Marcas</h4>
+                    {isBrandsOpen ? (
+                        <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors" />
+                    ) : (
+                        <ChevronRight className="w-4 h-4 text-gray-500 group-hover:text-primary transition-colors" />
+                    )}
+                </button>
+
+                <div
+                    className={`space-y-2 overflow-hidden transition-all duration-300 ease-in-out ${isBrandsOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+                        }`}
+                >
                     {availableBrands.map((brand) => {
                         const isChecked = selectedBrands.has(brand);
                         return (

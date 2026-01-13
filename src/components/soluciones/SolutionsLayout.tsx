@@ -23,7 +23,7 @@ export function SolutionsLayout({ initialProducts }: SolutionsLayoutProps) {
 
     return (
         <div className="container mx-auto px-4 py-8 lg:py-12">
-            <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-6">
 
                 {/* 1. Sidebar (Desktop & Mobile Stacked) */}
                 <div className="lg:block">

@@ -30,7 +30,7 @@ export function ProductCard({ product }: ProductCardProps) {
                     src={product.images[0]}
                     alt={product.name}
                     fill
-                    className="object-contain p-4"
+                    className="object-cover"
                 />
             </div>
 

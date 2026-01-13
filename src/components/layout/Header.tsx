@@ -229,8 +229,8 @@ export function Header() {
                     <SearchBar />
 
                     {/* Statement & Seal */}
-                    <div className="flex items-center justify-between w-full lg:w-1/3">
-                        <span className="font-outfit font-normal text-lg hidden md:block tracking-wide">
+                    <div className="flex items-center gap-6">
+                        <span className="font-outfit font-normal text-lg hidden md:block tracking-wide whitespace-nowrap">
                             Líderes en Distribución de productos de Higiene
                         </span>
                         <div className="flex items-center">

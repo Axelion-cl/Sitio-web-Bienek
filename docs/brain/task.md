@@ -26,7 +26,7 @@
 - [x] Página Empresa (Sobre Nosotros) <!-- id: 23 -->
 - [x] Página Contáctenos <!-- id: 24 -->
 
-### Fase 3: Soluciones y Catálogo (En Progreso)
+### Fase 3: Soluciones y Catálogo (Completado)
 - [x] Plantilla de Soluciones (Rutas Dinámicas `[slug]`) <!-- id: 18 -->
 - [x] Datos Centralizados (`src/data`) <!-- id: 20 -->
 - [x] Página Detalle de Producto (`[id]`) (En Progreso) <!-- id: 25 -->
@@ -38,4 +38,30 @@
 
 ### Fases Futuras (Pendientes)
 - [ ] Fase 4: Autenticación y Mi Cuenta <!-- id: 27 -->
+    - [ ] Autenticación <!-- id: 40 -->
+        - [ ] Página de Login <!-- id: 41 -->
+            - [ ] Formulario de Login <!-- id: 42 -->
+            - [ ] Botón de "Olvidé mi contraseña" <!-- id: 43 -->
+    - [ ] Al iniciar sesión, el menu principal cambia: <!-- id: 44 -->
+        - [ ] "Nombre_del_cliente" en reemplazo a "Acceso Clientes" <!-- id: 45 -->
+        - [ ] Icono/Botón de "Carrito" con contador de productos entre "Nombre_del_cliente" y "Contacto". <!-- id: 46 -->
+    - [ ] Mi Cuenta <!-- id: 47 -->
+        - [ ] "Mis Productos" (donde se muestran los productos que el cliente ha agregado) <!-- id: 48 -->
+        - [ ] "Mis Ordenes" (historial de ordenes realizadas por el cliente) <!-- id: 49 -->
+        - [ ] "Mi Perfil" (donde se muestran los datos del cliente y puede actualizarlos) <!-- id: 50 -->
+            - [ ] Actualizar contraseña (útil luego del primer inicio de sesión con contraseña temporal) <!-- id: 51 -->
 - [ ] Fase 5: Blog, Empleo y Promociones <!-- id: 28 -->
+- [ ] Fase 6: Administración (Dashboard Interno) <!-- id: 34 -->
+    - [ ] Login Admin y Protección de Rutas (Middleware) <!-- id: 35 -->
+    - [ ] CRUD de Productos (Formulario + Carga Masiva) <!-- id: 36 -->
+    - [ ] Gestión de Etiquetas (Sectores, Familias, etc.) <!-- id: 37 -->
+        - [ ] Crear, Editar y Eliminar Etiquetas <!-- id: 58 -->
+        - [ ] Asociar/Desasociar Etiquetas a Productos (Bulk Action) <!-- id: 59 -->
+    - [ ] Gestión de Usuarios (Clientes) <!-- id: 38 -->
+        - [ ] Listado de personas que han buscado comunicarse con la empresa a través del botón "Contactenos". <!-- id: 52 -->
+            - [ ] Botón para crear usuarios a partir de esta lista. <!-- id: 53 -->
+                - [ ] Generador de credenciales usando correo electrónico e información proporcionada. <!-- id: 54 -->
+        - [ ] Editar <!-- id: 55 -->
+        - [ ] Eliminar <!-- id: 56 -->
+    - [ ] Gestión de Ordenes <!-- id: 39 -->
+        - [ ] Listado de ordenes realizadas por el cliente. <!-- id: 57 -->
