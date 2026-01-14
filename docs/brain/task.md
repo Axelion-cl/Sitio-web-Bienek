@@ -38,31 +38,31 @@
 
 ### Proyección de Metas (Fases 4-6)
 
-#### Fase 4: Expansión de Contenido y Marketing <!-- id: 28 -->
-- [x] Blog Técnico (En Progreso) <!-- id: 60 -->
-    - [x] Layout Principal y Header <!-- id: 64 -->
-    - [x] Grilla de Artículos y Componente `ArticleCard` <!-- id: 65 -->
-    - [x] Datos Mock de Artículos (`src/data/articles.ts`) <!-- id: 66 -->
-- [x] Bolsa de Trabajo (En Progreso) <!-- id: 61 -->
-    - [x] Página `/trabaja-con-nosotros` (Layout y Formulario) <!-- id: 67 -->
-    - [x] Componente File Upload (Visual Drag & Drop) <!-- id: 69 -->
-- [x] Promociones (En Progreso) <!-- id: 62 -->
-    - [x] Página `/promociones` (Layout Modular) <!-- id: 70 -->
-    - [x] Grillas de "En Oferta" y "Más Vendidos" <!-- id: 71 -->
-    - [x] Componente `PromoBanner` (Highlight dinámico) <!-- id: 72 -->
-    - [x] Mock de Configuración de Bloques (`src/data/promo-layout.ts`) <!-- id: 73 -->
+#### Fase 4: Expansión de Contenido y Marketing (Completado) <!-- id: 28 -->
+- [x] Blog Técnico <!-- id: 60 -->
+- [x] Bolsa de Trabajo <!-- id: 61 -->
+- [x] Promociones <!-- id: 62 -->
 
-#### Fase 5: Ecosistema Cliente (Auth & B2B) <!-- id: 27 -->
-- [ ] **Autenticación (Sistema Híbrido)** <!-- id: 40 -->
-    - [ ] Página de Login (Formulario + Recuperación) <!-- id: 41 -->
-- [ ] **Experiencia Logged-In** <!-- id: 44 -->
-    - [ ] Header Personalizado ("Hola, Cliente") <!-- id: 45 -->
-    - [ ] Mi Cuenta (Dashboard Cliente) <!-- id: 47 -->
-        - [ ] Mis Productos (Favoritos/Asignados) <!-- id: 48 -->
-        - [ ] Mis Ordenes (Historial) <!-- id: 49 -->
-        - [ ] Mi Perfil (Datos y Password) <!-- id: 50 -->
+#### Fase 5: Ecosistema Cliente (Auth & B2B) - COMPLETADO <!-- id: 27 -->
+- [x] **Autenticación (Mock Auth - Supabase Pospuesto)** <!-- id: 40 -->
+    - [x] Contexto de Auth (`src/context/AuthContext.tsx`) <!-- id: 74 -->
+    - [x] Página de Login "Acceso Clientes" <!-- id: 41 -->
+    - [x] Mock de Usuarios (`src/data/mockUsers.ts`) <!-- id: 75 -->
+- [x] **Experiencia Logged-In** <!-- id: 44 -->
+    - [x] Header Personalizado (Nombre + Carrito + Salir) <!-- id: 45 -->
+    - [x] Mi Cuenta (Dashboard con Tabs) <!-- id: 47 -->
+        - [x] Mis Productos (Carrito) <!-- id: 48 -->
+        - [x] Mis Ordenes (Historial) <!-- id: 49 -->
+        - [x] Mi Perfil (Datos y Password) <!-- id: 50 -->
+- [x] **Carrito (CartContext + Contador Header)**
 
-#### Fase 6: Administración (CRM Interno) <!-- id: 34 -->
+#### Fase 6: Internacionalización (i18n) - Selector de Idioma (Faltan algúnos detalles.)
+- [x] Implementar cambio de idioma Español/Inglés funcional
+    - [x] Selector en header (barra negra) conectado a LanguageContext
+    - [ ] Todo el texto del sitio (Header, Footer, Home, Auth, Dashboard, ProductCards) cambia dinámicamente
+    - [x] Persistir preferencia de idioma (localStorage)
+
+#### Fase 7: Administración (CRM Interno) <!-- id: 34 -->
 - [ ] **Seguridad Admin** <!-- id: 35 -->
     - [ ] Login Admin y Middleware de Protección
 - [ ] **Gestión de Catálogo** <!-- id: 63 -->

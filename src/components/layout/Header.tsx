@@ -4,16 +4,19 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Search, Globe, Truck, Clock, Phone, ChevronDown } from "lucide-react";
+import { Search, Globe, Truck, Clock, Phone, ChevronDown, ShoppingCart, LogOut, User } from "lucide-react";
 import { SearchBar } from "./SearchBar";
 import { solutions } from "@/data/solutions";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function Header() {
     const [isLangOpen, setIsLangOpen] = useState(false);
-    const [selectedLang, setSelectedLang] = useState("Español");
     const [isVisible, setIsVisible] = useState(true);
     const lastScrollY = useRef(0);
     const headerRef = useRef<HTMLElement>(null);
+    const { language, setLanguage, t } = useLanguage();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -42,9 +45,53 @@ export function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const handleLanguageSelect = (lang: string) => {
-        setSelectedLang(lang);
+    const handleLanguageSelect = (lang: 'es' | 'en') => {
+        setLanguage(lang);
         setIsLangOpen(false);
+    };
+
+    // Auth Section Component
+    const AuthSection = () => {
+        const { user, isLoggedIn, logout } = useAuth();
+        const { cartCount } = useCart();
+
+        if (isLoggedIn && user) {
+            return (
+                <div className="flex items-center gap-6">
+                    {/* User Name with Icon */}
+                    <Link href="/mi-cuenta" className="flex items-center gap-2 text-sm font-normal hover:text-primary transition-colors">
+                        <User className="w-5 h-5" />
+                        <span>{user.name}</span>
+                    </Link>
+
+                    {/* Cart with Counter */}
+                    <Link href="/mi-cuenta" className="flex items-center gap-1 hover:text-primary transition-colors relative">
+                        <ShoppingCart className="w-5 h-5" />
+                        {cartCount > 0 && (
+                            <span className="bg-primary text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                {cartCount}
+                            </span>
+                        )}
+                    </Link>
+
+                    {/* Logout */}
+                    <button
+                        onClick={logout}
+                        className="flex items-center gap-1 text-sm font-normal hover:text-primary transition-colors"
+                    >
+                        <span>{t.header.salir}</span>
+                        <LogOut className="w-4 h-4" />
+                    </button>
+                </div>
+            );
+        }
+
+        return (
+            <Link href="/login" className="flex items-center gap-2 text-sm font-normal cursor-pointer hover:text-primary transition-colors group">
+                <Image src="/assets/icons/acceso-clientes.svg" alt="Login" width={20} height={20} className="group-hover:opacity-80" />
+                <span>{t.header.accesoClientes}</span>
+            </Link>
+        );
     };
 
     return (
@@ -64,9 +111,9 @@ export function Header() {
                             >
                                 <Globe className="w-6 h-6 text-white" />
                                 <div className="flex flex-col leading-tight">
-                                    <span className="text-sm font-medium text-white">Idioma</span>
+                                    <span className="text-sm font-normal text-white">{t.header.idioma}</span>
                                     <span className="text-sm text-white group-hover:text-primary transition-colors flex items-center gap-1">
-                                        {selectedLang} <ChevronDown className={`w-4 h-4 transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
+                                        {language === 'es' ? 'Español' : 'English'} <ChevronDown className={`w-4 h-4 transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
                                     </span>
                                 </div>
                             </div>
@@ -77,25 +124,25 @@ export function Header() {
                                     style={{ zIndex: 50 }}
                                 >
                                     <button
-                                        onClick={() => handleLanguageSelect("Español")}
+                                        onClick={() => handleLanguageSelect('es')}
                                         className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-gray-800 transition-colors flex items-center justify-between"
                                     >
                                         <span>Español</span>
-                                        {selectedLang === "Español" && <span className="text-primary">✓</span>}
+                                        {language === 'es' && <span className="text-primary">✓</span>}
                                     </button>
                                     <button
-                                        onClick={() => handleLanguageSelect("English")}
+                                        onClick={() => handleLanguageSelect('en')}
                                         className="w-full text-left px-4 py-2.5 text-sm text-white hover:bg-gray-800 transition-colors flex items-center justify-between"
                                     >
                                         <span>English</span>
-                                        {selectedLang === "English" && <span className="text-primary">✓</span>}
+                                        {language === 'en' && <span className="text-primary">✓</span>}
                                     </button>
                                 </div>
                             )}
                         </div>
-                        <div className="flex items-center gap-6 text-sm font-medium text-gray-300">
-                            <Link href="/empresa" className="hover:text-primary transition-colors">Empresa</Link>
-                            <Link href="/trabaja-con-nosotros" className="hover:text-primary transition-colors">Bolsa de Trabajo</Link>
+                        <div className="flex items-center gap-6 text-sm font-normal text-gray-300">
+                            <Link href="/empresa" className="hover:text-primary transition-colors">{t.header.empresa}</Link>
+                            <Link href="/trabaja-con-nosotros" className="hover:text-primary transition-colors">{t.header.bolsaTrabajo}</Link>
                         </div>
                     </div>
 
@@ -105,8 +152,8 @@ export function Header() {
                         <div className="flex items-center gap-4">
                             <Truck className="w-8 h-8 text-white" />
                             <div className="flex flex-col leading-tight">
-                                <span className="text-xs text-gray-300">Cobertura:</span>
-                                <span className="text-sm text-white">RM - X Región.</span>
+                                <span className="text-xs text-gray-300">{t.header.cobertura}</span>
+                                <span className="text-sm text-white">{t.header.coberturaValue}</span>
                             </div>
                         </div>
 
@@ -114,8 +161,8 @@ export function Header() {
                         <div className="flex items-center gap-4">
                             <Clock className="w-8 h-8 text-white" />
                             <div className="flex flex-col leading-tight">
-                                <span className="text-xs text-gray-300">Horario de atención:</span>
-                                <span className="text-sm text-white">8:00 a 18:00 hrs</span>
+                                <span className="text-xs text-gray-300">{t.header.horario}</span>
+                                <span className="text-sm text-white">{t.header.horarioValue}</span>
                             </div>
                         </div>
 
@@ -134,26 +181,31 @@ export function Header() {
             </div>
 
             {/* 2. Main Menu */}
-            <div className="bg-white py-4 z-20 relative">
+            <div className="bg-white py-3 pb-4 z-20 relative">
                 <div className="container mx-auto px-4 flex justify-between items-center">
 
-                    {/* Left Side: Logo + Nav */}
+                    {/* Left Side: Logo + Tagline + Nav */}
                     <div className="flex items-center gap-12">
-                        {/* Logo */}
-                        <Link href="/" className="flex-shrink-0">
-                            <Image
-                                src="/assets/images/logo.svg"
-                                alt="Bienek Logo"
-                                width={180}
-                                height={60}
-                                className="h-12 w-auto object-contain"
-                                priority
-                            />
-                        </Link>
+                        {/* Logo + Tagline */}
+                        <div className="flex flex-col">
+                            <Link href="/" className="flex-shrink-0">
+                                <Image
+                                    src="/assets/images/logo.svg"
+                                    alt="Bienek Logo"
+                                    width={180}
+                                    height={60}
+                                    className="h-12 w-auto object-contain"
+                                    priority
+                                />
+                            </Link>
+                            <p className="font-sans text-sm text-gray-800 tracking-wide mt-0.5 hidden lg:block">
+                                Soluciones Integrales de Limpieza
+                            </p>
+                        </div>
 
                         {/* Nav Links (Desktop) */}
-                        <nav className="hidden lg:flex items-center gap-8 font-sans font-medium text-base text-gray-700">
-                            <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>
+                        <nav className="hidden lg:flex items-center gap-8 font-sans font-normal text-sm text-black">
+                            <Link href="/" className="hover:text-primary transition-colors">{t.header.inicio}</Link>
 
                             {/* Soluciones Dropdown */}
                             <div className="group relative h-full flex items-center">
@@ -161,7 +213,7 @@ export function Header() {
                                     href="/soluciones/soluciones-generales-de-higiene"
                                     className="flex items-center gap-1 hover:text-primary transition-colors py-4"
                                 >
-                                    Soluciones
+                                    {t.header.soluciones}
                                     <ChevronDown className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 opacity-70" />
                                 </Link>
 
@@ -178,7 +230,7 @@ export function Header() {
                                                 <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary transition-colors shrink-0" />
 
                                                 <div className="flex flex-col">
-                                                    <span className="text-sm font-medium text-gray-700 group-hover/item:text-black transition-colors">
+                                                    <span className="text-sm font-normal text-gray-700 group-hover/item:text-black transition-colors">
                                                         {bg.title}
                                                     </span>
                                                 </div>
@@ -188,36 +240,25 @@ export function Header() {
                                 </div>
                             </div>
 
-                            <Link href="/promociones" className="hover:text-primary transition-colors">Promociones</Link>
+                            <Link href="/promociones" className="hover:text-primary transition-colors">{t.header.promociones}</Link>
                         </nav>
                     </div>
 
                     {/* Right Side: Actions */}
                     <div className="flex items-center gap-8">
-                        <Link href="/blog" className="hidden lg:block text-base font-medium hover:text-primary transition-colors">
-                            Blog Técnico
+                        <Link href="/blog" className="hidden lg:block text-sm font-normal hover:text-primary transition-colors">
+                            {t.header.blogTecnico}
                         </Link>
 
-                        <div className="flex items-center gap-2 text-base font-medium cursor-pointer hover:text-primary transition-colors group">
-                            <Image src="/assets/icons/acceso-clientes.svg" alt="Login" width={20} height={20} className="group-hover:opacity-80" />
-                            <span>Acceso Clientes</span>
-                        </div>
+                        {/* Auth Section - Dynamic */}
+                        <AuthSection />
 
                         <Link href="/contacto" className="cursor-pointer">
                             <Button className="bg-primary hover:bg-primary/90 text-black font-medium text-base rounded-full px-8 py-6 shadow-none cursor-pointer">
-                                CONTACTENOS
+                                {t.header.contactenos}
                             </Button>
                         </Link>
                     </div>
-                </div>
-            </div>
-
-            {/* 3. Brand Description Bar */}
-            <div className="bg-white hidden lg:flex items-start pt-2" style={{ height: '60px' }}>
-                <div className="container mx-auto px-4">
-                    <p className="font-sans text-xl text-gray-800 tracking-wide">
-                        Soluciones Integrales de Limpieza
-                    </p>
                 </div>
             </div>
 
@@ -231,7 +272,7 @@ export function Header() {
                     {/* Statement & Seal */}
                     <div className="flex items-center gap-6">
                         <span className="font-outfit font-normal text-lg hidden md:block tracking-wide whitespace-nowrap">
-                            Líderes en Distribución de productos de Higiene
+                            {t.header.lideresDistribucion}
                         </span>
                         <div className="flex items-center">
                             <Image

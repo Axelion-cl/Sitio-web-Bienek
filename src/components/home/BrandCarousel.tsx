@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 const brands = [
     { name: "3M", src: "/assets/images/logos/3M.png" },
@@ -27,11 +28,13 @@ const brands = [
 ];
 
 export function BrandCarousel() {
+    const { t } = useLanguage();
+
     return (
         <section className="py-16 bg-gray-50 border-y border-gray-100 overflow-hidden">
             <div className="container mx-auto px-4 mb-[106px] text-center relative z-10">
                 <h2 className="font-sans font-normal text-black text-[2.5rem] md:text-[55px] leading-tight mb-6">
-                    Marcas Destacadas
+                    {t.home.marcasDestacadas}
                 </h2>
                 <div className="mx-auto bg-[#ecec00]" style={{ width: '176px', height: '5px' }} />
             </div>

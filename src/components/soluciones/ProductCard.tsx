@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { Product } from "@/data/mockProducts";
 import { ImageIcon, Check } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 interface ProductCardProps {
     product: Product;
@@ -11,13 +12,19 @@ interface ProductCardProps {
 
 import Link from "next/link";
 
+import { useLanguage } from "@/context/LanguageContext";
+
 export function ProductCard({ product }: ProductCardProps) {
     const [isAdded, setIsAdded] = useState(false);
+    const { addToCart } = useCart();
+    const { t } = useLanguage();
 
     const handleAddClick = (e: React.MouseEvent) => {
         e.preventDefault(); // Prevent link navigation
-        setIsAdded(!isAdded);
-        // TODO: Future cart functionality when user is logged in
+        addToCart(product);
+        setIsAdded(true);
+        // Reset visual feedback after 2 seconds
+        setTimeout(() => setIsAdded(false), 2000);
     };
 
     return (
@@ -46,7 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
                 {/* Brand Row */}
                 <div className="flex items-center gap-2 mb-2">
-                    <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">MARCA:</span>
+                    <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">{t.productos.marca}</span>
                     <div className="relative shrink-0" style={{ width: '96px', height: '28px' }}>
                         <Image
                             src={product.brandLogo}
@@ -69,7 +76,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         style={{ backgroundColor: isAdded ? '#ECEC80' : '#ECEC00' }}
                     >
                         {isAdded && <Check className="w-4 h-4" />}
-                        {isAdded ? 'Agregado' : 'Agregar'}
+                        {isAdded ? t.productos.agregado : t.productos.agregar}
                     </button>
 
                     <Link
@@ -77,7 +84,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         className="w-full text-black font-normal text-base py-2.5 rounded-md shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center justify-center text-center"
                         style={{ backgroundColor: '#A7E0A0' }}
                     >
-                        Mas Info
+                        {t.productos.masInfo}
                     </Link>
                 </div>
             </div>
