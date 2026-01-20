@@ -2,21 +2,19 @@
 
 import { useState } from "react";
 import { Search } from "lucide-react";
-import { GridBlockConfig, getProductsByIds } from "@/data/promo-layout";
+import { Product } from "@/data/mockProducts";
 import { ProductCard } from "@/components/soluciones/ProductCard";
 
 interface PromoGridProps {
-    config: GridBlockConfig;
+    title: string;
+    products: Product[];
 }
 
-export function PromoGrid({ config }: PromoGridProps) {
-    const { title, productIds } = config;
-    const allProducts = getProductsByIds(productIds);
-
+export function PromoGrid({ title, products }: PromoGridProps) {
     const [searchQuery, setSearchQuery] = useState("");
 
     // Filter products by search
-    const filteredProducts = allProducts.filter(product =>
+    const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.brand.toLowerCase().includes(searchQuery.toLowerCase())
     );

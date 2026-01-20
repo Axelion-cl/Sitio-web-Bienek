@@ -1,16 +1,51 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { products as initialProducts, Product } from '@/data/mockProducts';
-import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, Upload } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { Product } from '@/data/mockProducts';
+import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight, Upload, Loader2 } from 'lucide-react';
 import Image from 'next/image';
+import { deleteProduct } from '@/app/actions/products';
 
 export default function AdminProductsPage() {
-    const [products, setProducts] = useState(initialProducts);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    const fetchProducts = async () => {
+        setLoading(true);
+        try {
+            const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            setProducts(data as any);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        if (confirm('¿Estás seguro de eliminar este producto?')) {
+            const result = await deleteProduct(id);
+            if (result.success) {
+                setProducts(products.filter(p => p.id !== id));
+            } else {
+                alert('No se pudo eliminar el producto: ' + result.error);
+            }
+        }
+    };
 
     // Filter
     const filteredProducts = products.filter(product =>
@@ -22,13 +57,6 @@ export default function AdminProductsPage() {
     const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentProducts = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
-
-    const handleDelete = (id: string) => {
-        if (confirm('¿Estás seguro de eliminar este producto?')) {
-            setProducts(products.filter(p => p.id !== id));
-            // Reset to page 1 if current page becomes empty?
-        }
-    };
 
     return (
         <div className="space-y-6">
@@ -69,7 +97,13 @@ export default function AdminProductsPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden min-h-[400px] relative">
+                {loading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[1px] z-10">
+                        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                    </div>
+                )}
+
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50 border-b border-gray-100">
@@ -78,7 +112,7 @@ export default function AdminProductsPage() {
                                 <th className="px-6 py-4 font-semibold text-gray-700">Nombre</th>
                                 <th className="px-6 py-4 font-semibold text-gray-700">Marca</th>
                                 <th className="px-6 py-4 font-semibold text-gray-700">SKU</th>
-                                <th className="px-6 py-4 font-semibold text-gray-700 text-right">Precio</th>
+
                                 <th className="px-6 py-4 font-semibold text-gray-700 text-center">Acciones</th>
                             </tr>
                         </thead>
@@ -89,7 +123,7 @@ export default function AdminProductsPage() {
                                         <td className="px-6 py-4">
                                             <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                                                 <Image
-                                                    src={product.images[0]}
+                                                    src={product.images[0] || '/assets/images/placeholder.png'}
                                                     alt={product.name}
                                                     fill
                                                     className="object-cover"
@@ -101,9 +135,7 @@ export default function AdminProductsPage() {
                                         </td>
                                         <td className="px-6 py-4 text-gray-600">{product.brand}</td>
                                         <td className="px-6 py-4 text-sm font-mono text-gray-500">{product.sku}</td>
-                                        <td className="px-6 py-4 text-right font-medium text-gray-900">
-                                            ${product.price.toLocaleString('es-CL')}
-                                        </td>
+
                                         <td className="px-6 py-4">
                                             <div className="flex justify-center gap-2">
                                                 <Link
@@ -125,7 +157,7 @@ export default function AdminProductsPage() {
                             ) : (
                                 <tr>
                                     <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
-                                        No se encontraron productos.
+                                        {loading ? 'Cargando...' : 'No se encontraron productos.'}
                                     </td>
                                 </tr>
                             )}

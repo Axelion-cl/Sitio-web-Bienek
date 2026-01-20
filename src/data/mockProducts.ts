@@ -15,7 +15,7 @@ export interface Product {
     relatedProducts: string[];
     sectorIds: string[];
     familyIds: string[]; // New: Multi-family support
-    price: number;
+
     sku: string;
     badges: string[];
 }
@@ -85,7 +85,7 @@ export const products: Product[] = Array.from({ length: 120 }).map((_, i) => {
         relatedProducts: [], // Populated below to avoid circular dependency issues during creation
         sectorIds: sectorIds,
         familyIds: familyIds,
-        price: 5000 + (i * 150),
+
         sku: `SKU-${50000 + i}`,
         badges: currentBadges
     };

@@ -7,11 +7,14 @@ import { ProductGrid } from "@/components/soluciones/ProductGrid";
 import { SidebarFilters } from "@/components/soluciones/SidebarFilters";
 import { useSolutionsFilters } from "@/hooks/useSolutionsFilters";
 
+import { Family } from "@/services/families";
+
 interface SolutionsLayoutProps {
     initialProducts: Product[];
+    initialFamilies: Family[];
 }
 
-export function SolutionsLayout({ initialProducts }: SolutionsLayoutProps) {
+export function SolutionsLayout({ initialProducts, initialFamilies }: SolutionsLayoutProps) {
     const {
         searchQuery,
         setSearchQuery,
@@ -39,6 +42,7 @@ export function SolutionsLayout({ initialProducts }: SolutionsLayoutProps) {
                             selectedBrands={selectedBrands}
                             onToggleBrand={toggleBrand}
                             availableFamilies={availableFamilies}
+                            allFamilies={initialFamilies}
                             selectedFamilies={selectedFamilies}
                             onToggleFamily={toggleFamily}
                             onClearFilters={clearAllFilters}

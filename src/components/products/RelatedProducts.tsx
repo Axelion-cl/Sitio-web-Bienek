@@ -2,16 +2,15 @@
 
 import { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { Product, getRelatedProducts } from "@/data/mockProducts";
+import type { Product } from "@/services/products";
 import { ProductCard } from "@/components/soluciones/ProductCard";
 import { ChevronRight } from "lucide-react";
 
 interface RelatedProductsProps {
-    relatedIds: string[];
+    products: Product[];
 }
 
-export function RelatedProducts({ relatedIds }: RelatedProductsProps) {
-    const products = getRelatedProducts(relatedIds);
+export function RelatedProducts({ products }: RelatedProductsProps) {
     const [emblaRef, emblaApi] = useEmblaCarousel({ align: 'start', loop: true, slidesToScroll: 2 });
 
     const scrollPrev = useCallback(() => {

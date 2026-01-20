@@ -1,17 +1,54 @@
 import { notFound } from "next/navigation";
-import { products, getProductById } from "@/data/mockProducts";
+import { getAllProducts, getProductById, getRelatedProducts } from "@/services/products";
 import { ProductGallery } from "@/components/products/ProductGallery";
 import { ProductInfo } from "@/components/products/ProductInfo";
 import { RelatedProducts } from "@/components/products/RelatedProducts";
 
-// Generate static params for all products (ISR strategy)
+// Generate static params for all products (Static Export)
+// This will fetch ALL products from Supabase at BUILD TIME.
 export async function generateStaticParams() {
+    const products = await getAllProducts();
+
+    // If empty (e.g. build with no DB access), handle gracefully
+    if (!products || products.length === 0) return [];
+
     return products.map((product) => ({
         id: product.id,
     }));
 }
 
-export const dynamicParams = false; // Required for static export
+export const dynamicParams = false;
+
+// Generate Metadata for SEO
+import { Metadata, ResolvingMetadata } from 'next';
+
+export async function generateMetadata(
+    { params }: PageProps,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const { id } = await params;
+    const product = await getProductById(id);
+
+    if (!product) {
+        return {
+            title: 'Producto no encontrado | Bienek',
+        };
+    }
+
+    const previousImages = (await parent).openGraph?.images || [];
+
+    return {
+        title: `${product.name} | Bienek`,
+        description: product.description || `Detalles y especificaciones de ${product.name}`,
+        openGraph: {
+            title: product.name,
+            description: product.description || undefined,
+            images: product.images && product.images.length > 0
+                ? [product.images[0], ...previousImages]
+                : previousImages,
+        },
+    };
+}
 
 interface PageProps {
     params: Promise<{ id: string }>;
@@ -19,11 +56,14 @@ interface PageProps {
 
 export default async function ProductPage({ params }: PageProps) {
     const { id } = await params;
-    const product = getProductById(id);
+    const product = await getProductById(id);
 
     if (!product) {
         notFound();
     }
+
+    // Fetch related products
+    const relatedProducts = await getRelatedProducts(product.relatedProducts);
 
     return (
         <main className="min-h-screen bg-white">
@@ -79,7 +119,7 @@ export default async function ProductPage({ params }: PageProps) {
 
 
             {/* 4. Related Products */}
-            <RelatedProducts relatedIds={product.relatedProducts} />
+            <RelatedProducts products={relatedProducts} />
         </main>
     );
 }

@@ -92,7 +92,7 @@ function OrderCard({ order }: { order: Order }) {
                         {statusLabels[order.status]}
                     </span>
                     <div className="text-right">
-                        <p className="font-bold text-gray-900">${order.total.toLocaleString('es-CL')}</p>
+
                         <p className="text-xs text-gray-500">{order.items.length} productos</p>
                     </div>
                     {isExpanded ? <ChevronUp className="w-5 h-5 text-gray-400" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
@@ -111,18 +111,11 @@ function OrderCard({ order }: { order: Order }) {
                                     </span>
                                     <span className="text-gray-700">{item.productName}</span>
                                 </div>
-                                <span className="font-medium text-gray-900">
-                                    ${(item.price * item.quantity).toLocaleString('es-CL')}
-                                </span>
+
                             </div>
                         ))}
                     </div>
-                    <div className="mt-6 pt-4 border-t border-gray-200 flex justify-end">
-                        <div className="text-right">
-                            <span className="text-gray-500 text-sm mr-4">Total Orden:</span>
-                            <span className="text-lg font-bold text-gray-900">${order.total.toLocaleString('es-CL')}</span>
-                        </div>
-                    </div>
+
                 </div>
             )}
         </div>

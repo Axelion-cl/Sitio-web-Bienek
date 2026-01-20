@@ -1,14 +1,41 @@
 'use client';
 
-import { getProductById } from '@/data/mockProducts';
+import { useEffect, useState } from 'react';
 import { ProductForm } from '@/components/admin/products/ProductForm';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 
 export default function EditProductView({ productId }: { productId: string }) {
-    // decodeURIComponent is good practice if ID has special chars
-    const id = decodeURIComponent(productId);
-    const product = getProductById(id);
+    const [product, setProduct] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const id = decodeURIComponent(productId);
+
+            const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (!error && data) {
+                setProduct(data);
+            }
+            setLoading(false);
+        };
+
+        fetchProduct();
+    }, [productId]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+        );
+    }
 
     if (!product) {
         return (

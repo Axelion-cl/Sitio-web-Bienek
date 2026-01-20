@@ -3,8 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heading } from "@/components/ui/typography";
-
-import { sectors } from "@/data/sectors"; // Use admin data source
+import type { Sector } from "@/services/sectors";
 import { families } from "@/data/families"; // Import families to resolve IDs
 
 // Helper to get family names from IDs
@@ -13,7 +12,11 @@ const getFamilyNames = (ids?: string[]) => {
     return ids.map(id => families.find(f => f.id === id)).filter(Boolean);
 };
 
-export function SolutionsGrid() {
+interface SolutionsGridProps {
+    sectors: Sector[];
+}
+
+export function SolutionsGrid({ sectors }: SolutionsGridProps) {
     return (
         <section className="py-20 bg-white">
             <div className="container mx-auto px-4 space-y-12">

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { families } from "@/data/families";
 
 // Using native input styled with Tailwind since shadcn Checkbox is not installed.
 
@@ -13,6 +12,7 @@ interface SidebarFiltersProps {
 
     // New Props for Families
     availableFamilies: string[];
+    allFamilies: { id: string, name: string }[];
     selectedFamilies: Set<string>;
     onToggleFamily: (familyId: string) => void;
 
@@ -26,6 +26,7 @@ export function SidebarFilters({
     selectedBrands,
     onToggleBrand,
     availableFamilies,
+    allFamilies,
     selectedFamilies,
     onToggleFamily,
     onClearFilters,
@@ -36,7 +37,7 @@ export function SidebarFilters({
 
     // Helper to get family name
     const getFamilyName = (id: string) => {
-        return families.find(f => f.id === id)?.name || id;
+        return allFamilies.find(f => f.id === id)?.name || id;
     };
 
     return (

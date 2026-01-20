@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { } from "react";
 import Image from "next/image";
 import { Product } from "@/data/mockProducts";
 import { Button } from "@/components/ui/button";
@@ -10,8 +10,21 @@ interface ProductInfoProps {
     product: Product;
 }
 
+import { useCart } from "@/context/CartContext";
+
 export function ProductInfo({ product }: ProductInfoProps) {
-    const [isAdded, setIsAdded] = useState(false);
+    const { addToCart, removeFromCart, cartItems } = useCart();
+
+    // Check if product is already in cart
+    const isAdded = cartItems.some(item => item.product.id === product.id);
+
+    const handleAddClick = () => {
+        if (isAdded) {
+            removeFromCart(product.id);
+        } else {
+            addToCart(product);
+        }
+    };
 
     return (
         <div className="flex flex-col gap-6">
@@ -59,7 +72,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             {/* Actions */}
             <div className="flex flex-col gap-3 mt-4">
                 <Button
-                    onClick={() => setIsAdded(!isAdded)}
+                    onClick={handleAddClick}
                     className="w-full h-12 text-base font-medium rounded-full flex items-center justify-center gap-2 shadow-none hover:shadow-lg transition-all"
                     style={{ backgroundColor: isAdded ? '#ECEC80' : '#ecec00', color: 'black' }}
                 >

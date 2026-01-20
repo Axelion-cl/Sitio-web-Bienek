@@ -1,8 +1,31 @@
-import { promoBlocks, isGridBlock, isBannerBlock, GridBlockConfig, BannerBlockConfig } from "@/data/promo-layout";
+import { getAllProducts } from '@/services/products';
 import { PromoBanner } from "@/components/promociones/PromoBanner";
 import { PromoGrid } from "@/components/promociones/PromoGrid";
 
-export default function PromocionesPage() {
+// Banner configuration (static)
+const promoBanner = {
+    title: 'Nueva Línea Profesional',
+    description: 'Descubre nuestra exclusiva colección de productos certificados para el sector hospitalario. Mayor eficacia, mayor seguridad.',
+    image: '/assets/images/blog-placeholder.png',
+    backgroundColor: '#1a365d',
+    buttonText: 'Conocer Más',
+    buttonLink: '/soluciones/salud',
+    orientation: 'right' as const
+};
+
+export default async function PromocionesPage() {
+    // Fetch all products from Supabase
+    const allProducts = await getAllProducts();
+
+    // Filter by badges
+    const enOfertaProducts = allProducts.filter(p =>
+        p.badges.includes('En Promoción') || p.badges.includes('En Oferta')
+    );
+
+    const masVendidosProducts = allProducts.filter(p =>
+        p.badges.includes('Más Vendidos')
+    );
+
     return (
         <main className="min-h-screen bg-white pb-20">
             {/* Header Section */}
@@ -20,15 +43,14 @@ export default function PromocionesPage() {
 
             {/* Dynamic Blocks */}
             <div className="container mx-auto px-4">
-                {promoBlocks.map((block, index) => {
-                    if (isGridBlock(block)) {
-                        return <PromoGrid key={index} config={block.config as GridBlockConfig} />;
-                    }
-                    if (isBannerBlock(block)) {
-                        return <PromoBanner key={index} config={block.config as BannerBlockConfig} />;
-                    }
-                    return null;
-                })}
+                {/* En Oferta Grid */}
+                <PromoGrid title="En Oferta" products={enOfertaProducts} />
+
+                {/* Banner */}
+                <PromoBanner config={promoBanner} />
+
+                {/* Más Vendidos Grid */}
+                <PromoGrid title="Más Vendidos" products={masVendidosProducts} />
             </div>
         </main>
     );

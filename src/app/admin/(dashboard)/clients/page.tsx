@@ -1,20 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
     Users, UserPlus, Mail, Phone, Plus,
-    FileText, Key, Trash2, Copy, Check, X, AlertTriangle, Save
+    FileText, Key, Trash2, Copy, Check, X, AlertTriangle, Save, Loader2
 } from 'lucide-react';
-import { mockLeads, mockClients, Lead, Client } from '@/data/mockCRM';
+import {
+    createLead, deleteLead, convertLeadToClient, deleteClient, getLeads, getClients
+} from '@/app/actions/clients';
+
+interface Lead {
+    id: string;
+    name: string;
+    email: string;
+    message?: string;
+    company?: string;
+    phone?: string;
+    status: string;
+    created_at: string;
+}
+
+interface Client {
+    id: string;
+    name: string;
+    email: string;
+    company?: string;
+    phone?: string;
+    status: string;
+    registration_date: string;
+}
 
 export default function ClientsPage() {
     const router = useRouter();
     const [activeTab, setActiveTab] = useState<'leads' | 'clients'>('leads');
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
 
-    // Mock State
-    const [leads, setLeads] = useState<Lead[]>(mockLeads);
-    const [clients, setClients] = useState<Client[]>(mockClients);
+    // Data State
+    const [leads, setLeads] = useState<Lead[]>([]);
+    const [clients, setClients] = useState<Client[]>([]);
 
     // Modal States
     const [passwordModal, setPasswordModal] = useState<{ isOpen: boolean; email: string; password: string }>({
@@ -33,62 +58,63 @@ export default function ClientsPage() {
     const [deleteError, setDeleteError] = useState('');
     const [copied, setCopied] = useState(false);
 
-    const generateTempPassword = () => {
-        const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
-        return Array.from({ length: 10 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const [leadsData, clientsData] = await Promise.all([
+                getLeads(),
+                getClients()
+            ]);
+            setLeads(leadsData as Lead[]);
+            setClients(clientsData as Client[]);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleAddLead = () => {
+    const handleAddLead = async () => {
         if (!newLeadForm.name || !newLeadForm.email) {
             alert('Por favor completa al menos el nombre y email.');
             return;
         }
 
-        const newLead: Lead = {
-            id: `lead-${Date.now()}`,
-            name: newLeadForm.name,
-            email: newLeadForm.email,
-            message: newLeadForm.message || 'Agregado manualmente por admin',
-            date: new Date().toISOString().split('T')[0],
-            status: 'new',
-            company: newLeadForm.company,
-            phone: newLeadForm.phone
-        };
+        setSaving(true);
+        const result = await createLead(newLeadForm);
 
-        setLeads([newLead, ...leads]);
-        setNewLeadModal(false);
-        setNewLeadForm({ name: '', email: '', message: '', company: '', phone: '' });
+        if (result.success) {
+            await fetchData();
+            setNewLeadModal(false);
+            setNewLeadForm({ name: '', email: '', message: '', company: '', phone: '' });
+        } else {
+            alert('Error: ' + result.error);
+        }
+        setSaving(false);
     };
 
     const handleConvertLead = (lead: Lead) => {
         setConvertModal({ isOpen: true, lead });
     };
 
-    const confirmConversion = () => {
+    const confirmConversion = async () => {
         const lead = convertModal.lead;
         if (!lead) return;
 
-        setLeads(leads.filter(l => l.id !== lead.id));
+        setSaving(true);
+        const result = await convertLeadToClient(lead.id);
 
-        const newClient: Client = {
-            id: `client-${Date.now()}`,
-            name: lead.name,
-            email: lead.email,
-            registrationDate: new Date().toISOString().split('T')[0],
-            status: 'active',
-            company: lead.company || 'Sin empresa',
-            phone: lead.phone
-        };
-        setClients([newClient, ...clients]);
+        if (result.success) {
+            await fetchData();
+            setPasswordModal({ isOpen: true, email: lead.email, password: result.tempPassword || '' });
+        } else {
+            alert('Error: ' + result.error);
+        }
 
-        const tempPass = generateTempPassword();
-        setPasswordModal({ isOpen: true, email: lead.email, password: tempPass });
+        setSaving(false);
         setConvertModal({ isOpen: false, lead: null });
-    };
-
-    const handleResetPassword = (client: Client) => {
-        const tempPass = generateTempPassword();
-        setPasswordModal({ isOpen: true, email: client.email, password: tempPass });
     };
 
     const handleCopyPassword = async () => {
@@ -103,16 +129,32 @@ export default function ClientsPage() {
         setDeleteError('');
     };
 
-    const handleDeleteConfirm = () => {
+    const handleDeleteConfirm = async () => {
         if (adminPassword !== 'admin123') {
             setDeleteError('Contraseña incorrecta. Intenta de nuevo.');
             return;
         }
 
-        setClients(clients.filter(c => c.id !== deleteModal.clientId));
-        setDeleteModal({ isOpen: false, clientId: '', clientName: '' });
+        setSaving(true);
+        const result = await deleteClient(deleteModal.clientId);
+
+        if (result.success) {
+            await fetchData();
+            setDeleteModal({ isOpen: false, clientId: '', clientName: '' });
+        } else {
+            alert('Error: ' + result.error);
+        }
+        setSaving(false);
         setAdminPassword('');
     };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -183,7 +225,7 @@ export default function ClientsPage() {
                                             {lead.phone && <div className="flex items-center gap-2"><Phone className="w-3 h-3" /> {lead.phone}</div>}
                                         </td>
                                         <td className="px-6 py-4 text-gray-500 truncate max-w-xs" title={lead.message}>{lead.message}</td>
-                                        <td className="px-6 py-4 text-gray-500">{lead.date}</td>
+                                        <td className="px-6 py-4 text-gray-500">{new Date(lead.created_at).toLocaleDateString()}</td>
                                         <td className="px-6 py-4 text-right">
                                             <button
                                                 onClick={() => handleConvertLead(lead)}
@@ -212,7 +254,9 @@ export default function ClientsPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {clients.map((client) => (
+                                {clients.length === 0 ? (
+                                    <tr><td colSpan={5} className="text-center py-8 text-gray-500">No hay clientes registrados.</td></tr>
+                                ) : clients.map((client) => (
                                     <tr key={client.id} className="hover:bg-gray-50 border-b border-gray-100 last:border-0">
                                         <td className="px-6 py-4">
                                             <div className="font-medium text-gray-900">{client.name}</div>
@@ -222,7 +266,7 @@ export default function ClientsPage() {
                                             <div className="flex items-center gap-2"><Mail className="w-3 h-3" /> {client.email}</div>
                                             {client.phone && <div className="flex items-center gap-2"><Phone className="w-3 h-3" /> {client.phone}</div>}
                                         </td>
-                                        <td className="px-6 py-4 text-gray-500">{client.registrationDate}</td>
+                                        <td className="px-6 py-4 text-gray-500">{new Date(client.registration_date).toLocaleDateString()}</td>
                                         <td className="px-6 py-4">
                                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${client.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
                                                 }`}>
@@ -231,20 +275,6 @@ export default function ClientsPage() {
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex justify-end gap-2">
-                                                <button
-                                                    onClick={() => router.push(`/admin/clients/${client.id}/orders`)}
-                                                    className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-primary transition-colors"
-                                                    title="Ver Órdenes"
-                                                >
-                                                    <FileText className="w-4 h-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleResetPassword(client)}
-                                                    className="p-1.5 hover:bg-yellow-50 rounded text-yellow-600 transition-colors"
-                                                    title="Resetear Contraseña"
-                                                >
-                                                    <Key className="w-4 h-4" />
-                                                </button>
                                                 <button
                                                     onClick={() => openDeleteModal(client)}
                                                     className="p-1.5 hover:bg-red-50 rounded text-red-600 transition-colors"
@@ -337,9 +367,10 @@ export default function ClientsPage() {
                             </button>
                             <button
                                 onClick={handleAddLead}
-                                className="bg-primary text-black px-4 py-2 rounded-lg font-medium hover:bg-primary/90 flex items-center gap-2"
+                                disabled={saving}
+                                className="bg-primary text-black px-4 py-2 rounded-lg font-medium hover:bg-primary/90 flex items-center gap-2 disabled:opacity-50"
                             >
-                                <Save className="w-4 h-4" /> Agregar Lead
+                                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Agregar Lead
                             </button>
                         </div>
                     </div>
@@ -435,9 +466,10 @@ export default function ClientsPage() {
                             </button>
                             <button
                                 onClick={handleDeleteConfirm}
-                                className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700"
+                                disabled={saving}
+                                className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 disabled:opacity-50"
                             >
-                                Eliminar Cliente
+                                {saving ? 'Eliminando...' : 'Eliminar Cliente'}
                             </button>
                         </div>
                     </div>
@@ -467,9 +499,10 @@ export default function ClientsPage() {
                             </button>
                             <button
                                 onClick={confirmConversion}
-                                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
+                                disabled={saving}
+                                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors disabled:opacity-50"
                             >
-                                Convertir
+                                {saving ? 'Convirtiendo...' : 'Convertir'}
                             </button>
                         </div>
                     </div>

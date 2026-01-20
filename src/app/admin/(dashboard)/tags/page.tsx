@@ -1,17 +1,19 @@
 'use client';
 
-import { useState } from 'react';
-import { sectors as initialSectors } from '@/data/sectors';
-import { families as initialFamilies } from '@/data/families';
-import { brands as initialBrands } from '@/data/brands';
-import { badges as initialBadges } from '@/data/badges';
-import { Edit, Trash2, Plus, Tag, Layers, Star, X, Save, Award, List } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Edit, Trash2, Plus, Tag, Layers, Star, X, Save, Award, List, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import FeaturedFamiliesSelector from '@/components/admin/tags/FeaturedFamiliesSelector';
+import { supabase } from '@/lib/supabase';
+import {
+    createSector, updateSector, deleteSector,
+    createFamily, updateFamily, deleteFamily,
+    createBrand, updateBrand, deleteBrand,
+    createBadge, updateBadge, deleteBadge
+} from '@/app/actions/tags';
 
 type Tab = 'sectors' | 'families' | 'brands' | 'badges';
 
-// Constants
 const BADGE_COLORS = [
     { name: 'Rojo', class: 'bg-red-500' },
     { name: 'Azul', class: 'bg-blue-500' },
@@ -26,12 +28,14 @@ const BADGE_COLORS = [
 
 export default function TagsPage() {
     const [activeTab, setActiveTab] = useState<Tab>('sectors');
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
 
-    // Mock State
-    const [sectors, setSectors] = useState(initialSectors);
-    const [families, setFamilies] = useState(initialFamilies);
-    const [brands, setBrands] = useState(initialBrands);
-    const [badges, setBadges] = useState(initialBadges);
+    // Data State (from Supabase)
+    const [sectors, setSectors] = useState<any[]>([]);
+    const [families, setFamilies] = useState<any[]>([]);
+    const [brands, setBrands] = useState<any[]>([]);
+    const [badges, setBadges] = useState<any[]>([]);
 
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,10 +44,35 @@ export default function TagsPage() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState<any>(null);
 
-    // Featured Families Modal State
+    // Featured Families Modal
     const [isFeaturedModalOpen, setIsFeaturedModalOpen] = useState(false);
     const [featuredSector, setFeaturedSector] = useState<any>(null);
     const [tempFeaturedIds, setTempFeaturedIds] = useState<string[]>([]);
+
+    // Fetch data on mount
+    useEffect(() => {
+        fetchAllData();
+    }, []);
+
+    const fetchAllData = async () => {
+        setLoading(true);
+        try {
+            const [sectorsRes, familiesRes, brandsRes, badgesRes] = await Promise.all([
+                supabase.from('sectors').select('*').order('title'),
+                supabase.from('families').select('*').order('name'),
+                supabase.from('brands').select('*').order('name'),
+                supabase.from('badges').select('*').order('name')
+            ]);
+            setSectors(sectorsRes.data || []);
+            setFamilies(familiesRes.data || []);
+            setBrands(brandsRes.data || []);
+            setBadges(badgesRes.data || []);
+        } catch (err) {
+            console.error('Error fetching tags:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const openModal = (item?: any) => {
         setEditingItem(item);
@@ -57,40 +86,45 @@ export default function TagsPage() {
         setFormData({});
     };
 
-    const handleSave = () => {
-        if (activeTab === 'sectors') {
-            if (editingItem) {
-                setSectors(sectors.map(s => s.id === editingItem.id ? { ...s, ...formData } : s));
-            } else {
-                setSectors([...sectors, { ...formData, id: Date.now().toString(), slug: formData.title?.toLowerCase().replace(/ /g, '-') }]);
+    const handleSave = async () => {
+        setSaving(true);
+        try {
+            let result;
+            if (activeTab === 'sectors') {
+                const data = {
+                    slug: formData.slug || formData.title?.toLowerCase().replace(/ /g, '-'),
+                    title: formData.title,
+                    description: formData.description,
+                    full_description: formData.fullDescription || formData.full_description,
+                    icon: formData.icon,
+                    image: formData.image
+                };
+                result = editingItem
+                    ? await updateSector(editingItem.id, data)
+                    : await createSector(data);
+            } else if (activeTab === 'families') {
+                result = editingItem
+                    ? await updateFamily(editingItem.id, { name: formData.name })
+                    : await createFamily({ name: formData.name });
+            } else if (activeTab === 'brands') {
+                result = editingItem
+                    ? await updateBrand(editingItem.id, { name: formData.name, logo: formData.logo })
+                    : await createBrand({ name: formData.name, logo: formData.logo || '/assets/images/logos/3M.png' });
+            } else if (activeTab === 'badges') {
+                result = editingItem
+                    ? await updateBadge(editingItem.id, { name: formData.name, color: formData.color })
+                    : await createBadge({ name: formData.name, color: formData.color || 'bg-black' });
             }
-        } else if (activeTab === 'families') {
-            if (editingItem) {
-                setFamilies(families.map(f => f.id === editingItem.id ? { ...f, ...formData } : f));
-            } else {
-                setFamilies([...families, { ...formData, id: Date.now().toString() }]);
-            }
-        } else if (activeTab === 'brands') {
-            if (editingItem) {
-                setBrands(brands.map(b => b.name === editingItem.name ? { ...b, ...formData } : b));
-            } else {
-                setBrands([...brands, { ...formData, logo: '/assets/images/logos/3M.png' }]);
-            }
-        } else if (activeTab === 'badges') {
-            const finalColor = formData.color || 'bg-black'; // Default to black
-            const badgeData = {
-                ...formData,
-                color: finalColor,
-                lastEdited: new Date().toISOString().split('T')[0]
-            };
 
-            if (editingItem) {
-                setBadges(badges.map(b => b.id === editingItem.id ? { ...b, ...badgeData } : b));
+            if (result?.success) {
+                await fetchAllData();
+                closeModal();
             } else {
-                setBadges([...badges, { ...badgeData, id: Date.now().toString() }]);
+                alert('Error: ' + (result?.error || 'Unknown error'));
             }
+        } finally {
+            setSaving(false);
         }
-        closeModal();
     };
 
     const handleDeleteClick = (item: any) => {
@@ -98,32 +132,53 @@ export default function TagsPage() {
         setIsDeleteModalOpen(true);
     };
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
         if (!itemToDelete) return;
+        setSaving(true);
 
-        const id = activeTab === 'brands' ? itemToDelete.name : itemToDelete.id;
+        try {
+            let result;
+            if (activeTab === 'sectors') result = await deleteSector(itemToDelete.id);
+            if (activeTab === 'families') result = await deleteFamily(itemToDelete.id);
+            if (activeTab === 'brands') result = await deleteBrand(itemToDelete.id);
+            if (activeTab === 'badges') result = await deleteBadge(itemToDelete.id);
 
-        if (activeTab === 'sectors') setSectors(sectors.filter(s => s.id !== id));
-        if (activeTab === 'families') setFamilies(families.filter(f => f.id !== id));
-        if (activeTab === 'brands') setBrands(brands.filter(b => b.name !== id));
-        if (activeTab === 'badges') setBadges(badges.filter(b => b.id !== id));
-
-        setIsDeleteModalOpen(false);
-        setItemToDelete(null);
+            if (result?.success) {
+                await fetchAllData();
+            } else {
+                alert('Error: ' + (result?.error || 'Unknown error'));
+            }
+        } finally {
+            setSaving(false);
+            setIsDeleteModalOpen(false);
+            setItemToDelete(null);
+        }
     };
 
     const handleFeaturedFamiliesClick = (sector: any) => {
         setFeaturedSector(sector);
-        setTempFeaturedIds(sector.featuredFamilies || []);
+        setTempFeaturedIds(sector.featured_families || []);
         setIsFeaturedModalOpen(true);
     };
 
-    const saveFeaturedFamilies = () => {
-        setSectors(sectors.map(s => s.id === featuredSector.id ? { ...s, featuredFamilies: tempFeaturedIds } : s));
+    const saveFeaturedFamilies = async () => {
+        setSaving(true);
+        const result = await updateSector(featuredSector.id, { featured_families: tempFeaturedIds });
+        if (result?.success) {
+            await fetchAllData();
+        }
+        setSaving(false);
         setIsFeaturedModalOpen(false);
         setFeaturedSector(null);
-        setTempFeaturedIds([]);
     };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-64">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -191,7 +246,7 @@ export default function TagsPage() {
                             <tr key={i} className="hover:bg-gray-50 bg-white border-b border-gray-100 last:border-0">
                                 <td className="px-6 py-4">
                                     <div className="relative w-10 h-10 bg-white rounded border border-gray-200 overflow-hidden flex items-center justify-center p-1">
-                                        <Image src={b.logo} alt={b.name} fill className="object-contain" />
+                                        {b.logo && <Image src={b.logo} alt={b.name} fill className="object-contain" />}
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 font-medium text-gray-900">{b.name}</td>
@@ -211,7 +266,7 @@ export default function TagsPage() {
                                         {b.name}
                                     </span>
                                 </td>
-                                <td className="px-6 py-4 text-gray-500 text-sm">{b.lastEdited || new Date().toISOString().split('T')[0]}</td>
+                                <td className="px-6 py-4 text-gray-500 text-sm">{b.last_edited ? new Date(b.last_edited).toLocaleDateString() : '-'}</td>
                                 <td className="px-6 py-4"><Actions onEdit={() => openModal(b)} onDelete={() => handleDeleteClick(b)} /></td>
                             </tr>
                         ))}
@@ -233,7 +288,6 @@ export default function TagsPage() {
                                 <>
                                     <Input label="Nombre" value={formData.title} onChange={(v: string) => setFormData({ ...formData, title: v })} />
                                     <Input label="Slug" value={formData.slug} onChange={(v: string) => setFormData({ ...formData, slug: v })} />
-                                    <Input label="Slug" value={formData.slug} onChange={(v: string) => setFormData({ ...formData, slug: v })} />
                                     <Input label="Descripción" value={formData.description} onChange={(v: string) => setFormData({ ...formData, description: v })} />
                                 </>
                             )}
@@ -241,7 +295,10 @@ export default function TagsPage() {
                                 <Input label="Nombre" value={formData.name} onChange={(v: string) => setFormData({ ...formData, name: v })} />
                             )}
                             {activeTab === 'brands' && (
-                                <Input label="Nombre" value={formData.name} onChange={(v: string) => setFormData({ ...formData, name: v })} />
+                                <>
+                                    <Input label="Nombre" value={formData.name} onChange={(v: string) => setFormData({ ...formData, name: v })} />
+                                    <Input label="Logo URL" value={formData.logo} onChange={(v: string) => setFormData({ ...formData, logo: v })} />
+                                </>
                             )}
                             {activeTab === 'badges' && (
                                 <>
@@ -267,8 +324,12 @@ export default function TagsPage() {
                         </div>
 
                         <div className="flex justify-end pt-4">
-                            <button onClick={handleSave} className="bg-primary text-black px-4 py-2 rounded-lg font-medium hover:bg-primary/90 flex items-center gap-2">
-                                <Save className="w-4 h-4" /> Guardar
+                            <button
+                                onClick={handleSave}
+                                disabled={saving}
+                                className="bg-primary text-black px-4 py-2 rounded-lg font-medium hover:bg-primary/90 flex items-center gap-2 disabled:opacity-50"
+                            >
+                                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Guardar
                             </button>
                         </div>
                     </div>
@@ -297,9 +358,10 @@ export default function TagsPage() {
                             </button>
                             <button
                                 onClick={confirmDelete}
-                                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors"
+                                disabled={saving}
+                                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors disabled:opacity-50"
                             >
-                                Eliminar
+                                {saving ? 'Eliminando...' : 'Eliminar'}
                             </button>
                         </div>
                     </div>
@@ -336,9 +398,10 @@ export default function TagsPage() {
                             </button>
                             <button
                                 onClick={saveFeaturedFamilies}
-                                className="bg-primary text-black px-4 py-2 rounded-lg font-medium hover:bg-primary/90 flex items-center gap-2"
+                                disabled={saving}
+                                className="bg-primary text-black px-4 py-2 rounded-lg font-medium hover:bg-primary/90 flex items-center gap-2 disabled:opacity-50"
                             >
-                                <Save className="w-4 h-4" /> Guardar Cambios
+                                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Guardar Cambios
                             </button>
                         </div>
                     </div>
@@ -348,7 +411,7 @@ export default function TagsPage() {
     );
 }
 
-// Helpers
+// Helper Components
 function Input({ label, value, onChange }: { label: string, value: string, onChange: (v: string) => void }) {
     return (
         <div>

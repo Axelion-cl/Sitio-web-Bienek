@@ -1,25 +1,26 @@
-'use client';
-
-import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/lib/supabase';
 import { Users, Package, FileText, UserPlus } from 'lucide-react';
-import { mockLeads, mockClients, mockOrders } from '@/data/mockCRM';
-import { products } from '@/data/mockProducts';
 
-export default function AdminDashboardPage() {
-    const { user } = useAuth();
-
-    // Calculate metrics
-    const leadsCount = mockLeads.length;
-    const clientsCount = mockClients.length;
-    const activeOrdersCount = mockOrders.filter(o => o.status === 'pending' || o.status === 'processing').length;
-    const productsCount = products.length;
+export default async function AdminDashboardPage() {
+    // Fetch real data from Supabase
+    const [
+        { count: leadsCount },
+        { count: clientsCount },
+        { count: ordersCount },
+        { count: productsCount }
+    ] = await Promise.all([
+        supabase.from('leads').select('*', { count: 'exact', head: true }),
+        supabase.from('clients').select('*', { count: 'exact', head: true }),
+        supabase.from('orders').select('*', { count: 'exact', head: true }).in('status', ['pending', 'processing']),
+        supabase.from('products').select('*', { count: 'exact', head: true })
+    ]);
 
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold text-gray-900">Dashboard General</h1>
                 <div className="text-sm text-gray-500">
-                    Bienvenido, <span className="font-semibold text-gray-900">{user?.name}</span>
+                    Bienvenido al panel de administración
                 </div>
             </div>
 
@@ -27,28 +28,28 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatCard
                     title="Leads"
-                    value={leadsCount.toString()}
+                    value={(leadsCount || 0).toString()}
                     change="Potenciales"
                     icon={UserPlus}
                     color="blue"
                 />
                 <StatCard
                     title="Clientes Actuales"
-                    value={clientsCount.toString()}
+                    value={(clientsCount || 0).toString()}
                     change="Registrados"
                     icon={Users}
                     color="green"
                 />
                 <StatCard
                     title="Órdenes Activas"
-                    value={activeOrdersCount.toString()}
+                    value={(ordersCount || 0).toString()}
                     change="En proceso"
                     icon={FileText}
                     color="yellow"
                 />
                 <StatCard
                     title="Productos Agregados"
-                    value={productsCount.toString()}
+                    value={(productsCount || 0).toString()}
                     change="En catálogo"
                     icon={Package}
                     color="purple"
@@ -60,19 +61,19 @@ export default function AdminDashboardPage() {
                 <h2 className="font-semibold text-lg text-gray-800 mb-4">Actividad Reciente</h2>
                 <div className="space-y-4">
                     <ActivityItem
-                        text="Juan Pérez solicitó una cotización"
-                        time="Hace 2 horas"
-                        type="quote"
+                        text="Panel de administración listo"
+                        time="Ahora"
+                        type="info"
                     />
                     <ActivityItem
-                        text="Nuevo cliente registrado: Empresa XYZ"
-                        time="Hace 5 horas"
-                        type="user"
+                        text="Sistema de gestión de productos activo"
+                        time="Ahora"
+                        type="success"
                     />
                     <ActivityItem
-                        text="Stock bajo: Detergente Industrial 20L"
-                        time="Ayer"
-                        type="alert"
+                        text="Base de datos Supabase conectada"
+                        time="Ahora"
+                        type="success"
                     />
                 </div>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { } from "react";
 import Image from "next/image";
 import { Product } from "@/data/mockProducts";
 import { ImageIcon, Check } from "lucide-react";
@@ -15,16 +15,18 @@ import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 
 export function ProductCard({ product }: ProductCardProps) {
-    const [isAdded, setIsAdded] = useState(false);
-    const { addToCart } = useCart();
+    const { addToCart, removeFromCart, cartItems } = useCart();
     const { t } = useLanguage();
+
+    const isAdded = cartItems.some((item) => item.product.id === product.id);
 
     const handleAddClick = (e: React.MouseEvent) => {
         e.preventDefault(); // Prevent link navigation
-        addToCart(product);
-        setIsAdded(true);
-        // Reset visual feedback after 2 seconds
-        setTimeout(() => setIsAdded(false), 2000);
+        if (isAdded) {
+            removeFromCart(product.id);
+        } else {
+            addToCart(product);
+        }
     };
 
     return (

@@ -23,7 +23,7 @@ export interface OrderItem {
     productId: string;
     productName: string;
     quantity: number;
-    price: number;
+
 }
 
 export interface Order {
@@ -31,7 +31,7 @@ export interface Order {
     clientId: string;
     clientName: string;
     date: string;
-    total: number;
+
     status: 'pending' | 'processing' | 'completed' | 'cancelled';
     items: OrderItem[];
 }
@@ -105,11 +105,11 @@ export const mockOrders: Order[] = [
         clientId: 'client-1',
         clientName: 'Hospital Regional',
         date: '2026-01-14',
-        total: 450000,
+
         status: 'processing',
         items: [
-            { productId: 'prod-1', productName: 'Desinfectante Grado Hospitalario 5L', quantity: 20, price: 15000 },
-            { productId: 'prod-2', productName: 'Guantes Nitrilo Caja 100u', quantity: 50, price: 3000 }
+            { productId: 'prod-1', productName: 'Desinfectante Grado Hospitalario 5L', quantity: 20 },
+            { productId: 'prod-2', productName: 'Guantes Nitrilo Caja 100u', quantity: 50 }
         ]
     },
     {
@@ -117,10 +117,10 @@ export const mockOrders: Order[] = [
         clientId: 'client-2',
         clientName: 'Limpiezas Industriales BioBio',
         date: '2026-01-12',
-        total: 125000,
+
         status: 'completed',
         items: [
-            { productId: 'prod-3', productName: 'Detergente Industrial 20L', quantity: 5, price: 25000 }
+            { productId: 'prod-3', productName: 'Detergente Industrial 20L', quantity: 5 }
         ]
     },
     {
@@ -128,12 +128,12 @@ export const mockOrders: Order[] = [
         clientId: 'client-1',
         clientName: 'Hospital Regional',
         date: '2025-12-20',
-        total: 890000,
+
         status: 'completed',
         items: [
-            { productId: 'prod-4', productName: 'Papel Higiénico Jumbo', quantity: 100, price: 4500 },
-            { productId: 'prod-5', productName: 'Dispensador Toalla', quantity: 10, price: 22000 },
-            { productId: 'prod-6', productName: 'Jabón Líquido 5L', quantity: 20, price: 11000 }
+            { productId: 'prod-4', productName: 'Papel Higiénico Jumbo', quantity: 100 },
+            { productId: 'prod-5', productName: 'Dispensador Toalla', quantity: 10 },
+            { productId: 'prod-6', productName: 'Jabón Líquido 5L', quantity: 20 }
         ]
     }
 ];
