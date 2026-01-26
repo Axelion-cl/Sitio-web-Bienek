@@ -50,7 +50,7 @@ export const translations = {
         miCuenta: {
             titulo: 'Mi Cuenta:',
             bienvenido: 'Bienvenido de nuevo,',
-            misProductos: 'Mis Productos',
+            misProductos: 'Mis Productos de interés',
             misOrdenes: 'Mis Ordenes',
             miPerfil: 'Mi Perfil',
             carritoVacio: 'Tu carrito está vacío',
@@ -135,7 +135,7 @@ export const translations = {
         miCuenta: {
             titulo: 'My Account:',
             bienvenido: 'Welcome back,',
-            misProductos: 'My Products',
+            misProductos: 'My Products of interest',
             misOrdenes: 'My Orders',
             miPerfil: 'My Profile',
             carritoVacio: 'Your cart is empty',

@@ -9,7 +9,7 @@ export default function ContactoPage() {
             <div className="container mx-auto px-8 lg:px-24 pt-16 pb-12">
                 <PageTitle className="mb-6">Contáctenos</PageTitle>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center">
-                    Estamos aquí para ayudarte. Envíanos tu consulta y te responderemos a la brevedad.
+                    Estamos aquí para ayudarle.
                 </p>
             </div>
 

@@ -20,24 +20,24 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'bienek_auth_user';
+const DEFAULT_STORAGE_KEY = 'bienek_auth_user';
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export function AuthProvider({ children, storageKey = DEFAULT_STORAGE_KEY }: { children: ReactNode; storageKey?: string }) {
     const [user, setUser] = useState<AuthUser | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     // Load user from localStorage on mount
     useEffect(() => {
-        const stored = localStorage.getItem(STORAGE_KEY);
+        const stored = localStorage.getItem(storageKey);
         if (stored) {
             try {
                 setUser(JSON.parse(stored));
             } catch {
-                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(storageKey);
             }
         }
         setIsLoading(false);
-    }, []);
+    }, [storageKey]);
 
     const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
         // Find user in mock database
@@ -59,14 +59,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         // Store in state and localStorage
         setUser(authUser);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(authUser));
+        localStorage.setItem(storageKey, JSON.stringify(authUser));
 
         return { success: true };
     };
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(storageKey);
     };
 
     // Don't render children until we've checked localStorage

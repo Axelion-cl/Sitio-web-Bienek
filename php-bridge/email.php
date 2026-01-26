@@ -67,11 +67,16 @@ function verifyTurnstile($token, $secretKey)
 }
 
 // Check token
+// Check token (Skip for 'order' type as it is an internal authenticated action)
+$type = isset($_POST['type']) ? $_POST['type'] : 'contact';
 $token = isset($_POST['cf-turnstile-response']) ? $_POST['cf-turnstile-response'] : null;
-if (!$token || !verifyTurnstile($token, $TURNSTILE_SECRET_KEY)) {
-    http_response_code(403);
-    echo json_encode(['error' => 'Turnstile validation failed. Please refresh and try again.']);
-    exit();
+
+if ($type !== 'order') {
+    if (!$token || !verifyTurnstile($token, $TURNSTILE_SECRET_KEY)) {
+        http_response_code(403);
+        echo json_encode(['error' => 'Turnstile validation failed. Please refresh and try again.']);
+        exit();
+    }
 }
 
 // Get form data
@@ -102,7 +107,11 @@ if (!$name || !$email) {
 
 // Build HTML email
 $date = date('d/m/Y H:i');
-$title = ($type === 'application') ? '🚀 Nueva Postulación' : '📬 Nueva Consulta de Contacto';
+$title = match ($type) {
+    'application' => '🚀 Nueva Postulación',
+    'order' => '📦 Nueva Solicitud de Pedido',
+    default => '📬 Nueva Consulta de Contacto'
+};
 
 $htmlBody = <<<HTML
 <!DOCTYPE html>
@@ -214,6 +223,15 @@ if ($hasAttachment) {
     $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
     $body = $htmlBody;
 }
+
+// Order handling logic
+if ($type === 'order') {
+    $subject = "Nueva Solicitud de Cotización: {$name}";
+    if ($hasAttachment) {
+        $subject .= " (Adjunto: {$attachmentName})";
+    }
+}
+
 
 // Send email to HARDCODED destination
 $success = mail($DESTINATION_EMAIL, $subject, $body, $headers);

@@ -187,7 +187,7 @@ export function ContactForm() {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            placeholder="Juan Pérez"
+                            placeholder="Nombre y Apellido"
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-gray-400"
                             required
                         />
@@ -204,7 +204,7 @@ export function ContactForm() {
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="juan@empresa.com"
+                            placeholder="ejemplo@dominio.cl"
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-gray-400"
                             required
                         />
@@ -316,7 +316,7 @@ export function ContactForm() {
                 <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-primary hover:bg-primary/90 text-black font-bold text-lg py-6 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-primary hover:bg-primary/90 text-black text-lg py-6 rounded-xl shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isSubmitting ? (
                         <>

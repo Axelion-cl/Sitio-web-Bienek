@@ -315,7 +315,7 @@ export function JobApplicationForm() {
             <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-4 rounded-lg font-bold text-black flex items-center justify-center gap-2 transition-all
+                className={`w-full py-4 rounded-lg text-black flex items-center justify-center gap-2 transition-all
                     ${isSubmitting ? 'bg-gray-200 cursor-not-allowed text-gray-500' : 'bg-[#ecec00] hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]'}
                 `}
             >

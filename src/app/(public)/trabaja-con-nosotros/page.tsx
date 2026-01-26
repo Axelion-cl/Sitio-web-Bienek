@@ -24,10 +24,10 @@ export default function TrabajaPage() {
                     <div className="w-full lg:w-5/12 space-y-8 lg:sticky lg:top-32">
                         <div className="space-y-6">
                             <h2 className="font-outfit font-normal text-3xl text-black leading-tight">
-                                ¿Por qué unirte a Bienek?
+                                ¿Por qué unirse a Bienek?
                             </h2>
                             <p className="text-gray-600 text-lg leading-relaxed">
-                                Buscamos personas apasionadas, comprometidas con la excelencia y con ganas de innovar en el sector de la distribución industrial. Ofrecemos un entorno de trabajo dinámico y oportunidades de crecimiento real.
+                                Buscamos personas apasionadas, comprometidas con la excelencia y con ganas de innovar en el sector de la distribución B2B. Ofrecemos un entorno de trabajo dinámico y oportunidades de crecimiento real.
                             </p>
                         </div>
 
@@ -38,8 +38,7 @@ export default function TrabajaPage() {
                                 {[
                                     "Ambiente laboral colaborativo",
                                     "Oportunidades de capacitación continua",
-                                    "Beneficios de salud complementarios",
-                                    "Crecimiento profesional interno"
+                                    "Crecimiento profesional"
                                 ].map((benefit, i) => (
                                     <li key={i} className="flex items-start gap-3">
                                         <div className="mt-1 w-5 h-5 rounded-full bg-[#ecec00] flex items-center justify-center flex-shrink-0">
