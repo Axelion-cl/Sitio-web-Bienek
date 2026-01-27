@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/context/AuthContext";
-import { CartProvider } from "@/context/CartContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 const outfit = Outfit({
@@ -26,11 +24,7 @@ export default function RootLayout({
         className={`${outfit.variable} antialiased flex flex-col min-h-screen`}
       >
         <LanguageProvider>
-          <AuthProvider>
-            <CartProvider>
-              {children}
-            </CartProvider>
-          </AuthProvider>
+          {children}
         </LanguageProvider>
       </body>
     </html>

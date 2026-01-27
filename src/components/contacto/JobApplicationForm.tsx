@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
 import { FileUpload } from "@/components/contacto/FileUpload";
-import { supabase } from "@/lib/supabase";
+
 
 // Helper to send email via PHP Bridge
 const sendEmail = async (formData: FormData) => {
@@ -106,19 +106,7 @@ export function JobApplicationForm() {
 
         try {
             // 1. Save to Supabase
-            const { error: dbError } = await supabase.from('applications').insert({
-                first_name: formData.firstName,
-                last_name: formData.lastName,
-                email: formData.email,
-                phone: formData.phone,
-                area: formData.area,
-                message: formData.message,
-                status: 'new'
-            });
 
-            if (dbError) {
-                console.error("Error saving to Supabase:", dbError);
-            }
 
             // 2. Send Email via PHP Bridge
             const bridgeData = new FormData();
@@ -136,7 +124,7 @@ export function JobApplicationForm() {
 
             const emailSuccess = await sendEmail(bridgeData);
 
-            if (emailSuccess || !dbError) {
+            if (emailSuccess) {
                 setIsSuccess(true);
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 setTurnstileToken(null);

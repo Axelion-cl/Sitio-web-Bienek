@@ -14,12 +14,13 @@ export default function EmpresaPage() {
                 <div className="container mx-auto px-8 lg:px-24">
                     <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-16">
                         {/* Imagen */}
-                        <div className="w-full md:w-5/12 relative h-[280px] md:h-[350px] rounded-2xl overflow-hidden shadow-lg">
+                        <div className="w-full md:w-5/12 relative rounded-2xl overflow-hidden shadow-lg">
                             <Image
-                                src="/assets/images/empresa/trayectoria.png"
+                                src="/assets/images/empresa/trayectoria_v3.jpg"
                                 alt="Equipo de logística Bienek en almacén"
-                                fill
-                                className="object-cover hover:scale-105 transition-transform duration-700"
+                                width={1000}
+                                height={950}
+                                className="w-full h-auto hover:scale-105 transition-transform duration-700"
                             />
                         </div>
 
@@ -41,12 +42,13 @@ export default function EmpresaPage() {
                 <div className="container mx-auto px-8 lg:px-24">
                     <div className="flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-16">
                         {/* Imagen */}
-                        <div className="w-full md:w-5/12 relative h-[280px] md:h-[350px] rounded-2xl overflow-hidden shadow-lg">
+                        <div className="w-full md:w-5/12 relative rounded-2xl overflow-hidden shadow-lg">
                             <Image
-                                src="/assets/images/empresa/vision.png"
+                                src="/assets/images/empresa/vision_v3.png"
                                 alt="Visión de higiene profesional y soluciones integrales"
-                                fill
-                                className="object-cover hover:scale-105 transition-transform duration-700"
+                                width={1000}
+                                height={582}
+                                className="w-full h-auto hover:scale-105 transition-transform duration-700"
                             />
                         </div>
 
@@ -74,12 +76,13 @@ export default function EmpresaPage() {
                 <div className="container mx-auto px-8 lg:px-24">
                     <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-16">
                         {/* Imagen */}
-                        <div className="w-full md:w-5/12 relative h-[280px] md:h-[350px] rounded-2xl overflow-hidden shadow-lg bg-gray-100 flex items-center justify-center">
+                        <div className="w-full md:w-5/12 relative flex items-center justify-center p-4">
                             <Image
-                                src="/assets/images/empresa/trayectoria.png"
+                                src="/assets/images/empresa/mision_v3.png"
                                 alt="Nuestra Misión Bienek"
-                                fill
-                                className="object-cover hover:scale-105 transition-transform duration-700"
+                                width={1000}
+                                height={1000}
+                                className="w-full h-auto hover:scale-105 transition-transform duration-700 drop-shadow-xl"
                             />
                         </div>
 
@@ -98,6 +101,6 @@ export default function EmpresaPage() {
                     </div>
                 </div>
             </section>
-        </main>
+        </main >
     );
 }

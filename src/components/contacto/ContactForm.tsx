@@ -3,7 +3,6 @@
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Send, Upload, X, FileSpreadsheet, Loader2 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
 import { isValidEmail, getEmailValidationError, suggestEmailCorrection } from "@/utils/validation";
 
 // ... imports
@@ -143,19 +142,7 @@ export function ContactForm() {
             // ... (keeping existing Supabase logic implicit if I don't replace it, but I must replace the whole handleSubmit if I want to inject logic safely)
             // Wait, I should replace just the start of handleSubmit to inject the check? No, best to replace the whole function to be safe.
 
-            const { error: dbError } = await supabase.from('leads').insert({
-                name: formData.name,
-                email: formData.email,
-                company: formData.company,
-                phone: formData.phone,
-                message: formData.message,
-                status: 'new',
-                date: new Date().toISOString().split('T')[0],
-            });
 
-            if (dbError) {
-                console.error("Error saving lead to Supabase:", dbError);
-            }
 
             // 2. Send Email via PHP Bridge
             const submitData = new FormData();
@@ -173,7 +160,7 @@ export function ContactForm() {
 
             const emailSuccess = await sendEmail(submitData);
 
-            if (emailSuccess || !dbError) {
+            if (emailSuccess) {
                 setSubmitStatus("success");
                 setFormData({ name: "", email: "", company: "", phone: "", message: "" });
                 removeFile();

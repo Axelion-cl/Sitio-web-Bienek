@@ -4,11 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Search, Globe, Truck, Clock, Phone, ChevronDown, ShoppingCart, LogOut, User } from "lucide-react";
-import { SearchBar } from "./SearchBar";
-import { solutions } from "@/data/solutions";
-import { useAuth } from "@/context/AuthContext";
-import { useCart } from "@/context/CartContext";
+import { Globe, Truck, Clock, Phone, ChevronDown } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export function Header() {
@@ -50,49 +46,7 @@ export function Header() {
         setIsLangOpen(false);
     };
 
-    // Auth Section Component
-    const AuthSection = () => {
-        const { user, isLoggedIn, logout } = useAuth();
-        const { cartCount } = useCart();
 
-        if (isLoggedIn && user) {
-            return (
-                <div className="flex items-center gap-6">
-                    {/* User Name with Icon */}
-                    <Link href="/mi-cuenta" className="flex items-center gap-2 text-sm font-normal hover:text-primary transition-colors">
-                        <User className="w-5 h-5" />
-                        <span>{user.name}</span>
-                    </Link>
-
-                    {/* Cart with Counter */}
-                    <Link href="/mi-cuenta" className="flex items-center gap-1 hover:text-primary transition-colors relative">
-                        <ShoppingCart className="w-5 h-5" />
-                        {cartCount > 0 && (
-                            <span className="bg-primary text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                                {cartCount}
-                            </span>
-                        )}
-                    </Link>
-
-                    {/* Logout */}
-                    <button
-                        onClick={logout}
-                        className="flex items-center gap-1 text-sm font-normal hover:text-primary transition-colors"
-                    >
-                        <span>{t.header.salir}</span>
-                        <LogOut className="w-4 h-4" />
-                    </button>
-                </div>
-            );
-        }
-
-        return (
-            <Link href="/login" className="flex items-center gap-2 text-sm font-normal cursor-pointer hover:text-primary transition-colors group">
-                <Image src="/assets/icons/acceso-clientes.svg" alt="Login" width={20} height={20} className="group-hover:opacity-80" />
-                <span>{t.header.accesoClientes}</span>
-            </Link>
-        );
-    };
 
     return (
         <header
@@ -207,51 +161,17 @@ export function Header() {
                         <nav className="hidden lg:flex items-center gap-8 font-sans font-normal text-sm text-black">
                             <Link href="/" className="hover:text-primary transition-colors">{t.header.inicio}</Link>
 
-                            {/* Soluciones Dropdown */}
-                            <div className="group relative h-full flex items-center">
-                                <Link
-                                    href="/soluciones/soluciones-generales-de-higiene"
-                                    className="flex items-center gap-1 hover:text-primary transition-colors py-4"
-                                >
-                                    {t.header.soluciones}
-                                    <ChevronDown className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180 opacity-70" />
-                                </Link>
+                            <Link href="/contacto" className="hover:text-primary transition-colors">{t.header.soluciones}</Link>
 
-                                {/* Dropdown Menu */}
-                                <div className="absolute top-full -left-20 w-[600px] bg-white rounded-xl shadow-xl border border-gray-100 p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-2 group-hover:translate-y-0 z-50">
-                                    <div className="grid grid-cols-2 gap-x-8 gap-y-4">
-                                        {solutions.map((bg) => (
-                                            <Link
-                                                key={bg.slug}
-                                                href={`/soluciones/${bg.slug}`}
-                                                className="group/item flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors"
-                                            >
-                                                {/* Dot indicator */}
-                                                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary transition-colors shrink-0" />
 
-                                                <div className="flex flex-col">
-                                                    <span className="text-sm font-normal text-gray-700 group-hover/item:text-black transition-colors">
-                                                        {bg.title}
-                                                    </span>
-                                                </div>
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <Link href="/promociones" className="hover:text-primary transition-colors">{t.header.promociones}</Link>
                         </nav>
                     </div>
 
                     {/* Right Side: Actions */}
                     <div className="flex items-center gap-8">
-                        <Link href="/blog" className="hidden lg:block text-sm font-normal hover:text-primary transition-colors">
-                            {t.header.blogTecnico}
-                        </Link>
 
-                        {/* Auth Section - Dynamic */}
-                        <AuthSection />
+
+
 
                         <Link href="/contacto" className="cursor-pointer">
                             <Button className="bg-primary hover:bg-primary/90 text-black font-medium text-base rounded-full px-8 py-6 shadow-none cursor-pointer">
@@ -266,22 +186,22 @@ export function Header() {
             <div className="bg-black text-white flex items-center" style={{ height: '60px' }}>
                 <div className="container mx-auto px-4 flex justify-between items-center h-full">
 
-                    {/* Search Input */}
-                    <SearchBar />
 
-                    {/* Statement & Seal */}
-                    <div className="flex items-center gap-6">
-                        <span className="font-outfit font-normal text-lg hidden md:block tracking-wide whitespace-nowrap">
-                            {t.header.lideresDistribucion}
-                        </span>
-                        <div className="flex items-center">
-                            <Image
-                                src="/assets/images/lema-bienek.png"
-                                alt="Sello Bienek"
-                                width={50}
-                                height={50}
-                                className="object-contain"
-                            />
+
+                    <div className="flex items-center justify-center w-full">
+                        <div className="flex items-center gap-6">
+                            <span className="font-outfit font-normal text-lg hidden md:block tracking-wide whitespace-nowrap">
+                                {t.header.lideresDistribucion}
+                            </span>
+                            <div className="flex items-center">
+                                <Image
+                                    src="/assets/images/lema-bienek.png"
+                                    alt="Sello Bienek"
+                                    width={50}
+                                    height={50}
+                                    className="object-contain"
+                                />
+                            </div>
                         </div>
                     </div>
 

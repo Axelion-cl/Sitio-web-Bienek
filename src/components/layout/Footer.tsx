@@ -60,7 +60,6 @@ export function Footer() {
                         <h3 className="font-sans font-semibold text-lg leading-6">{t.footer.informacionUtil}</h3>
                     </div>
                     <nav className="flex flex-col gap-1 text-black font-sans font-normal text-base leading-7">
-                        <Link href="/blog" className="hover:text-primary transition-colors">{t.footer.blog}</Link>
                         <Link href="/empresa" className="hover:text-primary transition-colors">{t.header.empresa}</Link>
                         <Link href="/trabaja-con-nosotros" className="hover:text-primary transition-colors">{t.footer.trabajaConNosotros}</Link>
                     </nav>
