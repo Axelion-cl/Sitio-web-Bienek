@@ -1,17 +1,22 @@
+'use client';
+
 import { JobApplicationForm } from "@/components/contacto/JobApplicationForm";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function TrabajaPage() {
+    const { t } = useLanguage();
+
     return (
         <main className="min-h-screen bg-white pb-20">
             {/* Header Section */}
             <section className="bg-gray-50 py-16 md:py-24 mb-12 border-b border-gray-100">
                 <div className="container mx-auto px-4 text-center">
                     <h1 className="font-sans font-normal text-black text-[2.5rem] md:text-[55px] leading-tight mb-6">
-                        Trabaja con Nosotros
+                        {t.trabajaPage.titulo}
                     </h1>
                     <div className="mx-auto bg-[#ecec00] mb-6" style={{ width: '176px', height: '5px' }} />
                     <p className="text-xl text-gray-600 font-light max-w-2xl mx-auto">
-                        Únete a un equipo líder en soluciones de higiene industrial y desarrolla tu carrera junto a los mejores profesionales.
+                        {t.trabajaPage.subtitulo}
                     </p>
                 </div>
             </section>
@@ -24,22 +29,18 @@ export default function TrabajaPage() {
                     <div className="w-full lg:w-5/12 space-y-8 lg:sticky lg:top-32">
                         <div className="space-y-6">
                             <h2 className="font-outfit font-normal text-3xl text-black leading-tight">
-                                ¿Por qué unirse a Bienek?
+                                {t.trabajaPage.porQue}
                             </h2>
                             <p className="text-gray-600 text-lg leading-relaxed">
-                                Buscamos personas apasionadas, comprometidas con la excelencia y con ganas de innovar en el sector de la distribución B2B. Ofrecemos un entorno de trabajo dinámico y oportunidades de crecimiento real.
+                                {t.trabajaPage.descripcion}
                             </p>
                         </div>
 
                         {/* Benefits/Values List */}
                         <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-                            <h3 className="font-semibold text-xl mb-4 text-gray-900">Nuestros Beneficios</h3>
+                            <h3 className="font-semibold text-xl mb-4 text-gray-900">{t.trabajaPage.beneficiosTitulo}</h3>
                             <ul className="space-y-4">
-                                {[
-                                    "Ambiente laboral colaborativo",
-                                    "Oportunidades de capacitación continua",
-                                    "Crecimiento profesional"
-                                ].map((benefit, i) => (
+                                {t.trabajaPage.beneficios.map((benefit, i) => (
                                     <li key={i} className="flex items-start gap-3">
                                         <div className="mt-1 w-5 h-5 rounded-full bg-[#ecec00] flex items-center justify-center flex-shrink-0">
                                             <svg className="w-3 h-3 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">

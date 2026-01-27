@@ -1,12 +1,17 @@
+'use client';
+
 import Image from "next/image";
 import { PageTitle } from "@/components/ui/PageTitle";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function EmpresaPage() {
+    const { t } = useLanguage();
+
     return (
         <main className="min-h-screen bg-white">
             {/* 1. Encabezado de Identidad */}
             <div className="container mx-auto px-4 py-16">
-                <PageTitle>Sobre Nosotros</PageTitle>
+                <PageTitle>{t.empresa.titulo}</PageTitle>
             </div>
 
             {/* 2. Bloque 1: Compromiso y Trayectoria (Imagen Izq - Texto Der) */}
@@ -27,10 +32,10 @@ export default function EmpresaPage() {
                         {/* Texto */}
                         <div className="w-full md:w-7/12 space-y-6">
                             <h2 className="text-3xl md:text-4xl leading-tight font-normal text-gray-900">
-                                Comprometidos con la excelencia en soluciones de higiene profesional.
+                                {t.empresa.trayectoria.titulo}
                             </h2>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Somos una empresa chilena con más de 40 años de experiencia en el suministro y asesoría en higiene profesional. Nuestro propósito es garantizar la continuidad operativa de nuestros clientes a través de productos de primera línea, asesoría experta y un servicio logístico confiable.
+                                {t.empresa.trayectoria.descripcion}
                             </p>
                         </div>
                     </div>
@@ -55,16 +60,16 @@ export default function EmpresaPage() {
                         {/* Texto */}
                         <div className="w-full md:w-7/12 space-y-6">
                             <h2 className="text-3xl md:text-4xl leading-tight font-normal text-gray-900">
-                                Nuestra Visión
+                                {t.empresa.vision.titulo}
                             </h2>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Ser Empresa Líder en distribución de productos de Higiene profesional, comprometidos con una evolución constante en la excelencia del servicio.
+                                {t.empresa.vision.desc1}
                             </p>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Es enfocarnos en proveer servicios en tiempo y forma, capacitando a nuestros consumidores finales en los productos más eficaces del mercado.
+                                {t.empresa.vision.desc2}
                             </p>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Persistir en nuestro objetivo de brindar a nuestros valiosos clientes, verdaderas: &quot;Soluciones Integrales de Limpieza&quot; cumpliendo expectativas de manera de ser soporte y contribución al éxito de sus operaciones.
+                                {t.empresa.vision.desc3}
                             </p>
                         </div>
                     </div>
@@ -89,13 +94,13 @@ export default function EmpresaPage() {
                         {/* Texto */}
                         <div className="w-full md:w-7/12 space-y-6">
                             <h2 className="text-3xl md:text-4xl leading-tight font-normal text-gray-900">
-                                Nuestra Misión
+                                {t.empresa.mision.titulo}
                             </h2>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Brindar soluciones integrales de limpieza, profesionalizando los servicios logísticos con excelencia y posicionándonos como partners confiables de nuestros clientes.
+                                {t.empresa.mision.desc1}
                             </p>
                             <p className="text-lg text-gray-600 leading-relaxed">
-                                Proveer productos especializados que contribuyan activamente en mejorar Operaciones en multisegmentos, teniendo una mirada eficiente y sustentable, construyendo así, un relevante valor en toda la cadena del Supply chain para nuestros Clientes como para la Sociedad.
+                                {t.empresa.mision.desc2}
                             </p>
                         </div>
                     </div>

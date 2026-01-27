@@ -1,20 +1,25 @@
+'use client';
+
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function ValueCards() {
+    const { t } = useLanguage();
+
     const cards = [
         {
-            title: "Consultoría Especializada",
-            description: "Enfoque en diagnóstico profesional para su empresa.",
+            title: t.home.values.consultoria.title,
+            description: t.home.values.consultoria.description,
             image: "/assets/images/value-cards/consultoria.jpg",
         },
         {
-            title: "Cobertura Logística",
-            description: "Distribución eficiente desde la RM hasta la X Región.",
+            title: t.home.values.logistica.title,
+            description: t.home.values.logistica.description,
             image: "/assets/images/value-cards/logistica.png",
         },
         {
-            title: "Soluciones de Higiene",
-            description: "Representación de marcas líderes en el mercado.",
+            title: t.home.values.higiene.title,
+            description: t.home.values.higiene.description,
             image: "/assets/images/value-cards/higiene.jpg",
         },
     ];

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Send, CheckCircle2 } from "lucide-react";
 import { FileUpload } from "@/components/contacto/FileUpload";
+import { useLanguage } from "@/context/LanguageContext";
+import { TurnstileWidget } from "@/components/ui/TurnstileWidget";
 
 
 // Helper to send email via PHP Bridge
@@ -25,12 +27,6 @@ const sendEmail = async (formData: FormData) => {
     }
 };
 
-// ... (keep interface)
-
-import { TurnstileWidget } from "@/components/ui/TurnstileWidget";
-
-// ... existing imports
-
 const AREAS = [
     "Ventas",
     "Logística y Bodega",
@@ -52,6 +48,7 @@ interface JobApplicationData {
 }
 
 export function JobApplicationForm() {
+    const { t } = useLanguage();
     const [formData, setFormData] = useState<JobApplicationData>({
         firstName: "",
         lastName: "",
@@ -70,13 +67,13 @@ export function JobApplicationForm() {
 
     const validate = () => {
         const newErrors: Partial<Record<keyof JobApplicationData, string>> = {};
-        if (!formData.firstName.trim()) newErrors.firstName = "El nombre es requerido";
-        if (!formData.lastName.trim()) newErrors.lastName = "El apellido es requerido";
-        if (!formData.email.trim()) newErrors.email = "El email es requerido";
+        if (!formData.firstName.trim()) newErrors.firstName = t.forms.general.camposObligatorios;
+        if (!formData.lastName.trim()) newErrors.lastName = t.forms.general.camposObligatorios;
+        if (!formData.email.trim()) newErrors.email = t.forms.general.camposObligatorios;
         else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "Email inválido";
-        if (!formData.phone.trim()) newErrors.phone = "El teléfono es requerido";
-        if (!formData.area) newErrors.area = "Selecciona un área de interés";
-        if (!formData.cv) newErrors.cv = "Debes adjuntar tu CV";
+        if (!formData.phone.trim()) newErrors.phone = t.forms.general.camposObligatorios;
+        if (!formData.area) newErrors.area = t.forms.general.camposObligatorios;
+        if (!formData.cv) newErrors.cv = t.forms.general.camposObligatorios;
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
@@ -105,10 +102,7 @@ export function JobApplicationForm() {
         setIsSubmitting(true);
 
         try {
-            // 1. Save to Supabase
-
-
-            // 2. Send Email via PHP Bridge
+            // Send Email via PHP Bridge
             const bridgeData = new FormData();
             bridgeData.append("name", `${formData.firstName} ${formData.lastName}`);
             bridgeData.append("email", formData.email);
@@ -129,10 +123,10 @@ export function JobApplicationForm() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 setTurnstileToken(null);
             } else {
-                setSubmitError("Hubo un error al enviar tu postulación. Intenta nuevamente.");
+                setSubmitError(t.forms.general.error);
             }
         } catch (error) {
-            setSubmitError("Error de conexión. Intenta nuevamente.");
+            setSubmitError(t.forms.general.error);
             console.error(error);
         } finally {
             setIsSubmitting(false);
@@ -146,7 +140,7 @@ export function JobApplicationForm() {
                     <CheckCircle2 className="w-10 h-10" />
                 </div>
                 <h3 className="font-outfit font-bold text-2xl md:text-3xl text-gray-900 mb-4">
-                    ¡Gracias por postular!
+                    {t.forms.general.exito}
                 </h3>
                 <p className="text-gray-600 text-lg mb-8 max-w-md mx-auto">
                     Hemos recibido tus antecedentes correctamente. Nuestro equipo de Recursos Humanos revisará tu perfil y te contactaremos si encajas con nuestras vacantes.
@@ -167,8 +161,8 @@ export function JobApplicationForm() {
     return (
         <form onSubmit={handleSubmit} className="bg-gray-50 rounded-2xl p-6 md:p-10 shadow-sm border border-gray-100">
             <div className="mb-8 border-b border-gray-200 pb-6">
-                <h2 className="font-outfit font-semibold text-2xl text-gray-900 mb-2">Postulación Directa</h2>
-                <p className="text-gray-600">Completa el formulario y adjunta tu CV para ser parte de nuestro equipo.</p>
+                <h2 className="font-outfit font-semibold text-2xl text-gray-900 mb-2">{t.forms.trabajo.titulo}</h2>
+                <p className="text-gray-600">{t.forms.trabajo.subtitulo}</p>
             </div>
 
             {submitError && (
@@ -180,7 +174,7 @@ export function JobApplicationForm() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 {/* Nombre */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="firstName">Nombre *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="firstName">{t.forms.general.nombre} *</label>
                     <input
                         type="text"
                         name="firstName"
@@ -214,7 +208,7 @@ export function JobApplicationForm() {
 
                 {/* Email */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">Correo Electrónico *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">{t.forms.general.email} *</label>
                     <input
                         type="email"
                         name="email"
@@ -231,7 +225,7 @@ export function JobApplicationForm() {
 
                 {/* Teléfono */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="phone">Teléfono *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="phone">{t.forms.general.telefono} *</label>
                     <input
                         type="tel"
                         name="phone"
@@ -269,7 +263,7 @@ export function JobApplicationForm() {
 
             {/* Carta de Presentación */}
             <div className="mb-8">
-                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="message">Carta de Presentación (Opcional)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="message">{t.forms.general.mensaje}</label>
                 <textarea
                     name="message"
                     id="message"
@@ -283,7 +277,7 @@ export function JobApplicationForm() {
 
             {/* File Upload */}
             <div className="mb-8">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Curriculum Vitae (CV) *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t.forms.general.adjuntar} *</label>
                 <FileUpload
                     onFileSelect={(file) => {
                         setFormData(prev => ({ ...prev, cv: file }));
@@ -313,12 +307,12 @@ export function JobApplicationForm() {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Enviando...
+                        {t.forms.general.enviando}
                     </span>
                 ) : (
                     <>
                         <Send className="w-5 h-5" />
-                        Enviar Postulación
+                        {t.forms.general.enviar}
                     </>
                 )}
             </button>
