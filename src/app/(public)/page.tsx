@@ -11,34 +11,98 @@ const staticSectors = [
     id: "higiene",
     slug: "soluciones-generales-de-higiene",
     title: "Soluciones Generales de Higiene",
-    description: "Equipamiento y suministros para la higiene profesional",
-    image: "/assets/images/sectores/higiene.png", // Ensure these paths exist or use placeholders
-    featuredFamilies: ["papeles", "jabones"] // IDs from families.ts
+    description: "Productos esenciales para la limpieza diaria.",
+    image: "/assets/images/solutions/jardines.png",
+    featuredFamilies: ["papeles", "jabones", "dispensadores"]
   },
   {
     id: "industrial",
-    slug: "soluciones-industriales",
-    title: "Soluciones Industriales",
-    description: "Productos especializados para la industria",
-    image: "/assets/images/sectores/industrial.png",
-    featuredFamilies: ["quimicos", "seguridad"]
-  },
-  {
-    id: "horeca",
-    slug: "canal-horeca",
-    title: "Canal Horeca",
-    description: "Hoteles, Restaurantes y Catering",
-    image: "/assets/images/sectores/horeca.png",
-    featuredFamilies: []
+    slug: "soluciones-especializadas-sector-industrial-y-almacenaje",
+    title: "Industrial y Almacenaje", // Shortened for display if needed
+    description: "Limpieza profunda para entornos exigentes.",
+    image: "/assets/images/solutions/industria.png",
+    featuredFamilies: ["desengrasantes", "epp"]
   },
   {
     id: "salud",
-    slug: "area-salud",
+    slug: "soluciones-especializadas-sector-salud",
     title: "Área Salud",
-    description: "Insumos clínicos y de limpieza",
-    image: "/assets/images/sectores/salud.png",
+    description: "Higiene crítica para clínicas y hospitales.",
+    image: "/assets/images/solutions/salud.png",
+    featuredFamilies: ["desinfectantes-hosp", "insumos-medicos"]
+  },
+  {
+    id: "institucional",
+    slug: "soluciones-especializadas-sector-institucional",
+    title: "Sector Institucional",
+    description: "Limpieza para oficinas y edificios públicos.",
+    image: "/assets/images/solutions/oficinas.png",
+    featuredFamilies: ["papeles", "dispensadores"]
+  },
+  {
+    id: "educacion",
+    slug: "soluciones-especializadas-sector-educacion",
+    title: "Sector Educación",
+    description: "Ambientes seguros para el aprendizaje.",
+    image: "/assets/images/solutions/educacion.png",
+    featuredFamilies: ["jabones", "papeles"]
+  },
+  {
+    id: "adulto-mayor",
+    slug: "soluciones-para-centros-adulto-mayor",
+    title: "Centros Adulto Mayor",
+    description: "Cuidado delicado para espacios residenciales.",
+    image: "/assets/images/solutions/adulto-mayor.png",
+    featuredFamilies: ["desinfectantes-hosp"]
+  },
+  {
+    id: "horeca",
+    slug: "soluciones-especializadas-sector-horeca",
+    title: "Canal HORECA",
+    description: "Impecabilidad para Hoteles, Restaurantes y Catering.",
+    image: "/assets/images/solutions/horeca.png",
+    featuredFamilies: ["cafe", "vajilla"]
+  },
+  {
+    id: "veterinario",
+    slug: "soluciones-especializadas-sector-veterinario",
+    title: "Sector Veterinario",
+    description: "Desinfección segura para clínicas veterinarias.",
+    image: "/assets/images/solutions/veterinaria.png",
     featuredFamilies: []
-  }
+  },
+  {
+    id: "accesorios",
+    slug: "equipamiento-accesorios",
+    title: "Equipamiento y Accesorios",
+    description: "Herramientas manuales de alto rendimiento.",
+    image: "/assets/images/solutions/limpieza-general.png",
+    featuredFamilies: []
+  },
+  {
+    id: "maquinaria",
+    slug: "equipamientos-de-maquinaria",
+    title: "Equipamientos de Maquinaria",
+    description: "Tecnología para grandes superficies.",
+    image: "/assets/images/solutions/maquinaria.png",
+    featuredFamilies: []
+  },
+  {
+    id: "aguas",
+    slug: "tratamiento-de-agua",
+    title: "Tratamiento de Agua",
+    description: "Soluciones químicas para calidad del agua.",
+    image: "/assets/images/solutions/aguas.png",
+    featuredFamilies: []
+  },
+  {
+    id: "embarcaciones",
+    slug: "soluciones-para-embarcaciones",
+    title: "Embarcaciones",
+    description: "Limpieza especializada marítima.",
+    image: "/assets/images/solutions/embarcaciones.png",
+    featuredFamilies: []
+  },
 ];
 
 export default function Home() {
