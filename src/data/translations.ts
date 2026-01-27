@@ -336,7 +336,7 @@ export const translations = {
         // Sectors (Solutions)
         sectores: {
             accesorios: {
-                title: 'Equipment and Accessories',
+                title: 'Equipment Accessories',
                 description: 'High-performance manual tools.',
             },
             maquinaria: {
@@ -344,27 +344,27 @@ export const translations = {
                 description: 'Technology for large surfaces.',
             },
             educacion: {
-                title: 'Education Sector',
+                title: 'Specialized Solutions for Education Sector',
                 description: 'Safe environments for learning.',
             },
             horeca: {
-                title: 'HORECA Channel',
+                title: 'Specialized Solutions for HORECA Sector',
                 description: 'Impeccability for Hotels, Restaurants, and Catering.',
             },
             industrial: {
-                title: 'Industrial and Storage',
+                title: 'Specialized Solutions for Industrial and Storage Sector',
                 description: 'Deep cleaning for demanding environments.',
             },
             institucional: {
-                title: 'Institutional Sector',
+                title: 'Specialized Solutions for Institutional Sector',
                 description: 'Cleaning for offices and public buildings.',
             },
             salud: {
-                title: 'Health Area',
+                title: 'Specialized Solutions for Health Sector',
                 description: 'Critical hygiene for clinics and hospitals.',
             },
             veterinario: {
-                title: 'Veterinary Sector',
+                title: 'Specialized Solutions for Veterinary Sector',
                 description: 'Safe disinfection for veterinary clinics.',
             },
             higiene: {
@@ -372,11 +372,11 @@ export const translations = {
                 description: 'Essential products for daily cleaning.',
             },
             adultoMayor: {
-                title: 'Senior Centers',
+                title: 'Solutions for Senior Centers',
                 description: 'Delicate care for residential spaces.',
             },
             embarcaciones: {
-                title: 'Vessels',
+                title: 'Solutions for Vessels',
                 description: 'Specialized maritime cleaning.',
             },
             aguas: {
