@@ -13,6 +13,7 @@ interface SidebarFiltersProps {
     // New Props for Families
     availableFamilies: string[];
     allFamilies: { id: string, name: string }[];
+    featuredFamilies: string[];
     selectedFamilies: Set<string>;
     onToggleFamily: (familyId: string) => void;
 
@@ -27,6 +28,7 @@ export function SidebarFilters({
     onToggleBrand,
     availableFamilies,
     allFamilies,
+    featuredFamilies = [],
     selectedFamilies,
     onToggleFamily,
     onClearFilters,
@@ -39,6 +41,16 @@ export function SidebarFilters({
     const getFamilyName = (id: string) => {
         return allFamilies.find(f => f.id === id)?.name || id;
     };
+
+    // Sort families: Featured first
+    const sortedFamilies = [...availableFamilies].sort((a, b) => {
+        const isFeaturedA = featuredFamilies.includes(a);
+        const isFeaturedB = featuredFamilies.includes(b);
+        if (isFeaturedA && !isFeaturedB) return -1;
+        if (!isFeaturedA && isFeaturedB) return 1;
+        // Secondary sort by name could be nice if original order isn't guaranteed
+        return getFamilyName(a).localeCompare(getFamilyName(b));
+    });
 
     return (
         <aside className="w-full lg:w-40 flex-shrink-0 space-y-6">
@@ -55,7 +67,7 @@ export function SidebarFilters({
             </div>
 
             {/* Families Filter */}
-            {availableFamilies.length > 0 && (
+            {sortedFamilies.length > 0 && (
                 <div>
                     <button
                         onClick={() => setIsFamiliesOpen(!isFamiliesOpen)}
@@ -73,12 +85,13 @@ export function SidebarFilters({
                         className={`space-y-2 overflow-hidden transition-all duration-300 ease-in-out ${isFamiliesOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
                             }`}
                     >
-                        {availableFamilies.map((familyId) => {
+                        {sortedFamilies.map((familyId) => {
                             const isChecked = selectedFamilies.has(familyId);
+                            const isFeatured = featuredFamilies.includes(familyId);
                             return (
                                 <label
                                     key={familyId}
-                                    className="flex items-center gap-3 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-colors -ml-2"
+                                    className={`flex items-center gap-3 cursor-pointer group hover:bg-gray-50 p-2 rounded-lg transition-colors -ml-2 ${isFeatured ? 'bg-yellow-50/50' : ''}`}
                                 >
                                     <div className="relative flex items-center">
                                         <input

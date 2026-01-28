@@ -106,15 +106,116 @@ export async function deleteProduct(id: string) {
     return { success: true };
 }
 
-export async function uploadProductImage(file: File): Promise<{ success: boolean; url?: string; error?: string }> {
+// Helper: Compress image before upload using Canvas
+async function compressImage(file: File, targetFormat: 'image/jpeg' | 'image/png'): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target?.result as string;
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                // Logos usually smaller, products larger.
+                const MAX_WIDTH = targetFormat === 'image/png' ? 800 : 1200;
+                let width = img.width;
+                let height = img.height;
+
+                // Resize logic
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                const ctx = canvas.getContext('2d');
+                if (!ctx) {
+                    reject(new Error('Canvas context not available'));
+                    return;
+                }
+
+                if (targetFormat === 'image/jpeg') {
+                    // Draw white background for transparent PNGs converted to JPEG
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, width, height);
+                } else {
+                    // Clear for transparency
+                    ctx.clearRect(0, 0, width, height);
+                }
+
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Compress
+                // PNG compression quality argument in toBlob is often ignored by browsers, but we pass it anyway.
+                // JPEG respects it (0.8).
+                const quality = targetFormat === 'image/jpeg' ? 0.8 : 1.0;
+
+                canvas.toBlob(
+                    (blob) => {
+                        if (blob) {
+                            resolve(blob);
+                        } else {
+                            reject(new Error('Compression failed'));
+                        }
+                    },
+                    targetFormat,
+                    quality
+                );
+            };
+            img.onerror = (err) => reject(err);
+        };
+        reader.onerror = (err) => reject(err);
+    });
+}
+
+export async function uploadProductImage(
+    file: File,
+    options: { isLogo?: boolean } = {}
+): Promise<{ success: boolean; url?: string; error?: string }> {
     try {
-        const fileExt = file.name.split('.').pop();
+        // Optimize image before upload
+
+        let fileToUpload: File | Blob = file;
+        let fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+        let contentType = file.type;
+
+        // Skip SVGs
+        if (file.type.startsWith('image/') && !file.type.includes('svg')) {
+            console.log(`Original size: ${(file.size / 1024).toFixed(2)} KB`);
+
+            // Determine target format
+            // If it's a logo AND original is PNG, keep PNG. Otherwise JPEG.
+            const isPng = file.type === 'image/png';
+            const targetFormat = (options.isLogo && isPng) ? 'image/png' : 'image/jpeg';
+
+            try {
+                const compressedBlob = await compressImage(file, targetFormat);
+                console.log(`Compressed size: ${(compressedBlob.size / 1024).toFixed(2)} KB`);
+
+                fileToUpload = compressedBlob;
+
+                // Update extension and content type based on result
+                if (targetFormat === 'image/png') {
+                    fileExt = 'png';
+                    contentType = 'image/png';
+                } else {
+                    fileExt = 'jpg';
+                    contentType = 'image/jpeg';
+                }
+
+            } catch (optErr) {
+                console.warn("Optimization failed, using original file", optErr);
+            }
+        }
+
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
 
         const { error: uploadError } = await supabase.storage
             .from('products')
-            .upload(fileName, file, {
-                contentType: file.type,
+            .upload(fileName, fileToUpload, {
+                contentType: contentType,
                 upsert: false
             });
 

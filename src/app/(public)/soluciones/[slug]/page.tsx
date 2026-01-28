@@ -70,7 +70,11 @@ export default async function SolucionesPage({ params }: PageProps) {
     return (
         <main>
             <SectorHero title={sector.title} image={sector.image} />
-            <SolutionsLayout initialProducts={products} initialFamilies={families} />
+            <SolutionsLayout
+                initialProducts={products}
+                initialFamilies={families}
+                featuredFamilies={sector.featured_families || []}
+            />
         </main>
     );
 }

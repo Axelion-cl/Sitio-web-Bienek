@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Edit, Trash2, Plus, Tag, Layers, Star, X, Save, Award, List, Loader2 } from 'lucide-react';
+import { Edit, Trash2, Plus, Tag, Layers, Star, X, Save, Award, List, Loader2, Upload } from 'lucide-react';
 import Image from 'next/image';
 import FeaturedFamiliesSelector from '@/components/admin/tags/FeaturedFamiliesSelector';
 import { supabase } from '@/lib/supabase';
@@ -297,7 +297,62 @@ export default function TagsPage() {
                             {activeTab === 'brands' && (
                                 <>
                                     <Input label="Nombre" value={formData.name} onChange={(v: string) => setFormData({ ...formData, name: v })} />
-                                    <Input label="Logo URL" value={formData.logo} onChange={(v: string) => setFormData({ ...formData, logo: v })} />
+                                    {/* Logo Upload */}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">Logo</label>
+                                        <div className="flex gap-4 items-center">
+                                            <div className="relative w-24 h-24 bg-gray-50 rounded-lg border border-gray-200 overflow-hidden flex items-center justify-center">
+                                                {formData.logo ? (
+                                                    <Image src={formData.logo} alt="Logo" fill className="object-contain p-2" />
+                                                ) : (
+                                                    <span className="text-gray-400 text-xs text-center p-2">Sin logo</span>
+                                                )}
+
+                                                {/* Upload Overlay */}
+                                                <label className="absolute inset-0 bg-black/0 hover:bg-black/50 hover:opacity-100 opacity-0 transition-all flex flex-col items-center justify-center cursor-pointer text-white text-xs">
+                                                    <Upload className="w-6 h-6 mb-1" />
+                                                    <span>Subir</span>
+                                                    <input
+                                                        type="file"
+                                                        className="hidden"
+                                                        accept="image/*"
+                                                        onChange={async (e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (!file) return;
+
+                                                            // Simple upload logic inline or reused
+                                                            try {
+                                                                // Reusing the product upload service for convenience as it targets the 'products' bucket which we set policies for
+                                                                const { uploadProductImage } = await import('@/services/admin/products');
+                                                                setSaving(true); // Show global saving spinner or local
+
+                                                                const result = await uploadProductImage(file, { isLogo: true });
+                                                                if (result.success && result.url) {
+                                                                    setFormData({ ...formData, logo: result.url });
+                                                                } else {
+                                                                    alert('Error: ' + result.error);
+                                                                }
+                                                            } catch (err) {
+                                                                console.error(err);
+                                                                alert('Error al subir imagen');
+                                                            } finally {
+                                                                setSaving(false);
+                                                            }
+                                                        }}
+                                                    />
+                                                </label>
+                                            </div>
+
+                                            <div className="flex-1">
+                                                <Input
+                                                    label="URL del Logo (Opcional)"
+                                                    value={formData.logo}
+                                                    onChange={(v: string) => setFormData({ ...formData, logo: v })}
+                                                />
+                                                <p className="text-xs text-gray-500 mt-1">Sube una imagen o pega una URL externa.</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </>
                             )}
                             {activeTab === 'badges' && (

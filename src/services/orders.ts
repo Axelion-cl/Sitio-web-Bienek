@@ -273,3 +273,58 @@ export async function deleteOrder(orderId: string): Promise<{ success: boolean; 
         return { success: false, error: 'Error al eliminar la orden' };
     }
 }
+
+// ============================================
+// ADMIN: MANAGE ORDER ITEMS
+// ============================================
+
+export async function searchProducts4Order(term: string) {
+    if (!term || term.length < 2) return [];
+
+    const { data, error } = await supabase
+        .from('products')
+        .select('id, name, sku, brand')
+        .ilike('name', `%${term}%`)
+        .limit(10);
+
+    if (error) {
+        console.error('Search products error:', error);
+        return [];
+    }
+
+    return data || [];
+}
+
+export async function addOrderItem(orderId: string, item: { product_id: string; product_name: string; quantity: number }) {
+    const { data, error } = await supabase
+        .from('order_items')
+        .insert({
+            order_id: orderId,
+            product_id: item.product_id,
+            product_name: item.product_name,
+            quantity: item.quantity
+        })
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Add order item error:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true, data };
+}
+
+export async function deleteOrderItem(itemId: string) {
+    const { error } = await supabase
+        .from('order_items')
+        .delete()
+        .eq('id', itemId);
+
+    if (error) {
+        console.error('Delete order item error:', error);
+        return { success: false, error: error.message };
+    }
+
+    return { success: true };
+}

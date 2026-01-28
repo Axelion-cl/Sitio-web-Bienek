@@ -134,9 +134,9 @@ export function ClientOrdersModal({ isOpen, onClose, clientId, clientName, curre
                                                     onChange={(e) => handleStatusChange(order.id, e.target.value as OrderStatus)}
                                                     disabled={updating === order.id}
                                                     className={`appearance-none pl-3 pr-8 py-2 rounded-lg text-sm font-medium border border-gray-200 bg-white hover:bg-gray-50 focus:ring-2 focus:ring-primary focus:border-transparent outline-none cursor-pointer disabled:opacity-50 transition-all ${order.status === 'activa' ? 'border-blue-200 text-blue-700' :
-                                                            order.status === 'finalizada' ? 'border-green-200 text-green-700' :
-                                                                order.status === 'no_finalizada' ? 'border-red-200 text-red-700' :
-                                                                    'text-gray-700'
+                                                        order.status === 'finalizada' ? 'border-green-200 text-green-700' :
+                                                            order.status === 'no_finalizada' ? 'border-red-200 text-red-700' :
+                                                                'text-gray-700'
                                                         }`}
                                                 >
                                                     {availableStatuses.map(status => (
@@ -157,8 +157,8 @@ export function ClientOrdersModal({ isOpen, onClose, clientId, clientName, curre
                                             <button
                                                 onClick={() => setShowProducts(showProducts === order.id ? null : order.id)}
                                                 className={`p-2 rounded-lg border transition-colors ${showProducts === order.id
-                                                        ? 'bg-primary/10 border-primary text-primary'
-                                                        : 'border-gray-200 hover:bg-gray-50 text-gray-600'
+                                                    ? 'bg-primary/10 border-primary text-primary'
+                                                    : 'border-gray-200 hover:bg-gray-50 text-gray-600'
                                                     }`}
                                                 title="Ver productos"
                                             >
@@ -179,30 +179,12 @@ export function ClientOrdersModal({ isOpen, onClose, clientId, clientName, curre
 
                                     {/* Products Details (Expandable) */}
                                     {showProducts === order.id && (
-                                        <div className="bg-gray-50 border-t border-gray-100 p-5 animate-in slide-in-from-top-2 duration-200">
-                                            <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                                                <ShoppingCart className="w-4 h-4 text-gray-500" />
-                                                Productos de la orden
-                                            </h4>
-                                            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                                                <table className="w-full text-sm text-left">
-                                                    <thead className="bg-gray-50 text-gray-500 font-medium border-b border-gray-200">
-                                                        <tr>
-                                                            <th className="px-4 py-2">Producto</th>
-                                                            <th className="px-4 py-2 text-right">Cantidad</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="divide-y divide-gray-100">
-                                                        {order.order_items?.map((item) => (
-                                                            <tr key={item.id}>
-                                                                <td className="px-4 py-3 text-gray-900">{item.product_name}</td>
-                                                                <td className="px-4 py-3 text-right text-gray-600 font-mono">{item.quantity}</td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                        <OrderItemsManager
+                                            orderId={order.id}
+                                            items={order.order_items || []}
+                                            readOnly={order.status === 'finalizada' || order.status === 'no_finalizada'}
+                                            onUpdate={() => loadOrders()} // Reload after change
+                                        />
                                     )}
                                 </div>
                             ))}
@@ -218,6 +200,147 @@ export function ClientOrdersModal({ isOpen, onClose, clientId, clientName, curre
                         Cerrar
                     </button>
                 </div>
+            </div>
+        </div>
+    );
+}
+
+// Subcomponent for managing order items
+import { addOrderItem, deleteOrderItem, searchProducts4Order } from '@/services/orders';
+import { Search, Plus } from 'lucide-react';
+
+function OrderItemsManager({ orderId, items, readOnly, onUpdate }: {
+    orderId: string,
+    items: any[],
+    readOnly: boolean,
+    onUpdate: () => void
+}) {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [isSearching, setIsSearching] = useState(false);
+    const [addingId, setAddingId] = useState<string | null>(null);
+
+    // Search debounce logic could be added here, but simple effect for now
+    useEffect(() => {
+        const delaySearch = setTimeout(async () => {
+            if (searchTerm.length >= 2) {
+                setIsSearching(true);
+                const results = await searchProducts4Order(searchTerm);
+                setSearchResults(results);
+                setIsSearching(false);
+            } else {
+                setSearchResults([]);
+            }
+        }, 300);
+        return () => clearTimeout(delaySearch);
+    }, [searchTerm]);
+
+    const handleAddItem = async (product: any) => {
+        setAddingId(product.id);
+        const result = await addOrderItem(orderId, {
+            product_id: product.id,
+            product_name: product.name,
+            quantity: 1
+        });
+
+        if (result.success) {
+            setSearchTerm(''); // Clear search
+            setSearchResults([]);
+            onUpdate(); // Refresh parent
+        } else {
+            alert('Error al agregar producto');
+        }
+        setAddingId(null);
+    };
+
+    const handleDeleteItem = async (itemId: string) => {
+        if (!confirm('¿Eliminar producto de la orden?')) return;
+        const result = await deleteOrderItem(itemId);
+        if (result.success) {
+            onUpdate();
+        } else {
+            alert('Error al eliminar producto');
+        }
+    };
+
+    return (
+        <div className="bg-gray-50 border-t border-gray-100 p-5 animate-in slide-in-from-top-2 duration-200">
+            <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <ShoppingCart className="w-4 h-4 text-gray-500" />
+                Productos de la orden
+            </h4>
+
+            {/* Product Search Bar */}
+            {!readOnly && (
+                <div className="relative mb-4">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            placeholder="Buscar producto para agregar..."
+                            className="w-full pl-9 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                        />
+                        {isSearching && (
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Search Results Dropdown */}
+                    {searchResults.length > 0 && (
+                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                            {searchResults.map(product => (
+                                <button
+                                    key={product.id}
+                                    onClick={() => handleAddItem(product)}
+                                    disabled={addingId === product.id}
+                                    className="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center justify-between group border-b border-gray-50 last:border-0"
+                                >
+                                    <div>
+                                        <div className="font-medium text-sm text-gray-900">{product.name}</div>
+                                        <div className="text-xs text-gray-500">{product.brand} - SKU: {product.sku}</div>
+                                    </div>
+                                    <Plus className="w-4 h-4 text-gray-400 group-hover:text-primary" />
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            )}
+
+            {/* Items List */}
+            <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <table className="w-full text-sm text-left">
+                    <thead className="bg-gray-50 text-gray-500 font-medium border-b border-gray-200">
+                        <tr>
+                            <th className="px-4 py-2">Producto</th>
+                            {!readOnly && <th className="px-4 py-2 text-right w-16">Acción</th>}
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                        {items.length === 0 ? (
+                            <tr><td colSpan={2} className="px-4 py-4 text-center text-gray-400 italic">Sin productos</td></tr>
+                        ) : items.map((item) => (
+                            <tr key={item.id} className="group hover:bg-gray-50">
+                                <td className="px-4 py-3 text-gray-900">{item.product_name}</td>
+                                {!readOnly && (
+                                    <td className="px-4 py-3 text-right">
+                                        <button
+                                            onClick={() => handleDeleteItem(item.id)}
+                                            className="p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                                            title="Quitar producto"
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </button>
+                                    </td>
+                                )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );

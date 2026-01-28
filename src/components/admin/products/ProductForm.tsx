@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Save, X, Upload, Loader2 } from 'lucide-react';
+import { Save, X, Upload, Loader2, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
 import { createProduct, updateProduct, uploadProductImage } from '@/services/admin/products';
@@ -247,41 +247,177 @@ export function ProductForm({ initialData, isEditing = false }: ProductFormProps
                             placeholder="Descripción detallada del producto..."
                         />
                     </div>
-                </div>
 
-                {/* Right Column: Image */}
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Imagen Principal</label>
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer relative h-64">
-                        {/* Preview */}
-                        <div className="absolute inset-0 p-4">
-                            <div className="relative w-full h-full bg-gray-100 rounded-lg overflow-hidden">
-                                <Image
-                                    src={formData.images[0] || '/assets/images/solutions/limpieza-general.png'}
-                                    alt="Preview"
-                                    fill
-                                    className="object-contain"
-                                />
-                            </div>
-                        </div>
-                        {/* Overlay hint */}
-                        <div className="absolute inset-x-0 bottom-6 flex justify-center z-10">
-                            <span className="bg-white/90 px-3 py-1 rounded-full text-sm font-medium shadow-sm flex items-center gap-2">
-                                {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-                                {uploading ? 'Subiendo...' : 'Cambiar imagen'}
+                    {/* Technical Specs Editor */}
+                    <div className="pt-4 border-t border-gray-100">
+                        <div className="flex justify-between items-center mb-3">
+                            <label className="block text-sm font-semibold text-gray-900">Especificaciones Técnicas</label>
+                            <span className={`text-xs font-medium ${Object.keys(formData.specs || {}).length >= 10 ? 'text-red-500' : 'text-gray-500'}`}>
+                                {Object.keys(formData.specs || {}).length}/10
                             </span>
                         </div>
-                        <input
-                            type="file"
-                            className="absolute inset-0 opacity-0 cursor-pointer"
-                            accept="image/*"
-                            onChange={handleImageUpload}
-                            disabled={uploading || saving}
-                        />
+
+                        <div className="space-y-3 mb-3">
+                            {Object.entries(formData.specs || {}).map(([key, value]) => (
+                                <div key={key} className="flex gap-2 items-center">
+                                    <div className="flex-1 bg-gray-50 px-3 py-2 rounded border border-gray-200 text-sm font-medium text-gray-700">{key}</div>
+                                    <div className="flex-1 bg-white px-3 py-2 rounded border border-gray-200 text-sm text-gray-600">{value as string}</div>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const newSpecs = { ...formData.specs };
+                                            delete newSpecs[key];
+                                            setFormData({ ...formData, specs: newSpecs });
+                                        }}
+                                        className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded"
+                                    >
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+
+                        {Object.keys(formData.specs || {}).length < 10 ? (
+                            <div className="flex gap-2 items-center bg-gray-50 p-3 rounded-lg border border-dashed border-gray-300">
+                                <input
+                                    type="text"
+                                    id="newSpecKey"
+                                    placeholder="Nombre (Ej: Material)"
+                                    className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary outline-none"
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            document.getElementById('addSpecBtn')?.click();
+                                        }
+                                    }}
+                                />
+                                <input
+                                    type="text"
+                                    id="newSpecValue"
+                                    placeholder="Valor (Ej: Acero Inox)"
+                                    className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary outline-none"
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            document.getElementById('addSpecBtn')?.click();
+                                        }
+                                    }}
+                                />
+                                <button
+                                    type="button"
+                                    id="addSpecBtn"
+                                    onClick={() => {
+                                        const keyInput = document.getElementById('newSpecKey') as HTMLInputElement;
+                                        const valueInput = document.getElementById('newSpecValue') as HTMLInputElement;
+                                        const key = keyInput.value.trim();
+                                        const value = valueInput.value.trim();
+
+                                        if (key && value) {
+                                            setFormData({
+                                                ...formData,
+                                                specs: { ...formData.specs, [key]: value }
+                                            });
+                                            keyInput.value = '';
+                                            valueInput.value = '';
+                                            keyInput.focus();
+                                        }
+                                    }}
+                                    className="px-3 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded hover:bg-gray-50 hover:text-primary hover:border-primary transition-colors"
+                                >
+                                    Agregar
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="text-center p-3 bg-gray-50 rounded-lg border border-gray-200 text-xs text-gray-500 italic">
+                                Has alcanzado el límite máximo de 10 especificaciones.
+                            </div>
+                        )}
                     </div>
-                    <p className="text-xs text-gray-500 mt-2 text-center">
-                        PNG, JPG hasta 5MB.
-                    </p>
+                </div>
+
+                {/* Right Column: Images */}
+                <div>
+                    <div className="flex justify-between items-center mb-1">
+                        <label className="block text-sm font-medium text-gray-700">Imágenes del Producto</label>
+                        <span className={`text-xs font-medium ${formData.images.length >= 2 ? 'text-red-500' : 'text-gray-500'}`}>
+                            {formData.images.length}/2
+                        </span>
+                    </div>
+
+                    <div className="space-y-4">
+                        {/* Existing Images Grid */}
+                        <div className="grid grid-cols-1 gap-4">
+                            {formData.images.map((imgUrl: string, index: number) => (
+                                <div key={index} className="relative group border border-gray-200 rounded-xl overflow-hidden h-48 bg-gray-50">
+                                    <Image
+                                        src={imgUrl}
+                                        alt={`Product image ${index + 1}`}
+                                        fill
+                                        className="object-contain p-2"
+                                    />
+                                    {/* Overlay Actions */}
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const newImages = formData.images.filter((_: string, i: number) => i !== index);
+                                                setFormData({ ...formData, images: newImages });
+                                            }}
+                                            className="p-2 bg-white text-red-600 rounded-full hover:bg-red-50"
+                                            title="Eliminar imagen"
+                                        >
+                                            <Trash2 className="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                    <div className="absolute top-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                                        {index === 0 ? 'Principal' : 'Secundaria'}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Add Image Button (if less than 2) */}
+                        {formData.images.length < 2 && (
+                            <div className="border-2 border-dashed border-gray-300 rounded-xl h-32 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition-colors cursor-pointer relative">
+                                <div className="text-gray-400 flex flex-col items-center gap-2">
+                                    {uploading ? <Loader2 className="w-6 h-6 animate-spin" /> : <Upload className="w-6 h-6" />}
+                                    <span className="text-sm font-medium">
+                                        {uploading ? 'Subiendo...' : 'Agregar Imagen'}
+                                    </span>
+                                </div>
+                                <input
+                                    type="file"
+                                    className="absolute inset-0 opacity-0 cursor-pointer"
+                                    accept="image/*"
+                                    onChange={async (e) => {
+                                        if (!e.target.files || e.target.files.length === 0) return;
+                                        setUploading(true);
+                                        try {
+                                            const result = await uploadProductImage(e.target.files[0]);
+                                            if (result.success && result.url) {
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    images: [...prev.images, result.url!]
+                                                }));
+                                            } else {
+                                                alert("Error al subir: " + result.error);
+                                            }
+                                        } catch (err: any) {
+                                            console.error(err);
+                                            alert("Error: " + err.message);
+                                        } finally {
+                                            setUploading(false);
+                                        }
+                                    }}
+                                    disabled={uploading || saving}
+                                />
+                            </div>
+                        )}
+
+                        <p className="text-xs text-gray-500 mt-2 text-center">
+                            PNG, JPG hasta 5MB. Máximo 2 imágenes.
+                        </p>
+                    </div>
                 </div>
             </div>
 

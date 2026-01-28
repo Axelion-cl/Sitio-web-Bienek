@@ -95,9 +95,8 @@ export function MisOrdenes() {
                                 <h4 className="text-sm font-semibold text-gray-900 mb-3">Productos</h4>
                                 <div className="space-y-2">
                                     {order.order_items.map((item) => (
-                                        <div key={item.id} className="flex justify-between items-center text-sm">
+                                        <div key={item.id} className="flex justify-between items-center text-sm p-2 hover:bg-gray-50 rounded">
                                             <span className="text-gray-700">{item.product_name}</span>
-                                            <span className="text-gray-500">x{item.quantity}</span>
                                         </div>
                                     ))}
                                 </div>

@@ -12,6 +12,7 @@ import {
 import { isValidEmail, getEmailValidationError } from '@/utils/validation';
 import { ClientOrdersModal } from '@/components/admin/clients/ClientOrdersModal';
 import { useAuth } from '@/context/AuthContext';
+import { signIn } from '@/services/auth';
 import { Package } from 'lucide-react';
 import PasswordInput from '@/components/ui/PasswordInput';
 
@@ -57,6 +58,9 @@ export default function ClientsPage() {
     const [newLeadForm, setNewLeadForm] = useState({ name: '', email: '', message: '', company: '', phone: '' });
     const [convertModal, setConvertModal] = useState<{ isOpen: boolean; lead: Lead | null }>({
         isOpen: false, lead: null
+    });
+    const [deleteLeadModal, setDeleteLeadModal] = useState<{ isOpen: boolean; leadId: string; leadName: string }>({
+        isOpen: false, leadId: '', leadName: ''
     });
     const [selectedClientOrders, setSelectedClientOrders] = useState<{ id: string; name: string } | null>(null);
 
@@ -151,17 +155,54 @@ export default function ClientsPage() {
     };
 
     const handleDeleteConfirm = async () => {
-        if (adminPassword !== 'admin123') {
-            setDeleteError('Contraseña incorrecta. Intenta de nuevo.');
+        if (!currentUser?.email) return;
+
+        setSaving(true);
+        // Verify password by re-authenticating
+        const authResult = await signIn(currentUser.email, adminPassword);
+
+        if (!authResult.success) {
+            setDeleteError('Contraseña incorrecta.');
+            setSaving(false);
             return;
         }
 
-        setSaving(true);
         const result = await deleteClient(deleteModal.clientId);
 
         if (result.success) {
             await fetchData();
             setDeleteModal({ isOpen: false, clientId: '', clientName: '' });
+        } else {
+            alert('Error: ' + result.error);
+        }
+        setSaving(false);
+        setAdminPassword('');
+    };
+
+    const openDeleteLeadModal = (lead: Lead) => {
+        setDeleteLeadModal({ isOpen: true, leadId: lead.id, leadName: lead.name });
+        setAdminPassword('');
+        setDeleteError('');
+    };
+
+    const handleDeleteLeadConfirm = async () => {
+        if (!currentUser?.email) return;
+
+        setSaving(true);
+        // Verify password by re-authenticating
+        const authResult = await signIn(currentUser.email, adminPassword);
+
+        if (!authResult.success) {
+            setDeleteError('Contraseña incorrecta.');
+            setSaving(false);
+            return;
+        }
+
+        const result = await deleteLead(deleteLeadModal.leadId);
+
+        if (result.success) {
+            await fetchData();
+            setDeleteLeadModal({ isOpen: false, leadId: '', leadName: '' });
         } else {
             alert('Error: ' + result.error);
         }
@@ -248,12 +289,22 @@ export default function ClientsPage() {
                                         <td className="px-6 py-4 text-gray-500 truncate max-w-xs" title={lead.message}>{lead.message}</td>
                                         <td className="px-6 py-4 text-gray-500">{new Date(lead.created_at).toLocaleDateString()}</td>
                                         <td className="px-6 py-4 text-right">
-                                            <button
-                                                onClick={() => handleConvertLead(lead)}
-                                                className="inline-flex items-center gap-1 bg-green-50 text-green-700 hover:bg-green-100 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-green-200"
-                                            >
-                                                <UserPlus className="w-3 h-3" /> Convertir a Cliente
-                                            </button>
+                                            <div className="flex justify-end gap-2">
+                                                <button
+                                                    onClick={() => handleConvertLead(lead)}
+                                                    className="inline-flex items-center gap-1 bg-green-50 text-green-700 hover:bg-green-100 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-green-200"
+                                                    title="Convertir a Cliente"
+                                                >
+                                                    <UserPlus className="w-3 h-3" /> Convertir
+                                                </button>
+                                                <button
+                                                    onClick={() => openDeleteLeadModal(lead)}
+                                                    className="inline-flex items-center gap-1 bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border border-red-200"
+                                                    title="Eliminar Lead"
+                                                >
+                                                    <Trash2 className="w-3 h-3" />
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
@@ -470,7 +521,7 @@ export default function ClientsPage() {
                 </div>
             )}
 
-            {/* Delete Confirmation Modal */}
+            {/* Delete Confirmation Modal (Client) */}
             {deleteModal.isOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 space-y-4">
@@ -478,7 +529,7 @@ export default function ClientsPage() {
                             <div className="p-2 bg-red-100 rounded-full">
                                 <AlertTriangle className="w-6 h-6" />
                             </div>
-                            <h3 className="text-lg font-bold">Confirmar Eliminación</h3>
+                            <h3 className="text-lg font-bold">Eliminar Cliente</h3>
                         </div>
 
                         <p className="text-sm text-gray-600">
@@ -514,6 +565,56 @@ export default function ClientsPage() {
                                 className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 disabled:opacity-50"
                             >
                                 {saving ? 'Eliminando...' : 'Eliminar Cliente'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Confirmation Modal (Lead) */}
+            {deleteLeadModal.isOpen && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-xl shadow-xl max-w-sm w-full p-6 space-y-4">
+                        <div className="flex items-center gap-3 text-red-600">
+                            <div className="p-2 bg-red-100 rounded-full">
+                                <AlertTriangle className="w-6 h-6" />
+                            </div>
+                            <h3 className="text-lg font-bold">Eliminar Lead</h3>
+                        </div>
+
+                        <p className="text-sm text-gray-600">
+                            Estás a punto de eliminar el lead de <strong>{deleteLeadModal.leadName}</strong>.
+                            Esta acción no se puede deshacer.
+                        </p>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Ingresa tu contraseña de administrador:
+                            </label>
+                            <PasswordInput
+                                value={adminPassword}
+                                onChange={(e) => { setAdminPassword(e.target.value); setDeleteError(''); }}
+                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+                                placeholder="Contraseña admin"
+                            />
+                            {deleteError && (
+                                <p className="text-xs text-red-500 mt-1">{deleteError}</p>
+                            )}
+                        </div>
+
+                        <div className="flex justify-end gap-3 pt-2">
+                            <button
+                                onClick={() => setDeleteLeadModal({ isOpen: false, leadId: '', leadName: '' })}
+                                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={handleDeleteLeadConfirm}
+                                disabled={saving}
+                                className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 disabled:opacity-50"
+                            >
+                                {saving ? 'Eliminando...' : 'Eliminar Lead'}
                             </button>
                         </div>
                     </div>

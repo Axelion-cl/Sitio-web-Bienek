@@ -12,9 +12,10 @@ import { Family } from "@/services/families";
 interface SolutionsLayoutProps {
     initialProducts: Product[];
     initialFamilies: Family[];
+    featuredFamilies: string[];
 }
 
-export function SolutionsLayout({ initialProducts, initialFamilies }: SolutionsLayoutProps) {
+export function SolutionsLayout({ initialProducts, initialFamilies, featuredFamilies }: SolutionsLayoutProps) {
     const {
         searchQuery,
         setSearchQuery,
@@ -43,6 +44,7 @@ export function SolutionsLayout({ initialProducts, initialFamilies }: SolutionsL
                             onToggleBrand={toggleBrand}
                             availableFamilies={availableFamilies}
                             allFamilies={initialFamilies}
+                            featuredFamilies={featuredFamilies}
                             selectedFamilies={selectedFamilies}
                             onToggleFamily={toggleFamily}
                             onClearFilters={clearAllFilters}
