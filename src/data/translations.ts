@@ -87,8 +87,7 @@ export const translations = {
         // Home
         home: {
             marcasDestacadas: 'Marcas Destacadas',
-<<<<<<< HEAD
-=======
+
             nuestrasSoluciones: 'Nuestras Soluciones',
             clickCotizar: 'Click para cotizar',
             consultarPor: 'Consultar por',
@@ -232,7 +231,7 @@ export const translations = {
                 titulo: 'Trabaja con Nosotros',
                 subtitulo: 'Únete a nuestro equipo. Completa el formulario y adjunta tu CV.',
             },
->>>>>>> 2fbac8e (Update homepage branding, carousel logos, and solutions grid for Lite version)
+
         },
     },
     en: {

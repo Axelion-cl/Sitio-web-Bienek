@@ -61,14 +61,14 @@ export const sectors: Sector[] = [
         featuredFamilies: ["jabones", "papeles"]
     },
     {
-        id: "adulto-mayor",
-        slug: "soluciones-para-centros-adulto-mayor",
-        title: "Soluciones para Centros Adulto Mayor",
-        description: "Cuidado delicado para espacios residenciales.",
-        fullDescription: "Soluciones enfocadas en la desinfección suave pero efectiva, control de olores y productos para el cuidado personal, creando un ambiente digno, limpio y acogedor para los residentes.",
-        icon: "/assets/icons/adulto-mayor.svg",
-        image: "/assets/images/solutions/adulto-mayor.png",
-        featuredFamilies: ["desinfectantes-hosp"]
+        id: "oficina",
+        slug: "articulos-de-oficina",
+        title: "Artículos de Oficina",
+        description: "Variedad de suministros para su espacio de trabajo.",
+        fullDescription: "Proveemos una gama completa de artículos de oficina para mantener su equipo productivo y organizado. Papel, lápices, carpetas, tecnología básica y todo lo necesario para la operación diaria.",
+        icon: "/assets/icons/oficina.svg",
+        image: "/assets/images/solutions/articulos-oficina.jpg",
+        featuredFamilies: ["papeles"]
     },
     {
         id: "horeca",

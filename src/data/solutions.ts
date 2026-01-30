@@ -55,10 +55,10 @@ export const solutions: Solution[] = [
         subcategories: ["Mopas y Carros", "Paños", "Escobas", "Señalética"]
     },
     {
-        title: "Soluciones para Centros Adulto Mayor",
-        slug: "soluciones-para-centros-adulto-mayor",
-        image: "/assets/images/solutions/adulto-mayor.png",
-        subcategories: ["Higiene Personal", "Incontinencia", "Desinfección", "Lavandería"]
+        title: "Artículos de Oficina",
+        slug: "articulos-de-oficina",
+        image: "/assets/images/solutions/articulos-oficina.jpg",
+        subcategories: ["Papelería", "Escritorio", "Archivado", "Tecnología"] // Added subcategories to match interface
     },
     {
         title: "Equipamientos de Maquinaria",
