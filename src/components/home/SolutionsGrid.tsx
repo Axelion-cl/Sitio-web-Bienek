@@ -23,19 +23,19 @@ export function SolutionsGrid({ sectors }: SolutionsGridProps) {
     const { t } = useLanguage();
 
     return (
-        <section className="py-20 bg-white">
-            <div className="container mx-auto px-4 space-y-12">
+        <section id="soluciones" className="py-10 bg-white">
+            <div className="container mx-auto px-4 space-y-6">
                 <div className="text-center">
                     <Heading>{t.home.nuestrasSoluciones}</Heading>
-                    <div className="mx-auto mt-4 bg-[#ecec00] rounded-full" style={{ width: '176px', height: '5px' }} />
+                    <div className="mx-auto mt-4 bg-[#ecec00]" style={{ width: '176px', height: '5px' }} />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {sectors.map((sector, index) => {
                         return (
                             <div
                                 key={index}
-                                className="group relative h-64 w-full overflow-hidden rounded-2xl shadow-md block isolate"
+                                className="group relative h-44 w-full overflow-hidden rounded-2xl shadow-md block isolate"
                             >
                                 {/* Main Sector Link (Background Cover) */}
                                 <Link
@@ -56,7 +56,7 @@ export function SolutionsGrid({ sectors }: SolutionsGridProps) {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-opacity -z-10" />
 
                                 {/* Text Content */}
-                                <div className="absolute bottom-0 left-0 p-6 w-full transform transition-all duration-300 group-hover:-translate-y-2 z-20 pointer-events-none">
+                                <div className="absolute bottom-0 left-0 p-4 w-full transform transition-all duration-300 group-hover:-translate-y-2 z-20 pointer-events-none">
                                     <h3 className="text-white text-xl font-bold font-sans mb-1 transition-transform duration-300">
                                         {sector.title}
                                     </h3>

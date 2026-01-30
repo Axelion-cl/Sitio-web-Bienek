@@ -143,9 +143,9 @@ export const translations = {
                 title: 'Soluciones Generales de Higiene',
                 description: 'Productos esenciales para la limpieza diaria.',
             },
-            adultoMayor: {
-                title: 'Soluciones para Centros Adulto Mayor',
-                description: 'Cuidado delicado para espacios residenciales.',
+            articulosOficina: {
+                title: 'Artículos de Oficina',
+                description: 'Variedad de suministros para su espacio de trabajo.',
             },
             embarcaciones: {
                 title: 'Soluciones para Embarcaciones',
@@ -371,9 +371,9 @@ export const translations = {
                 title: 'General Hygiene Solutions',
                 description: 'Essential products for daily cleaning.',
             },
-            adultoMayor: {
-                title: 'Solutions for Senior Centers',
-                description: 'Delicate care for residential spaces.',
+            articulosOficina: {
+                title: 'Office Supplies',
+                description: 'Variety of supplies for your workspace.',
             },
             embarcaciones: {
                 title: 'Solutions for Vessels',

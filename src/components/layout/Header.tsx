@@ -161,7 +161,7 @@ export function Header() {
                         <nav className="hidden lg:flex items-center gap-8 font-sans font-normal text-sm text-black">
                             <Link href="/" className="hover:text-primary transition-colors">{t.header.inicio}</Link>
 
-                            <Link href="/contacto" className="hover:text-primary transition-colors">{t.header.soluciones}</Link>
+                            <Link href="/#soluciones" className="hover:text-primary transition-colors">{t.header.soluciones}</Link>
 
 
                         </nav>

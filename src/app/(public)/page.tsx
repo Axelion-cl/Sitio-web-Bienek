@@ -52,12 +52,12 @@ export default function Home() {
       featuredFamilies: ["jabones", "papeles"]
     },
     {
-      id: "adulto-mayor",
-      slug: "soluciones-para-centros-adulto-mayor",
-      title: t.sectores.adultoMayor.title,
-      description: t.sectores.adultoMayor.description,
-      image: "/assets/images/solutions/adulto-mayor.png",
-      featuredFamilies: ["desinfectantes-hosp"]
+      id: "oficina",
+      slug: "articulos-de-oficina",
+      title: t.sectores.articulosOficina.title,
+      description: t.sectores.articulosOficina.description,
+      image: "/assets/images/solutions/articulos-oficina.jpg",
+      featuredFamilies: ["papeles"]
     },
     {
       id: "horeca",
