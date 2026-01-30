@@ -24,6 +24,8 @@ body {
   font-family: var(--font-outfit), sans-serif;
 }
 
+
+
 /* Custom hover effects for SolutionsGrid cards */
 .group:hover .blur-on-hover {
   filter: blur(4px);

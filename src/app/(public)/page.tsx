@@ -52,12 +52,12 @@ export default function Home() {
       featuredFamilies: ["jabones", "papeles"]
     },
     {
-      id: "oficina",
-      slug: "articulos-de-oficina",
-      title: t.sectores.articulosOficina.title,
-      description: t.sectores.articulosOficina.description,
-      image: "/assets/images/solutions/articulos-oficina.jpg",
-      featuredFamilies: ["papeles"]
+      id: "embarcaciones",
+      slug: "soluciones-para-embarcaciones",
+      title: t.sectores.embarcaciones.title,
+      description: t.sectores.embarcaciones.description,
+      image: "/assets/images/solutions/embarcaciones.png",
+      featuredFamilies: []
     },
     {
       id: "horeca",
@@ -76,11 +76,11 @@ export default function Home() {
       featuredFamilies: []
     },
     {
-      id: "accesorios",
-      slug: "equipamiento-accesorios",
-      title: t.sectores.accesorios.title,
-      description: t.sectores.accesorios.description,
-      image: "/assets/images/solutions/limpieza-general.png",
+      id: "aguas",
+      slug: "tratamiento-de-agua",
+      title: t.sectores.aguas.title,
+      description: t.sectores.aguas.description,
+      image: "/assets/images/solutions/aguas.png",
       featuredFamilies: []
     },
     {
@@ -92,20 +92,20 @@ export default function Home() {
       featuredFamilies: []
     },
     {
-      id: "aguas",
-      slug: "tratamiento-de-agua",
-      title: t.sectores.aguas.title,
-      description: t.sectores.aguas.description,
-      image: "/assets/images/solutions/aguas.png",
+      id: "accesorios",
+      slug: "equipamiento-accesorios",
+      title: t.sectores.accesorios.title,
+      description: t.sectores.accesorios.description,
+      image: "/assets/images/solutions/limpieza-general.png",
       featuredFamilies: []
     },
     {
-      id: "embarcaciones",
-      slug: "soluciones-para-embarcaciones",
-      title: t.sectores.embarcaciones.title,
-      description: t.sectores.embarcaciones.description,
-      image: "/assets/images/solutions/embarcaciones.png",
-      featuredFamilies: []
+      id: "oficina",
+      slug: "articulos-de-oficina",
+      title: t.sectores.articulosOficina.title,
+      description: t.sectores.articulosOficina.description,
+      image: "/assets/images/solutions/articulos-oficina.jpg",
+      featuredFamilies: ["papeles"]
     },
   ];
 

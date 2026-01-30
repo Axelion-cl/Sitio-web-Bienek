@@ -48,6 +48,39 @@ export function Header() {
 
 
 
+    const handleScrollToSolutions = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const targetId = 'soluciones';
+        const target = document.getElementById(targetId);
+        if (!target) return;
+
+        const duration = 1500; // 1.5 seconds for slower scroll
+        const targetPosition = target.getBoundingClientRect().top + window.scrollY;
+        const startPosition = window.scrollY;
+        const distance = targetPosition - startPosition;
+        let startTime: number | null = null;
+
+        const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t + b;
+            t--;
+            return -c / 2 * (t * (t - 2) - 1) + b;
+        };
+
+        const animation = (currentTime: number) => {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        };
+
+        requestAnimationFrame(animation);
+    };
+
     return (
         <header
             ref={headerRef}
@@ -161,7 +194,13 @@ export function Header() {
                         <nav className="hidden lg:flex items-center gap-8 font-sans font-normal text-sm text-black">
                             <Link href="/" className="hover:text-primary transition-colors">{t.header.inicio}</Link>
 
-                            <Link href="/#soluciones" className="hover:text-primary transition-colors">{t.header.soluciones}</Link>
+                            <Link
+                                href="/#soluciones"
+                                className="hover:text-primary transition-colors"
+                                onClick={handleScrollToSolutions}
+                            >
+                                {t.header.soluciones}
+                            </Link>
 
 
                         </nav>
