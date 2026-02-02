@@ -8,7 +8,7 @@ export function Footer() {
     const { t } = useLanguage();
 
     return (
-        <footer className="bg-white border-t border-gray-100 py-16 mt-auto">
+        <footer className="bg-white border-t border-gray-100 py-10 mt-auto">
             <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 font-sans">
 
                 {/* 1. Logo Column - Aligned left */}
@@ -68,7 +68,7 @@ export function Footer() {
             </div>
 
             {/* Copyright */}
-            <div className="container mx-auto px-4 mt-12 pt-6 border-t border-gray-100 text-center text-xs text-gray-400 font-sans">
+            <div className="container mx-auto px-4 mt-8 pt-4 border-t border-gray-100 text-center text-xs text-gray-400 font-sans">
                 {t.footer.derechos}
             </div>
         </footer>

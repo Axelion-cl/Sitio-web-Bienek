@@ -34,7 +34,7 @@ export const translations = {
             blog: 'Blog',
             soluciones: 'Soluciones',
             trabajaConNosotros: 'Trabaja Con Nosotros',
-            derechos: '© 2024 Bienek. Todos los derechos reservados.',
+            derechos: '© 2026 Bienek. Todos los derechos reservados.',
         },
         // Login Page
         login: {
@@ -262,7 +262,7 @@ export const translations = {
             blog: 'Blog',
             soluciones: 'Solutions',
             trabajaConNosotros: 'Work With Us',
-            derechos: '© 2024 Bienek. All rights reserved.',
+            derechos: '© 2026 Bienek. All rights reserved.',
         },
         // Login Page
         login: {
