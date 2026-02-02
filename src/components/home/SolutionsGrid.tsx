@@ -23,7 +23,7 @@ export function SolutionsGrid({ sectors }: SolutionsGridProps) {
     const { t } = useLanguage();
 
     return (
-        <section id="soluciones" className="py-10 bg-white">
+        <section id="soluciones" className="py-8 bg-white">
             <div className="container mx-auto px-4 space-y-6">
                 <div className="text-center">
                     <Heading>{t.home.nuestrasSoluciones}</Heading>
@@ -35,7 +35,7 @@ export function SolutionsGrid({ sectors }: SolutionsGridProps) {
                         return (
                             <div
                                 key={index}
-                                className="group relative h-44 w-full overflow-hidden rounded-2xl shadow-md block isolate"
+                                className="group relative h-36 w-full overflow-hidden rounded-2xl shadow-md block isolate"
                             >
                                 {/* Main Sector Link (Background Cover) */}
                                 <Link
