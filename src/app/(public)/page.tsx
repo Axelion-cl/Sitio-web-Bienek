@@ -16,7 +16,7 @@ export default function Home() {
       slug: "soluciones-generales-de-higiene",
       title: t.sectores.higiene.title,
       description: t.sectores.higiene.description,
-      image: "/assets/images/solutions/jardines.png",
+      image: "/assets/images/solutions/jardines.webp",
       featuredFamilies: ["papeles", "jabones", "dispensadores"]
     },
     {
@@ -24,7 +24,7 @@ export default function Home() {
       slug: "soluciones-especializadas-sector-industrial-y-almacenaje",
       title: t.sectores.industrial.title,
       description: t.sectores.industrial.description,
-      image: "/assets/images/solutions/industria.png",
+      image: "/assets/images/solutions/industria.webp",
       featuredFamilies: ["desengrasantes", "epp"]
     },
     {
@@ -32,7 +32,7 @@ export default function Home() {
       slug: "soluciones-especializadas-sector-salud",
       title: t.sectores.salud.title,
       description: t.sectores.salud.description,
-      image: "/assets/images/solutions/salud.png",
+      image: "/assets/images/solutions/salud.webp",
       featuredFamilies: ["desinfectantes-hosp", "insumos-medicos"]
     },
     {
@@ -40,7 +40,7 @@ export default function Home() {
       slug: "soluciones-especializadas-sector-institucional",
       title: t.sectores.institucional.title,
       description: t.sectores.institucional.description,
-      image: "/assets/images/solutions/oficinas.png",
+      image: "/assets/images/solutions/oficinas.webp",
       featuredFamilies: ["papeles", "dispensadores"]
     },
     {
@@ -48,7 +48,7 @@ export default function Home() {
       slug: "soluciones-especializadas-sector-educacion",
       title: t.sectores.educacion.title,
       description: t.sectores.educacion.description,
-      image: "/assets/images/solutions/educacion.png",
+      image: "/assets/images/solutions/educacion.webp",
       featuredFamilies: ["jabones", "papeles"]
     },
     {
@@ -56,7 +56,7 @@ export default function Home() {
       slug: "soluciones-para-embarcaciones",
       title: t.sectores.embarcaciones.title,
       description: t.sectores.embarcaciones.description,
-      image: "/assets/images/solutions/embarcaciones.png",
+      image: "/assets/images/solutions/embarcaciones.webp",
       featuredFamilies: []
     },
     {
@@ -64,7 +64,7 @@ export default function Home() {
       slug: "soluciones-especializadas-sector-horeca",
       title: t.sectores.horeca.title,
       description: t.sectores.horeca.description,
-      image: "/assets/images/solutions/horeca.png",
+      image: "/assets/images/solutions/horeca.webp",
       featuredFamilies: ["cafe", "vajilla"]
     },
     {
@@ -72,7 +72,7 @@ export default function Home() {
       slug: "soluciones-especializadas-sector-veterinario",
       title: t.sectores.veterinario.title,
       description: t.sectores.veterinario.description,
-      image: "/assets/images/solutions/veterinaria.png",
+      image: "/assets/images/solutions/veterinaria.webp",
       featuredFamilies: []
     },
     {
@@ -80,7 +80,7 @@ export default function Home() {
       slug: "tratamiento-de-agua",
       title: t.sectores.aguas.title,
       description: t.sectores.aguas.description,
-      image: "/assets/images/solutions/aguas.png",
+      image: "/assets/images/solutions/aguas.webp",
       featuredFamilies: []
     },
     {
@@ -88,7 +88,7 @@ export default function Home() {
       slug: "equipamientos-de-maquinaria",
       title: t.sectores.maquinaria.title,
       description: t.sectores.maquinaria.description,
-      image: "/assets/images/solutions/maquinaria.png",
+      image: "/assets/images/solutions/maquinaria.webp",
       featuredFamilies: []
     },
     {
@@ -96,7 +96,7 @@ export default function Home() {
       slug: "equipamiento-accesorios",
       title: t.sectores.accesorios.title,
       description: t.sectores.accesorios.description,
-      image: "/assets/images/solutions/limpieza-general.png",
+      image: "/assets/images/solutions/limpieza-general.webp",
       featuredFamilies: []
     },
     {

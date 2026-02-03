@@ -49,6 +49,9 @@ export function SolutionsGrid({ sectors }: SolutionsGridProps) {
                                     src={sector.image}
                                     alt={sector.title}
                                     fill
+                                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                    quality={85}
+                                    loading="lazy"
                                     className="object-cover blur-on-hover group-hover:scale-110 -z-10"
                                 />
 

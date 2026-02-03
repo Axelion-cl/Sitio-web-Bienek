@@ -12,21 +12,25 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 0); // No mostrar errores en el output para no romper JSON
 
-// Configuración del Correo de Destino
-// ¡IMPORTANTE! Cambiar este correo por el real de la empresa
-$DESTINATION_EMAIL = 'marketing@bienek.cl';
-
-// CORS headers para permitir solicitudes desde el sitio web (localhost y dominio real)
+// CORS headers MÁS IMPORTANTES - Deben ir primero que todo
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, X-Requested-With");
 header('Content-Type: application/json; charset=utf-8');
 
-// Handle preflight request
+// Handle preflight request (OPTIONS) - Responder y salir INMEDIATAMENTE
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
+
+// Configuración de Correos de Destino (Routing)
+$CONTACT_EMAIL = 'contacto.web@bienek.cl';
+$CAREERS_EMAIL = 'postulaciones.web@bienek.cl';
+
+// Determine destination based on type
+$type = isset($_POST['type']) ? $_POST['type'] : 'contact';
+$DESTINATION_EMAIL = ($type === 'application') ? $CAREERS_EMAIL : $CONTACT_EMAIL;
 
 // Only allow POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -38,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Configuration
 $TURNSTILE_SECRET_KEY = '0x4AAAAAACOOO6Bko1rAU6ph-HgkTwMAUhU'; // Replace with actual secret key
 
-// Verify Turnstile Token
+// Verify Turnstile Token using cURL (More robust than file_get_contents)
 function verifyTurnstile($token, $secretKey)
 {
     $url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
@@ -48,16 +52,23 @@ function verifyTurnstile($token, $secretKey)
         'remoteip' => $_SERVER['REMOTE_ADDR']
     ];
 
-    $options = [
-        'http' => [
-            'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method' => 'POST',
-            'content' => http_build_query($data)
-        ]
-    ];
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
-    $context = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
+    $result = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        // Log error silently if needed, or just return false
+        curl_close($ch);
+        return false;
+    }
+
+    curl_close($ch);
 
     if ($result === FALSE)
         return false;
@@ -111,8 +122,6 @@ if ($type !== 'order') {
 }
 
 // Get form data
-$type = isset($_POST['type']) ? $_POST['type'] : 'contact'; // 'contact' or 'application'
-
 // Sanitización básica
 $name = isset($_POST['name']) ? htmlspecialchars($_POST['name'], ENT_QUOTES, 'UTF-8') : '';
 $raw_email = isset($_POST['email']) ? trim($_POST['email']) : '';
@@ -147,61 +156,164 @@ $email = $raw_email;
 
 // Build HTML email
 $date = date('d/m/Y H:i');
-$title = match ($type) {
-    'application' => '🚀 Nueva Postulación',
-    'order' => '📦 Nueva Solicitud de Pedido',
-    default => '📬 Nueva Consulta de Contacto'
-};
+// Determine title based on type (PHP 7.2 compatible)
+switch ($type) {
+    case 'application':
+        $title = '🚀 Nueva Postulación';
+        break;
+    case 'order':
+        $title = '📦 Nueva Solicitud de Pedido';
+        break;
+    default:
+        $title = '📬 Nueva Consulta de Contacto';
+        break;
+}
 
-$htmlBody = <<<HTML
+// Build HTML email using Output Buffering (Safer than Heredoc)
+ob_start();
+?>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .header { background-color: #1a365d; background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 100%); color: #ffffff; padding: 30px; text-align: center; }
-        .header h1 { margin: 0; font-size: 24px; font-weight: 600; color: #ffffff; }
-        .header p { margin: 10px 0 0; opacity: 0.9; font-size: 14px; color: #ffffff; }
-        .content { padding: 30px; }
-        .field { margin-bottom: 20px; }
-        .field-label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .field-value { font-size: 16px; color: #333; padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #ecec00; }
-        .message-box { background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #ecec00; margin-top: 10px; }
-        .message-box p { margin: 0; line-height: 1.6; color: #333; white-space: pre-wrap; }
-        .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #666; }
-        .highlight { display: inline-block; background: #ecec00; color: #1a365d; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
-        .attachment-notice { background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px; padding: 12px; margin-top: 20px; text-align: center; color: #2e7d32; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background-color: #1a365d;
+            background: linear-gradient(135deg, #1a365d 0%, #2d4a7c 100%);
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .field-value {
+            font-size: 16px;
+            color: #333;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #ecec00;
+        }
+
+        .message-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ecec00;
+            margin-top: 10px;
+        }
+
+        .message-box p {
+            margin: 0;
+            line-height: 1.6;
+            color: #333;
+            white-space: pre-wrap;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .highlight {
+            display: inline-block;
+            background: #ecec00;
+            color: #1a365d;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .attachment-notice {
+            background: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 20px;
+            text-align: center;
+            color: #2e7d32;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
-            <h1>{$title}</h1>
-            <p>Recibido el {$date}</p>
+            <h1><?php echo $title; ?></h1>
+            <p>Recibido el <?php echo $date; ?></p>
         </div>
         <div class="content">
             <div class="field">
                 <div class="field-label">Nombre Completo</div>
-                <div class="field-value">{$name}</div>
+                <div class="field-value"><?php echo $name; ?></div>
             </div>
             <div class="field">
                 <div class="field-label">Correo Electrónico</div>
-                <div class="field-value"><a href="mailto:{$email}" style="color: #1a365d;">{$email}</a></div>
+                <div class="field-value"><a href="mailto:<?php echo $email; ?>"
+                        style="color: #1a365d;"><?php echo $email; ?></a></div>
             </div>
             <div class="field">
-                <div class="field-label">{$field3_label}</div>
-                <div class="field-value">{$field3_value}</div>
+                <div class="field-label"><?php echo $field3_label; ?></div>
+                <div class="field-value"><?php echo $field3_value; ?></div>
             </div>
             <div class="field">
                 <div class="field-label">Teléfono</div>
-                <div class="field-value"><a href="tel:{$phone}" style="color: #1a365d;">{$phone}</a></div>
+                <div class="field-value"><a href="tel:<?php echo $phone; ?>"
+                        style="color: #1a365d;"><?php echo $phone; ?></a></div>
             </div>
             <div class="field">
                 <div class="field-label">Mensaje / Presentación</div>
                 <div class="message-box">
-                    <p>{$message}</p>
+                    <p><?php echo $message; ?></p>
                 </div>
             </div>
             {{ATTACHMENT_NOTICE}}
@@ -211,8 +323,11 @@ $htmlBody = <<<HTML
         </div>
     </div>
 </body>
+
 </html>
-HTML;
+<?php
+$htmlBody = ob_get_clean();
+
 
 // Check for attachment
 $hasAttachment = false;
@@ -241,7 +356,7 @@ if ($type === 'application') {
     $subject = "Nueva consulta de: {$name} - {$field3_value}";
 }
 
-$headers = "From: Bienek Web <noreply@axelion.cl>\r\n";
+$headers = "From: Bienek Web <no-reply@bienek.cl>\r\n";
 $headers .= "Reply-To: {$email}\r\n";
 $headers .= "MIME-Version: 1.0\r\n";
 
