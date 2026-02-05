@@ -62,7 +62,7 @@ export default function ContactoPage() {
                                         </div>
                                         <div>
                                             <span className="block text-sm font-bold text-gray-900 mb-1">{t.contactoPage.ventas}</span>
-                                            <a href="mailto:ventas@bienek.cl" className="text-gray-600 hover:text-primary transition-colors">ventas@bienek.cl</a>
+                                            <a href="mailto:contacto.web@bienek.cl" className="text-gray-600 hover:text-primary transition-colors">contacto.web@bienek.cl</a>
                                         </div>
                                     </li>
                                 </ul>
