@@ -49,7 +49,9 @@ export function Footer() {
                             <p>{t.header.horario}</p>
                             <p>Lunes A Viernes De 8:00 A 18:00.</p>
                         </div>
-                        <p>{t.miCuenta.correoElectronico} contacto.web@bienek.cl</p>
+                        <p>
+                            {t.miCuenta.correoElectronico} <a href="mailto:contacto.web@bienek.cl" className="hover:text-primary transition-colors">contacto.web@bienek.cl</a>
+                        </p>
                     </div>
                 </div>
 
