@@ -36,6 +36,8 @@ interface Client {
     status: string;
     registration_date: string;
     temp_password?: string | null;
+    last_order_date?: string | null;
+    has_active_order?: boolean;
 }
 
 export default function ClientsPage() {
@@ -322,13 +324,14 @@ export default function ClientsPage() {
                                     <th className="px-6 py-3">Cliente</th>
                                     <th className="px-6 py-3">Contacto</th>
                                     <th className="px-6 py-3">Registro</th>
-                                    <th className="px-6 py-3">Estado</th>
+                                    <th className="px-6 py-3">Última Orden</th>
+                                    <th className="px-6 py-3 text-center">Orden Activa</th>
                                     <th className="px-6 py-3 text-right">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {clients.length === 0 ? (
-                                    <tr><td colSpan={5} className="text-center py-8 text-gray-500">No hay clientes registrados.</td></tr>
+                                    <tr><td colSpan={6} className="text-center py-8 text-gray-500">No hay clientes registrados.</td></tr>
                                 ) : clients.map((client) => (
                                     <tr key={client.id} className="hover:bg-gray-50 border-b border-gray-100 last:border-0">
                                         <td className="px-6 py-4">
@@ -341,10 +344,26 @@ export default function ClientsPage() {
                                         </td>
                                         <td className="px-6 py-4 text-gray-500">{new Date(client.registration_date).toLocaleDateString()}</td>
                                         <td className="px-6 py-4">
-                                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${client.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
-                                                }`}>
-                                                {client.status === 'active' ? 'Activo' : 'Inactivo'}
-                                            </span>
+                                            {client.last_order_date ? (
+                                                <span className="text-gray-900 font-medium">
+                                                    {new Date(client.last_order_date).toLocaleDateString()}
+                                                </span>
+                                            ) : (
+                                                <span className="text-gray-400 text-xs italic">
+                                                    Sin pedidos
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            {client.has_active_order ? (
+                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Sí
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                    No
+                                                </span>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex justify-end gap-2">
@@ -678,6 +697,7 @@ export default function ClientsPage() {
                 clientId={selectedClientOrders?.id || ''}
                 clientName={selectedClientOrders?.name || ''}
                 currentUserEmail={currentUser?.email || 'admin'}
+                onOrdersChange={fetchData}
             />
         </div>
     );

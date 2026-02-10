@@ -13,9 +13,10 @@ interface ClientOrdersModalProps {
     clientId: string;
     clientName: string;
     currentUserEmail: string; // For audit logging
+    onOrdersChange?: () => void; // Notify parent of changes
 }
 
-export function ClientOrdersModal({ isOpen, onClose, clientId, clientName, currentUserEmail }: ClientOrdersModalProps) {
+export function ClientOrdersModal({ isOpen, onClose, clientId, clientName, currentUserEmail, onOrdersChange }: ClientOrdersModalProps) {
     const [orders, setOrders] = useState<OrderWithItems[]>([]);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState<string | null>(null); // Order ID being updated
@@ -43,6 +44,8 @@ export function ClientOrdersModal({ isOpen, onClose, clientId, clientName, curre
             setOrders(prev => prev.map(order =>
                 order.id === orderId ? { ...order, status: newStatus } : order
             ));
+            // Notify parent
+            if (onOrdersChange) onOrdersChange();
         } else {
             alert('Error al actualizar el estado: ' + result.error);
         }
@@ -57,6 +60,8 @@ export function ClientOrdersModal({ isOpen, onClose, clientId, clientName, curre
 
         if (result.success) {
             setOrders(prev => prev.filter(o => o.id !== orderId));
+            // Notify parent
+            if (onOrdersChange) onOrdersChange();
         } else {
             alert('Error al eliminar la orden: ' + result.error);
         }

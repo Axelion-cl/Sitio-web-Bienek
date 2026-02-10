@@ -81,6 +81,8 @@ export interface Client {
     status: string;     // 'active' or 'inactive' - we can derive from profile
     registration_date: string; // from created_at
     temp_password?: string | null; // Nuevo campo para visualización temporal
+    last_order_date?: string | null; // Fecha de la última orden
+    has_active_order?: boolean; // Si tiene alguna orden en estado 'activa'
 }
 
 /**
@@ -98,6 +100,30 @@ export async function getClients(): Promise<Client[]> {
         return [];
     }
 
+    // Fetch all orders to determine last order date and active status
+    const { data: orders } = await supabase
+        .from('orders')
+        .select('user_id, created_at, status')
+        .order('created_at', { ascending: false });
+
+    // Create maps for user_id -> last_order_date and active_order_status
+    const lastOrderMap = new Map<string, string>();
+    const activeOrderMap = new Map<string, boolean>();
+
+    if (orders) {
+        orders.forEach(order => {
+            // Last order date (first one found is latest due to sort)
+            if (order.user_id && !lastOrderMap.has(order.user_id)) {
+                lastOrderMap.set(order.user_id, order.created_at);
+            }
+
+            // Check for active order
+            if (order.user_id && order.status === 'activa') {
+                activeOrderMap.set(order.user_id, true);
+            }
+        });
+    }
+
     // Map user_profiles to Client interface
     return (profiles || []).map(profile => ({
         id: profile.id,
@@ -107,7 +133,9 @@ export async function getClients(): Promise<Client[]> {
         phone: profile.phone || '',
         status: 'active', // All registered users are active by default
         registration_date: profile.created_at,
-        temp_password: profile.temp_password || null
+        temp_password: profile.temp_password || null,
+        last_order_date: lastOrderMap.get(profile.id) || null,
+        has_active_order: activeOrderMap.get(profile.id) || false
     }));
 }
 
