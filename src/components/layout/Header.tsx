@@ -276,7 +276,7 @@ export function Header() {
                         </span>
                         <div className="flex items-center">
                             <Image
-                                src="/assets/images/lema-bienek.png"
+                                src="/assets/images/lema-bienek.webp"
                                 alt="Sello Bienek"
                                 width={50}
                                 height={50}

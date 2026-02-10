@@ -109,7 +109,7 @@ export default function TagsPage() {
             } else if (activeTab === 'brands') {
                 result = editingItem
                     ? await updateBrand(editingItem.id, { name: formData.name, logo: formData.logo })
-                    : await createBrand({ name: formData.name, logo: formData.logo || '/assets/images/logos/3M.png' });
+                    : await createBrand({ name: formData.name, logo: formData.logo || '/assets/images/logos/3M.webp' });
             } else if (activeTab === 'badges') {
                 result = editingItem
                     ? await updateBadge(editingItem.id, { name: formData.name, color: formData.color })

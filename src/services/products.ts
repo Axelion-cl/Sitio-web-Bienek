@@ -164,7 +164,7 @@ export async function searchProducts(query: string, limit: number = 10): Promise
         name: row.name,
         brand: row.brand || '',
         brandLogo: row.brand_logo || '',
-        image: row.images?.[0] || '/assets/images/solutions/limpieza-general.png',
+        image: row.images?.[0] || '/assets/images/solutions/limpieza-general.webp',
         sectorId: row.product_sectors?.[0]?.sector_id || null
     }));
 }

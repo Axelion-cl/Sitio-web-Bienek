@@ -6,7 +6,7 @@ import { PromoGrid } from "@/components/promociones/PromoGrid";
 const promoBanner = {
     title: 'Nueva Línea Profesional',
     description: 'Descubre nuestra exclusiva colección de productos certificados para el sector hospitalario. Mayor eficacia, mayor seguridad.',
-    image: '/assets/images/blog-placeholder.png',
+    image: '/assets/images/blog-placeholder.webp',
     backgroundColor: '#1a365d',
     buttonText: 'Conocer Más',
     buttonLink: '/soluciones/salud',

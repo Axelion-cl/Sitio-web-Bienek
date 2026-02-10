@@ -7,7 +7,7 @@ export function HeroSection() {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/assets/images/home/hero.png"
+                    src="/assets/images/home/hero.webp"
                     alt="Bienek Hero Background"
                     fill
                     className="object-cover brightness-75"

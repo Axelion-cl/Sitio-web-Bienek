@@ -5,17 +5,17 @@ export function ValueCards() {
         {
             title: "Consultoría Especializada",
             description: "Enfoque en diagnóstico profesional para su empresa.",
-            image: "/assets/images/value-cards/consultoria.jpg",
+            image: "/assets/images/value-cards/consultoria.webp",
         },
         {
             title: "Cobertura Logística",
             description: "Distribución eficiente desde la RM hasta la X Región.",
-            image: "/assets/images/value-cards/logistica.png",
+            image: "/assets/images/value-cards/logistica.webp",
         },
         {
             title: "Soluciones de Higiene",
             description: "Representación de marcas líderes en el mercado.",
-            image: "/assets/images/value-cards/higiene.jpg",
+            image: "/assets/images/value-cards/higiene.webp",
         },
     ];
 

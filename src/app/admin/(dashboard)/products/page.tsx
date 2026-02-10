@@ -123,7 +123,7 @@ export default function AdminProductsPage() {
                                         <td className="px-6 py-4">
                                             <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
                                                 <Image
-                                                    src={product.images[0] || '/assets/images/placeholder.png'}
+                                                    src={product.images[0] || '/assets/images/blog-placeholder.webp'}
                                                     alt={product.name}
                                                     fill
                                                     className="object-cover"

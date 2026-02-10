@@ -16,7 +16,7 @@ export default function EmpresaPage() {
                         {/* Imagen */}
                         <div className="w-full md:w-5/12 relative h-[280px] md:h-[350px] rounded-2xl overflow-hidden shadow-lg">
                             <Image
-                                src="/assets/images/empresa/trayectoria.png"
+                                src="/assets/images/empresa/trayectoria.webp"
                                 alt="Equipo de logística Bienek en almacén"
                                 fill
                                 className="object-cover hover:scale-105 transition-transform duration-700"
@@ -43,7 +43,7 @@ export default function EmpresaPage() {
                         {/* Imagen */}
                         <div className="w-full md:w-5/12 relative h-[280px] md:h-[350px] rounded-2xl overflow-hidden shadow-lg">
                             <Image
-                                src="/assets/images/empresa/vision.png"
+                                src="/assets/images/empresa/vision.webp"
                                 alt="Visión de higiene profesional y soluciones integrales"
                                 fill
                                 className="object-cover hover:scale-105 transition-transform duration-700"
@@ -76,7 +76,7 @@ export default function EmpresaPage() {
                         {/* Imagen */}
                         <div className="w-full md:w-5/12 relative h-[280px] md:h-[350px] rounded-2xl overflow-hidden shadow-lg bg-gray-100 flex items-center justify-center">
                             <Image
-                                src="/assets/images/empresa/trayectoria.png"
+                                src="/assets/images/empresa/trayectoria.webp"
                                 alt="Nuestra Misión Bienek"
                                 fill
                                 className="object-cover hover:scale-105 transition-transform duration-700"

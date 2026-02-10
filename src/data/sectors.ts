@@ -17,7 +17,7 @@ export const sectors: Sector[] = [
         description: "Productos esenciales para la limpieza diaria.",
         fullDescription: "En Bienek entendemos que la higiene fundamental es la base de cualquier operación segura y eficiente. Nuestra línea de soluciones generales abarca desde detergentes de alto rendimiento hasta implementos de limpieza ergonómicos, diseñados para maximizar la productividad y garantizar espacios impecables.",
         icon: "/assets/icons/higiene.svg",
-        image: "/assets/images/solutions/jardines.png",
+        image: "/assets/images/solutions/jardines.webp",
         featuredFamilies: ["papeles", "jabones", "dispensadores"]
     },
     {
@@ -27,7 +27,7 @@ export const sectors: Sector[] = [
         description: "Limpieza profunda para entornos exigentes.",
         fullDescription: "El sector industrial requiere soluciones robustas que puedan enfrentar grasa, aceites y suciedad pesada. Ofrecemos productos químicos especializados y maquinaria de última generación para mantener sus plantas y almacenes operativos y seguros.",
         icon: "/assets/icons/industrial.svg",
-        image: "/assets/images/solutions/industria.png",
+        image: "/assets/images/solutions/industria.webp",
         featuredFamilies: ["desengrasantes", "epp"]
     },
     {
@@ -37,7 +37,7 @@ export const sectors: Sector[] = [
         description: "Higiene crítica para clínicas y hospitales.",
         fullDescription: "En el sector salud, la limpieza salva vidas. Nuestras soluciones cumplen con los más altos estándares de desinfección y esterilización, ayudando a prevenir infecciones asociadas a la atención de salud (IAAS) y protegiendo tanto a pacientes como a personal médico.",
         icon: "/assets/icons/salud.svg",
-        image: "/assets/images/solutions/salud.png",
+        image: "/assets/images/solutions/salud.webp",
         featuredFamilies: ["desinfectantes-hosp", "insumos-medicos"]
     },
     {
@@ -47,7 +47,7 @@ export const sectors: Sector[] = [
         description: "Limpieza para oficinas y edificios públicos.",
         fullDescription: "Mantenemos la imagen corporativa y el bienestar de los empleados con soluciones discretas y efectivas para oficinas, bancos y edificios gubernamentales. Aromatización, limpieza de alfombras y gestión de residuos.",
         icon: "/assets/icons/institucional.svg",
-        image: "/assets/images/solutions/oficinas.png",
+        image: "/assets/images/solutions/oficinas.webp",
         featuredFamilies: ["papeles", "dispensadores"]
     },
     {
@@ -57,7 +57,7 @@ export const sectors: Sector[] = [
         description: "Ambientes seguros para el aprendizaje.",
         fullDescription: "Desde jardines infantiles hasta universidades, garantizamos espacios limpios que promueven la salud y reducen el ausentismo. Productos seguros, no tóxicos y sistemas de higiene para baños de alto tráfico.",
         icon: "/assets/icons/educacion.svg",
-        image: "/assets/images/solutions/educacion.png",
+        image: "/assets/images/solutions/educacion.webp",
         featuredFamilies: ["jabones", "papeles"]
     },
     {
@@ -67,7 +67,7 @@ export const sectors: Sector[] = [
         description: "Variedad de suministros para su espacio de trabajo.",
         fullDescription: "Proveemos una gama completa de artículos de oficina para mantener su equipo productivo y organizado. Papel, lápices, carpetas, tecnología básica y todo lo necesario para la operación diaria.",
         icon: "/assets/icons/oficina.svg",
-        image: "/assets/images/solutions/articulos-oficina.jpg",
+        image: "/assets/images/solutions/articulos-oficina.webp",
         featuredFamilies: ["papeles"]
     },
     {
@@ -77,7 +77,7 @@ export const sectors: Sector[] = [
         description: "Impecabilidad para Hoteles, Restaurantes y Catering.",
         fullDescription: "La limpieza es la carta de presentación en la hospitalidad. Ofrecemos soluciones integrales para cocina, housekeeping y lavandería, garantizando la seguridad alimentaria y la satisfacción total del huésped.",
         icon: "/assets/icons/horeca.svg",
-        image: "/assets/images/solutions/horeca.png",
+        image: "/assets/images/solutions/horeca.webp",
         featuredFamilies: ["cafe", "vajilla"]
     },
     {
@@ -87,7 +87,7 @@ export const sectors: Sector[] = [
         description: "Desinfección segura para clínicas veterinarias.",
         fullDescription: "Productos específicos que eliminan patógenos animales (parvovirus, distemper) sin dañar a las mascotas. Control de olores potente y desinfección de quirófanos y caniles.",
         icon: "/assets/icons/veterinario.svg",
-        image: "/assets/images/solutions/veterinaria.png",
+        image: "/assets/images/solutions/veterinaria.webp",
         featuredFamilies: []
     },
     {
@@ -97,7 +97,7 @@ export const sectors: Sector[] = [
         description: "Herramientas manuales de alto rendimiento.",
         fullDescription: "Desde carros de limpieza ergonómicos hasta paños de microfibra de última tecnología. Proveemos todas las herramientas necesarias para facilitar el trabajo del personal de limpieza.",
         icon: "/assets/icons/accesorios.svg",
-        image: "/assets/images/solutions/limpieza-general.png",
+        image: "/assets/images/solutions/limpieza-general.webp",
         featuredFamilies: []
     },
     {
@@ -107,7 +107,7 @@ export const sectors: Sector[] = [
         description: "Tecnología para grandes superficies.",
         fullDescription: "Venta y arriendo de aspiradoras industriales, restregadoras, barredoras e hidrolavadoras top de línea para maximizar la eficiencia en grandes áreas.",
         icon: "/assets/icons/maquinaria.svg",
-        image: "/assets/images/solutions/maquinaria.png",
+        image: "/assets/images/solutions/maquinaria.webp",
         featuredFamilies: []
     },
     {
@@ -117,7 +117,7 @@ export const sectors: Sector[] = [
         description: "Soluciones químicas para calidad del agua.",
         fullDescription: "Polímeros, coagulantes y desinfectantes para el tratamiento de aguas industriales y potables, asegurando el cumplimiento normativo y la sostenibilidad.",
         icon: "/assets/icons/aguas.svg",
-        image: "/assets/images/solutions/aguas.png",
+        image: "/assets/images/solutions/aguas.webp",
         featuredFamilies: []
     },
     {
@@ -127,7 +127,7 @@ export const sectors: Sector[] = [
         description: "Limpieza especializada marítima.",
         fullDescription: "Productos biodegradables certificados para uso marítimo. Limpieza de sentinas, cubiertas y camarotes, cumpliendo con las estrictas normas ambientales del sector.",
         icon: "/assets/icons/embarcaciones.svg",
-        image: "/assets/images/solutions/embarcaciones.png",
+        image: "/assets/images/solutions/embarcaciones.webp",
         featuredFamilies: []
     },
 ];

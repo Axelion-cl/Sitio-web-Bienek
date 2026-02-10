@@ -34,7 +34,7 @@ export function ProductForm({ initialData, isEditing = false }: ProductFormProps
         familyIds: initialData?.familyIds || [],
         badges: initialData?.badges || [],
         description: initialData?.description || '',
-        images: initialData?.images || ['/assets/images/solutions/limpieza-general.png'],
+        images: initialData?.images || ['/assets/images/solutions/limpieza-general.webp'],
         specs: initialData?.specs || {},
         brand_logo: initialData?.brand_logo || ''
     });
