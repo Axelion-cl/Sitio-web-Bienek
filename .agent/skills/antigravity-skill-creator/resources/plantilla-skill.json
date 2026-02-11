@@ -1,0 +1,52 @@
+{
+  "nombre_skill": "[nombre-en-gerundio]",
+  "descripcion": "[descripción en tercera persona]",
+  "disparadores": [
+    "[palabra clave 1]",
+    "[palabra clave 2]",
+    "[palabra clave 3]"
+  ],
+  "estructura": {
+    "carpetas_opcionales": {
+      "scripts": "Scripts auxiliares y herramientas",
+      "examples": "Ejemplos de uso y casos de referencia",
+      "resources": "Plantillas, configuraciones y recursos"
+    }
+  },
+  "frontmatter": {
+    "name": {
+      "formato": "gerundio",
+      "max_caracteres": 64,
+      "caracteres_permitidos": "a-z, 0-9, -",
+      "prohibido": ["claude", "anthropic", "gemini"]
+    },
+    "description": {
+      "perspectiva": "tercera persona",
+      "max_caracteres": 1024,
+      "debe_incluir": "disparadores y palabras clave"
+    }
+  },
+  "mejores_practicas": {
+    "concision": "Asume inteligencia del agente, no expliques conceptos básicos",
+    "max_lineas": 500,
+    "rutas": "Siempre usar / nunca \\",
+    "idioma": "español"
+  },
+  "grados_libertad": {
+    "alta": "Viñetas para heurísticas",
+    "media": "Bloques de código para plantillas",
+    "baja": "Comandos bash específicos para operaciones frágiles"
+  },
+  "checklist_calidad": [
+    "Frontmatter YAML válido",
+    "Nombre en gerundio descriptivo",
+    "Descripción con disparadores claros",
+    "Contenido en español",
+    "Rutas con /",
+    "Menos de 500 líneas",
+    "Grados de libertad correctos",
+    "Ejemplos claros de uso",
+    "Scripts con instrucciones",
+    "Sin referencias a Claude/Anthropic"
+  ]
+}
