@@ -107,7 +107,7 @@ export async function deleteProduct(id: string) {
 }
 
 // Helper: Compress image before upload using Canvas
-async function compressImage(file: File, targetFormat: 'image/jpeg' | 'image/png'): Promise<Blob> {
+async function compressImage(file: File, targetFormat: 'image/jpeg' | 'image/png' | 'image/webp'): Promise<Blob> {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -116,8 +116,8 @@ async function compressImage(file: File, targetFormat: 'image/jpeg' | 'image/png
             img.src = event.target?.result as string;
             img.onload = () => {
                 const canvas = document.createElement('canvas');
-                // Logos usually smaller, products larger.
-                const MAX_WIDTH = targetFormat === 'image/png' ? 800 : 1200;
+                // Optimization Goal: Max 1000px for products to keep size low (<200KB)
+                const MAX_WIDTH = (targetFormat === 'image/png' || targetFormat === 'image/webp') ? 1000 : 1200;
                 let width = img.width;
                 let height = img.height;
 
@@ -141,16 +141,15 @@ async function compressImage(file: File, targetFormat: 'image/jpeg' | 'image/png
                     ctx.fillStyle = '#FFFFFF';
                     ctx.fillRect(0, 0, width, height);
                 } else {
-                    // Clear for transparency
+                    // Clear for transparency (PNG/WebP)
                     ctx.clearRect(0, 0, width, height);
                 }
 
                 ctx.drawImage(img, 0, 0, width, height);
 
                 // Compress
-                // PNG compression quality argument in toBlob is often ignored by browsers, but we pass it anyway.
-                // JPEG respects it (0.8).
-                const quality = targetFormat === 'image/jpeg' ? 0.8 : 1.0;
+                // WebP at 0.8 quality offers excellent size reduction while maintaining visual fidelity
+                const quality = targetFormat === 'image/png' ? 1.0 : 0.8;
 
                 canvas.toBlob(
                     (blob) => {
@@ -186,9 +185,10 @@ export async function uploadProductImage(
             console.log(`Original size: ${(file.size / 1024).toFixed(2)} KB`);
 
             // Determine target format
-            // If it's a logo AND original is PNG, keep PNG. Otherwise JPEG.
+            // If it's a logo AND original is PNG, keep PNG (for email compatibility).
+            // For ALL products, force WebP to save space (Supabase Storage Limit).
             const isPng = file.type === 'image/png';
-            const targetFormat = (options.isLogo && isPng) ? 'image/png' : 'image/jpeg';
+            const targetFormat = (options.isLogo && isPng) ? 'image/png' : 'image/webp';
 
             try {
                 const compressedBlob = await compressImage(file, targetFormat);
@@ -200,6 +200,9 @@ export async function uploadProductImage(
                 if (targetFormat === 'image/png') {
                     fileExt = 'png';
                     contentType = 'image/png';
+                } else if (targetFormat === 'image/webp') {
+                    fileExt = 'webp';
+                    contentType = 'image/webp';
                 } else {
                     fileExt = 'jpg';
                     contentType = 'image/jpeg';

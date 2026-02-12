@@ -256,8 +256,9 @@ export function MiPerfil() {
                 ) : (
                     <button
                         onClick={() => setShowPasswordForm(true)}
-                        className="text-primary hover:underline text-sm"
+                        className="flex items-center gap-2 bg-white text-gray-900 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors shadow-sm font-medium"
                     >
+                        <Lock className="w-4 h-4 text-gray-500" />
                         {t.miCuenta.cambiarMiContrasena}
                     </button>
                 )}

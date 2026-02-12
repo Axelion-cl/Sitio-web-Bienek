@@ -11,7 +11,9 @@ Este documento registra los cambios implementados durante las sesiones de desarr
 - **Reglas del Agente**: Establecidas en `.agent/rules.md` para garantizar el uso correcto del stack (Static Export, No Server Actions, Español).
 - **Limpieza**: Archivados `ORCHESTRATOR_AGENT_CONTEXT.md` y `PRD Sitio web Bienek` en `docs/archive/legacy_context/`.
 - **Limpieza Adicional**: Se migraron reglas de negocio críticas (Lead Conversion) de `Flujo_comun.md` al Contexto y se archivaron archivos obsoletos (`backend_migration`, `implementation_plans`, etc.) en `docs/archive/legacy_context/`.
+
 - **Auditoría**: Se validó el stack actual (Next.js 16, Supabase, PHP Bridge) y se corrigieron imprecisiones en rutas y funcionalidades.
+- **Limitaciones**: Se documentaron explícitamente las restricciones del plan Free de Supabase (DB 500MB, Storage 1GB, Pausa por inactividad) en el Documento Maestro.
 
 ---
 

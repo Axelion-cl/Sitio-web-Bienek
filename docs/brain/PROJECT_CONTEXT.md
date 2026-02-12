@@ -17,6 +17,10 @@ Este documento es la **Fuente Única de Verdad (Single Source of Truth)** para e
 | **Imágenes** | Sharp + Canvas | Optimización a WebP en build y compresión client-side en Admin. |
 
 ### ⚠️ Limitaciones Críticas
+- **Supabase Free Plan**:
+    - **Base de Datos (500MB)**: Límite estricto. Se requiere optimización constante de datos y evitar logs excesivos.
+    - **Storage (1GB)**: Crítico para imágenes de productos. Se usa compresión agresiva (WebP + Resize) antes de subir.
+    - **Pausado por Inactividad**: El proyecto se detiene tras 1 semana sin uso. Se requiere un "ping" periódico o upgrade para producción continua.
 - **NO Server Actions**: Al ser un sitio estático, `'use server'` no funciona. Todo debe ser client-side services (`src/services/`).
 - **Dynamic Routes**: No se soportan rutas dinámicas en runtime. Se utiliza **GenerateStaticParams** para pre-renderizar las páginas de soluciones y productos en el build.
 
