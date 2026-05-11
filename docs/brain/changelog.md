@@ -4,6 +4,43 @@ Este documento registra los cambios implementados durante las sesiones de desarr
 
 ---
 
+## Sesión: 2026-05-11 - Seguridad, Fix Órdenes y Setup MCP Supabase
+
+### Rama: `Sitio-Bienek-Cpanel-Supabase`
+
+### Configuración MCP Supabase
+- Configurado el MCP local de Supabase (`@supabase/mcp-server-supabase`) apuntando al proyecto `sentrbgguudnhmrqeikj` via `claude mcp add`. Permite consultar tablas, ejecutar SQL y revisar migraciones directamente desde Claude Code.
+
+### Inicialización CLAUDE.md
+- Creado `CLAUDE.md` en la raíz del proyecto con arquitectura, comandos, restricciones clave y referencias a documentación. Se agregó instrucción obligatoria de actualizar este changelog al final de cada sesión.
+
+### Fix: Flujo "Contactar Vendedor" (`mi-cuenta/page.tsx`)
+- **Problema**: Al presionar "Contactar vendedor", el sistema intentaba enviar el email vía PHP Bridge primero y solo creaba la orden en Supabase si el email era exitoso. Desde localhost, el fetch fallaba por CORS/Turnstile ausente, lanzando excepción y mostrando "Ocurrió un error al procesar tu solicitud". La orden nunca se creaba.
+- **Solución**: Se invirtió el orden. Ahora: (1) se crea la orden en Supabase primero como fuente de verdad, (2) se intenta el email de forma secundaria y no bloqueante — si falla, la orden ya quedó registrada y el admin la ve igual.
+
+### Seguridad: Mejoras desde rama `Sitio-web-bienek-lite`
+- **`php-bridge/.htaccess`**: Reescrito para bloquear acceso HTTP directo a `config.php` y `test_capabilities.php`. Solo `email.php` es accesible públicamente.
+- **`php-bridge/email.php`**: Refactorizado con las mejoras de seguridad de la rama lite:
+  - CORS estricto usando `ALLOWED_ORIGINS` desde `config.php` (en lugar de `*`)
+  - Headers de seguridad: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Vary: Origin`
+  - `verifyTurnstile()` reescrito con cURL y `SSL_VERIFYPEER: true` (más robusto que `file_get_contents`)
+  - `sanitizeHeaderValue()` para prevenir header injection en subject y Reply-To
+  - Validación de email con rechazo explícito de caracteres de control (`\r\n\t\0`)
+  - Validación de adjuntos con magic bytes (`finfo`) + extensión (no solo MIME del cliente)
+  - Boundary generado con `uniqid()` en lugar de `time()` (menos predecible)
+  - Secretos cargados desde `config.php` (elimina claves hardcodeadas)
+  - Se mantiene el skip de Turnstile para tipo `order` (acción autenticada, no formulario público)
+- **`public/.htaccess`**: Nuevo archivo con headers de seguridad HTTP para despliegues Apache/cPanel (CSP, HSTS, X-Frame, Referrer-Policy, Permissions-Policy).
+- **`vercel.json`**: Nuevo archivo con los mismos headers de seguridad para despliegues Vercel.
+- **`.gitignore`**: Agregado `php-bridge/config.php` para evitar exponer secretos en git.
+- **`FileUpload.tsx`**: Validación por extensión de archivo agregada como capa adicional a la validación MIME (defense-in-depth).
+
+### Gestión de usuarios via MCP Supabase
+- Reset de contraseña de `marketing@bienek.cl` (admin) → `MarketingAdmin2026`
+- Reset de contraseña de `martunchohaas90@gmail.com` (cliente test) y confirmación de email via SQL directo en `auth.users`
+
+---
+
 ## Sesión: 2026-02-11 - Consolidación de Documentación y Contexto
 
 ### Reorganización Documental
