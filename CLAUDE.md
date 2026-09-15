@@ -10,7 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev      # Dev server at http://localhost:3000
 npm run build    # Static export to out/
 npm run lint     # ESLint
-npm start        # Production server (requires Node.js, not used on Hostinger)
+npm start        # Production server (requires Node.js, not used on Mundo Hosting)
 ```
 
 Images must be pre-optimized before build:
@@ -18,17 +18,17 @@ Images must be pre-optimized before build:
 node scripts/optimize-images.mjs   # Converts PNG/JPG → WebP in public/assets/
 ```
 
-Deployment: upload `out/` to `public_html` on Hostinger.
+Deployment: upload `out/` to `public_html` on Mundo Hosting (cPanel).
 
 ---
 
 ## Architecture
 
-**Next.js 16 static export** (`output: 'export'` in `next.config.ts`) — the site builds to plain HTML in `out/` and runs on Hostinger with no Node.js runtime. This has critical implications:
+**Next.js 16 static export** (`output: 'export'` in `next.config.ts`) — the site builds to plain HTML in `out/` and runs on Mundo Hosting (cPanel) with no Node.js runtime. This has critical implications:
 
 - **No Server Actions** (`'use server'` does not work). All DB operations are client-side via Supabase services in `src/services/`.
 - **No runtime dynamic routes**. `/soluciones/[slug]` and `/productos/[id]` use `generateStaticParams` to pre-render at build time.
-- **`next/image` is `unoptimized: true`**. Hostinger doesn't support Next.js image optimization.
+- **`next/image` is `unoptimized: true`**. Mundo Hosting doesn't support Next.js image optimization.
 
 ### Data Layer
 

@@ -11,7 +11,7 @@ Este documento es la **Fuente Única de Verdad (Single Source of Truth)** para e
 | **Frontend** | Next.js 16 + React 19 | Arquitectura de **Static Export** (`output: 'export'`). |
 | **Estilos** | Tailwind CSS 4 | Basado en variables CSS modernas. |
 | **Backend/DB** | Supabase Cloud | PostgreSQL + RLS + Storage. Uso de clave anónima en cliente. |
-| **Hosting** | Hostinger | Despliegue estático en carpeta `public_html`. |
+| **Hosting** | Mundo Hosting (cPanel) | Despliegue estático en carpeta `public_html`. |
 | **Email** | PHP Bridge + SMTP | Bridge en `/api-bienek/email.php` para bypass de CORS. Apuntando a despliegue final en **bienek.cl** (Mundo Hosting). |
 | **Anti-Spam** | Cloudflare Turnstile | Integrado en todos los formularios públicos. |
 | **Imágenes** | Sharp + Canvas | Optimización a WebP en build y compresión client-side en Admin. |
@@ -41,7 +41,7 @@ Este documento es la **Fuente Única de Verdad (Single Source of Truth)** para e
 
 1.  **Static Site Generation (SSG)**: Carga instantánea al servir archivos HTML pre-renderizados.
 2.  **Optimización de Imágenes**:
-    - **Build Time**: Uso de `next/image` con `unoptimized: true` (Hostinger/Mundo Hosting no soportan Image Optimization de Next.js), pero las imágenes se procesan a **WebP** mediante scripts (`scripts/optimize-images.mjs`).
+    - **Build Time**: Uso de `next/image` con `unoptimized: true` (Mundo Hosting no soporta Image Optimization de Next.js), pero las imágenes se procesan a **WebP** mediante scripts (`scripts/optimize-images.mjs`).
     - **Runtime (Admin)**: El servicio de productos comprime y redimensiona imágenes vía Canvas antes de subirlas a Supabase Storage para ahorrar ancho de banda.
 3.  **Fuentes**: Uso de `next/font/google` (Outfit) para evitar layout shift y descargas externas.
 

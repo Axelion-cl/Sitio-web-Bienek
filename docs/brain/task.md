@@ -26,7 +26,7 @@ Consolidar la plataforma para lanzamiento. El sistema backend (Supabase) ya est�
 - [ ] **Generación de Build de Producción**
     - [ ] Ejecutar `npm run build` para validar integridad.
     - [ ] Verificar configuración de imágenes `unoptimized: true`.
-- [ ] **Subida a Hostinger**
+- [ ] **Subida a Mundo Hosting (cPanel)**
     - [ ] Sincronizar carpeta `out/` con `public_html`.
 
 ---
