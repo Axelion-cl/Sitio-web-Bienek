@@ -4,6 +4,30 @@ Este documento registra los cambios implementados durante las sesiones de desarr
 
 ---
 
+## Sesión: 2026-05-11 (continuación 2) - Ajuste visual tabs admin clientes
+
+### Rama: `Sitio-Bienek-Cpanel-Supabase`
+
+### UI: Tabs "Potenciales Clientes / Clientes Actuales"
+- **Cambio**: El color activo de las tabs pasó de amarillo primario (`text-primary`) a escala de grises.
+- **Estados**: default `gray-400` → hover `gray-700` → activo `gray-900` + borde inferior `gray-900`.
+- **Archivo**: `src/app/admin/(dashboard)/clients/page.tsx` (ambos botones de tab).
+
+---
+
+## Sesión: 2026-05-11 (continuación) - Fix Eliminar Cliente Admin
+
+### Rama: `Sitio-Bienek-Cpanel-Supabase`
+
+### Fix: Eliminar cliente en panel admin no funcionaba
+
+- **Problema**: Al eliminar un cliente desde la pestaña "Clientes Actuales" del admin, el cliente seguía apareciendo incluso después de recargar la página. No había mensaje de error.
+- **Causa raíz**: La tabla `user_profiles` tenía RLS policies para SELECT, INSERT y UPDATE, pero **ninguna para DELETE** (excepto `service_role`). `deleteClient()` en `src/services/admin/clients.ts` usa el cliente `supabase` (anon key con JWT del admin). Supabase recibía el DELETE, no encontraba policy que lo autorizara, devolvía `{ error: null }` con 0 filas eliminadas. El código interpretaba eso como éxito.
+- **Solución**: Nueva migración `20260511_allow_admin_delete_user_profiles.sql` que agrega la policy `"Admins delete any user_profile"` — permite DELETE cuando `auth.uid()` tiene `role = 'admin'` en su propio perfil de `user_profiles`. Aplicada vía MCP a Supabase.
+- **Patrón a recordar**: Con RLS, un DELETE no autorizado NO lanza error — devuelve silenciosamente 0 filas afectadas. Siempre verificar que exista una DELETE policy cuando una operación de borrado "funciona" sin error pero no elimina nada.
+
+---
+
 ## Sesión: 2026-05-11 - Seguridad, Fix Órdenes y Setup MCP Supabase
 
 ### Rama: `Sitio-Bienek-Cpanel-Supabase`

@@ -242,7 +242,7 @@ export default function ClientsPage() {
             <div className="flex gap-4 border-b border-gray-200">
                 <button
                     onClick={() => setActiveTab('leads')}
-                    className={`pb-3 px-1 font-medium text-sm transition-colors relative ${activeTab === 'leads' ? 'text-primary border-b-2 border-primary' : 'text-gray-500 hover:text-gray-900'
+                    className={`pb-3 px-1 font-medium text-sm transition-colors relative ${activeTab === 'leads' ? 'text-gray-900 border-b-2 border-gray-900' : 'text-gray-400 hover:text-gray-700'
                         }`}
                 >
                     Potenciales Clientes (Leads)
@@ -252,7 +252,7 @@ export default function ClientsPage() {
                 </button>
                 <button
                     onClick={() => setActiveTab('clients')}
-                    className={`pb-3 px-1 font-medium text-sm transition-colors relative ${activeTab === 'clients' ? 'text-primary border-b-2 border-primary' : 'text-gray-500 hover:text-gray-900'
+                    className={`pb-3 px-1 font-medium text-sm transition-colors relative ${activeTab === 'clients' ? 'text-gray-900 border-b-2 border-gray-900' : 'text-gray-400 hover:text-gray-700'
                         }`}
                 >
                     Clientes Actuales
